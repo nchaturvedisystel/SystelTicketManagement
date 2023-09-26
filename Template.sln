@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traveller.UI", "Traveller.U
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB.SQL", "DB.SQL", "{5833B812-8FA4-4C8A-B8DF-F2C4872DB764}"
 	ProjectSection(SolutionItems) = preProject
-		C:\Users\amuttathu\Desktop\TemplateDB_SchemaWithData.sql = C:\Users\amuttathu\Desktop\TemplateDB_SchemaWithData.sql
+		TemplateDB_SchemaWithData.sql = TemplateDB_SchemaWithData.sql
 	EndProjectSection
 EndProject
 Global
