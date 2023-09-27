@@ -10,6 +10,29 @@
         .h-100 {
             height: 100vh!important;
         }
+
+        .btn-danger {
+            color: #fff;
+            background-color: #01018f;
+            border-color: #01018f;
+            
+        }
+
+        .login_block .login_hd {
+            color: darkblue;
+            font-size: 24px;
+        }
+
+        .login_block .forgot_pass{
+            color: darkblue !important;
+        }
+        .btn-danger:hover{
+            color: #fff;
+            background-color: #01018f;
+            border-color: #01018f;
+        }
+
+      
     </style>
 </head>
 
@@ -17,22 +40,29 @@
     <div class="login_container">
         <div class="container h-100">
             <div class="row align-items-center h-100">
+               @*  <div class="col-md-5">
+                    <div class="h1 text-white font-b">SAP Business One</div>
+                    <p class="h5 mb-3 text-white">The SAP Business One application provides an affordable, comprehensive solution for managing your entire business –from sales and customer relationships to financials andoperations.</p>                   
+                </div> *@
                 <div class="col-md-4">
                     <div class="h1 text-white font-b">Ticket Desk</div>
                     <p class="h5 mb-3 text-white">The Ticket Desk Management System.</p>
-                    <img src="Layout2/images/login_stages.png">
+                    @* <img src="Layout2/images/login_stages.png"> *@
                 </div>
-                <div class="col-md-4"></div>
+                <div class="col-md-3"></div>
                 <div class="col-md-4">
+                  
                     <div class="login_block" onkeypress="handle(event)">
-                        <img src="Layout2/images/logo_white.svg" class="logo">
-                        <div class="text-center my-4 login_hd">Login</div>
+                        <img src="Layout2/images/logo.png" class="logo">
+                        <div class="text-center my-4 login_hd" color="dark">Welcome Back</div>
                         <input type="text" placeholder="UserID" id="UserId" class="form-control rounded-pill mb-3">
-                        <input type="password" placeholder="password" id="UserPassword" class="form-control rounded-pill mb-2">
+                        <input type="password" placeholder="Password" id="UserPassword" class="form-control rounded-pill mb-2">
+                       
+                        
                         <div class="text-right mb-3">
-                            <a href="#" class="forgot_pass" onclick="UserForgotPassword_OnClick()">forgot password ?</a>
+                            <a href="#" class="forgot_pass" onclick="UserForgotPassword_OnClick()">Forgot Password ?</a>
                         </div>
-                        <a href="#" class="btn btn-primary rounded-pill w-100" onclick="UserLogin_OnClick()">Login</a>
+                        <a href="#" class="btn btn-danger rounded-pill w-100" onclick="UserLogin_OnClick()">Login</a>
                     </div>
                 </div>
             </div>
