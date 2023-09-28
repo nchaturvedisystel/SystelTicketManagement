@@ -13,8 +13,8 @@ ul, li {list-style-type: none}
 .font-sb {font-weight: 600 !important}
 .font-b {font-weight: 800 !important}
 
-.btn-primary {background-color: var(--orange-col); color: white; border-color: var(--orange-col);}
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {background-color: #bf3900 !important; border-color: #bf3900 !important;}
+.btn-primary {background-color: #01018f; color: white; border-color: #01018f;}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {background-color: #000076 !important; border-color: #01018f !important;}
 .btn-outline-secondary {border-color: var(--dark-gray-col); color: var(--dark-gray-col);}
 .btn-outline-secondary:hover {background-color: var(--dark-gray-col); color: white; border-color: var(--dark-gray-col);}
 
@@ -84,15 +84,15 @@ ul, li {list-style-type: none}
 
 .sidebar-toggled #wrapper .sec_head {left: 105px; transition: 0.3s all ease;}
 
-.btn-outline-primary{
-    border-color: orange !important;
-    color: orange !important;
+.btn-outline-primary {
+    border-color: #01018f !important;
+    color: #01018f !important;
 }
 
     .btn-outline-primary:hover {
-        background-color: orange !important;
+        background-color: #01018f !important;
         color: white !important;
-        border-color: orange !important;
+        border-color: #01018f !important;
     }
 
 /* Scollbar */
@@ -363,3 +363,8 @@ footer.sticky-footer {padding: 1rem 0; bottom:0px; height:auto !important; posit
 #MainNavigationBar .nav-item:hover .collapse
 #MainNavigationBar .nav-item.clicked .collapse { display: block;}
 #MainNavigationBar .collapse { display: none;}
+
+.h-100 {
+    height: 100vh !important;
+}
+
