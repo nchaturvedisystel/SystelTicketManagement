@@ -103,6 +103,7 @@ UserMaster.ValidateAndCreateNewUser = function (templateFile) {
         UserMaster.MobileNo = document.getElementById('UserMobile').value;
         UserMaster.EmailId = document.getElementById('UserEmail').value;
         UserMaster.Designation = document.getElementById('UserDesignation').value;
+        UserMaster.Company = document.getElementById('UserCompany').value;
         UserMaster.IsActive = document.getElementById('isUserActive').checked ? 1 : 0;
         UserMaster.DOB = document.getElementById('UserDOB').value;
         UserMaster.ActionUser = User.UserId;
@@ -231,6 +232,7 @@ UserMaster.ValidateAndUpdateUser = function (userMaster) {
     userMaster.mobileNo = document.getElementById('UserMobile').value;
     userMaster.emailId = document.getElementById('UserEmail').value;
     userMaster.designation = document.getElementById('UserDesignation').value;
+    userMaster.company = document.getElementById('UserCompany').value;
     userMaster.isActive = document.getElementById('isUserActive').checked ? 1 : 0;
     userMaster.isDeleted = document.getElementById('isUserActive').checked ? 0 : 1;
     userMaster.dob = document.getElementById('UserDOB').value;
@@ -294,6 +296,7 @@ UserMaster.SetUserMasterCRUDForm = function(userMaster){
     document.getElementById('UserMobile').value = userMaster.mobileNo;
     document.getElementById('UserDOB').value = userMaster.dob.split("T")[0];
     document.getElementById('UserDesignation').value = userMaster.designation;
+    document.getElementById('UserCompany').value = userMaster.company;
     document.getElementById('isUserActive').checked = userMaster.isActive === 1;
     document.getElementById('profileImagePath').value = userMaster.profileImage;
 
@@ -312,6 +315,7 @@ UserMaster.ClearUserMasterCRUDForm = function(){
     document.getElementById('UserMobile').value = "";
     document.getElementById('UserDOB').value = "";
     document.getElementById('UserDesignation').value = "";
+    document.getElementById('UserCompany').value = ""; 
     document.getElementById('isUserActive').checked = true;
     document.getElementById('profilePic').value = "";
 

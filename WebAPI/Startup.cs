@@ -41,6 +41,7 @@ namespace WebAPI
             //Common Services
             services.AddTransient<IUserContract, UserService>();
             services.AddTransient<IUserMaster, UserService>();
+            services.AddTransient<ICompany, UserService>();
             services.AddTransient<IMenuContract, MenuMasterService>();
             //services.AddTransient<IGlobalSearch, GlobalSearchService>();
             services.AddTransient<IUserTimeTracking, UserTimeTrackingService>();

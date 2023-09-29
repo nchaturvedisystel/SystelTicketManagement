@@ -13,6 +13,8 @@ using Infrastructure.Persistance.Services;
 using Application.Features.Users.Commands;
 using Application.DTOs.User;
 using WebAPI.Authorization;
+using Application.DTOs.Admin;
+using Application.Features.Admin.Commands;
 
 namespace WebAPI.Controllers
 {
@@ -194,6 +196,13 @@ namespace WebAPI.Controllers
             {
                 userMasterDTO = userMasterDTO
             });
+            return Ok(response);
+        }
+
+        [HttpGet("GetCompanyList")]
+        public async Task<IActionResult> GetCompanyList()
+        {
+            CompanyList response = await mediator.Send(new GetCompanyCommand{ } );
             return Ok(response);
         }
 
