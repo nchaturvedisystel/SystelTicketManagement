@@ -1,10 +1,12 @@
 using Application.Interfaces;
 using Application.Interfaces.Admin;
 using Application.Interfaces.Common;
+using Application.Interfaces.SupportTicket;
 using Application.Interfaces.User;
 using Infrastructure.Persistance.Services;
 using Infrastructure.Persistance.Services.Admin;
 using Infrastructure.Persistance.Services.Common;
+using Infrastructure.Persistance.Services.SupportTicket;
 using Infrastructure.Persistance.Services.Traveler;
 using Infrastructure.Persistance.Services.User;
 using Microsoft.AspNetCore.Authorization;
@@ -46,7 +48,8 @@ namespace WebAPI
             //services.AddTransient<IGlobalSearch, GlobalSearchService>();
             services.AddTransient<IUserTimeTracking, UserTimeTrackingService>();
 
-           // services.AddTransient<IPushNotification, PushNotificationService>();
+            //Ticket Service
+            services.AddTransient<ISupportTicket, TicketService>();
 
 
             
