@@ -1,6 +1,8 @@
 ﻿using Application.DTOs;
+using Application.DTOs.Admin;
 using Application.DTOs.User;
 using Application.Interfaces;
+using Application.Interfaces.Admin;
 using Application.Interfaces.User;
 using Dapper;
 using Domain.Settings;
@@ -15,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistance.Services.User
 {
-    public class UserService : DABase, IUserContract, IUserMaster
+    public class UserService : DABase, IUserContract, IUserMaster, ICompany
     {
         APISettings _settings;
         private const string SP_AuthenticateUser = "ValidateUserLogin";
@@ -25,6 +27,7 @@ namespace Infrastructure.Persistance.Services.User
         private const string SP_UserRole_CRUD = "UserRole_CRUD";
         private const string SP_Dashboard_GetAllUserDetails = "Dashboard_GetAllUserDetails";
         private const string SP_UserMaster_UpdateStatus = "UserMaster_UpdateStatus";
+        private const string SP_GetCompanyName = "GetCompanyName";
 
         private ILogger<UserService> _logger;
 
@@ -100,7 +103,8 @@ namespace Infrastructure.Persistance.Services.User
                     IsActive = userMasterDTO.IsActive,
                     IsDeleted = userMasterDTO.IsDeleted,
                     ActionUser = userMasterDTO.ActionUser,
-                    ProfileImage = filepath
+                    ProfileImage = filepath,
+                    CompanyId = userMasterDTO.CompanyId
 
 
                 }, commandType: CommandType.StoredProcedure);
@@ -233,6 +237,20 @@ namespace Infrastructure.Persistance.Services.User
                     UserId = userMasterDTO.UserId
                 }, commandType: CommandType.StoredProcedure);
             }
+            return response;
+        }
+
+        public async Task<CompanyList> GetCompany()
+        {
+            CompanyList response = new CompanyList();
+
+            _logger.LogInformation($"fetching data for Company List");
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                response.Companies = await connection.QueryAsync<CompanyMasterDTO>(SP_GetCompanyName, commandType: CommandType.StoredProcedure);
+            }
+
+
             return response;
         }
     }
