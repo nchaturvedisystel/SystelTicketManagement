@@ -29,6 +29,7 @@ namespace Application.DTOs.User
         public string ProfileImageBase64 { get; set; }
         public string Username { get; set; }
         public string AssignedWC { get; set; }
+        public int CompanyId { get; set; }
     }
 
     public class UserList
