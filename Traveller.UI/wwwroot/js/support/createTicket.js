@@ -1,11 +1,22 @@
 var Support = new Object();
-var InstructionsEditor;
+
+
+
+
+
+
+
 Support.BasepageOnReady = function () {
-    try {
-        InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-        $('#WorkflowInstructionsModal').modal('show');
-    }
-    catch (ex) {
-        alert(ex);
-    }
+    Support.LoadAll()
+}
+
+
+Support.LoadAll = function () {
+    console.log('Crate page loaded')
+}
+
+
+Support.OpenCreateTicketModal = function () {
+    InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+    $('#CreateTicketModal').modal('show');
 }
