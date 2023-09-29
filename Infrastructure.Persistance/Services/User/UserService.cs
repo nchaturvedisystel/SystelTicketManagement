@@ -103,7 +103,8 @@ namespace Infrastructure.Persistance.Services.User
                     IsActive = userMasterDTO.IsActive,
                     IsDeleted = userMasterDTO.IsDeleted,
                     ActionUser = userMasterDTO.ActionUser,
-                    ProfileImage = filepath
+                    ProfileImage = filepath,
+                    CompanyId = userMasterDTO.CompanyId
 
 
                 }, commandType: CommandType.StoredProcedure);
