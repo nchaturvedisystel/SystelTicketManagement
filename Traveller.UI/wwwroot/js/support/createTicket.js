@@ -1,61 +1,29 @@
 var Ticket = new Object();
 
-Ticket.ticketId = 0
-Ticket.title = ""
-Ticket.ticketDesc = ""
-Ticket.ticketType = ""
-Ticket.category = ""
-Ticket.tagList = ""
-Ticket.assignedTo = ""
-Ticket.ticketStatus = ""
-Ticket.ticketPriority = ""
-Ticket.affectsCustomer = ""
-Ticket.appVersion = ""
-Ticket.dueDate = ""
-Ticket.estimatedDuration = ""
-Ticket.actualDuration = ""
-Ticket.targetDate = ""
-Ticket.resolutionDate = ""
-Ticket.isActive = 0
-Ticket.isDeleted = 0
-Ticket.ticketOwner = ""
-Ticket.projectId = 0
-Ticket.companyId = 0
-Ticket.companyName = ""
-Ticket.projectName = ""
-Ticket.actionUser = 0
-
-// var TicketObject = {
-//   ticketId: 0,
-//   title: "string",
-//   ticketDesc: "string",
-//   ticketType: "string",
-//   category: "string",
-//   tagList: "string",
-//   assignedTo: "string",
-//   ticketStatus: "string",
-//   ticketPriority: "string",
-//   affectsCustomer: "string",
-//   appVersion: "string",
-//   dueDate: "2023-09-29T10:35:19.724Z",
-//   estimatedDuration: "string",
-//   actualDuration: "string",
-//   targetDate: "2023-09-29T10:35:19.724Z",
-//   resolutionDate: "2023-09-29T10:35:19.724Z",
-//   isActive: 0,
-//   isDeleted: 0,
-//   ticketOwner: "string",
-//   projectId: 0,
-//   companyId: 0,
-//   companyName: "string",
-//   projectName: "string",
-//   actionUser: 0
-// }
-
-
-
-
-
+Ticket.TicketId = 0
+Ticket.Title = ""
+Ticket.TicketDesc = ""
+Ticket.TicketType = ""
+Ticket.Category = ""
+Ticket.TagList = ""
+Ticket.AssignedTo = ""
+Ticket.TicketStatus = ""
+Ticket.TicketPriority = ""
+Ticket.AffectsCustomer = ""
+Ticket.AppVersion = ""
+Ticket.DueDate = new Date()
+Ticket.EstimatedDuration = ""
+Ticket.ActualDuration = ""
+Ticket.TargetDate = new Date()
+Ticket.ResolutionDate = new Date()
+Ticket.IsActive = 0
+Ticket.IsDeleted = 0
+Ticket.TicketOwner = ""
+Ticket.ProjectId = 0
+Ticket.CompanyId = 0
+Ticket.CompanyName = ""
+Ticket.ProjectName = ""
+Ticket.ActionUser = 0
 
 
 Ticket.BasepageOnReady = function () {
@@ -65,7 +33,7 @@ Ticket.BasepageOnReady = function () {
 
 Ticket.LoadAll = function () {
     console.log('Crate page loaded')
-    Ticket.actionUser = User.userId
+    Ticket.ActionUser = User.UserId
     Ajax.AuthPost("ticket/ManageTicket", Ticket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
 }
 
@@ -76,7 +44,49 @@ Ticket.OpenCreateTicketModal = function () {
 }
 
 function Ticket_OnSuccessCallBack(data) {
-    console.log(data);
+    let ticketData = data.tickets
+    var body = document.getElementById('TemplateListBody')
+    body.innerHTML = "";
+    console.log(ticketData);
+    for (var i = 0; i < ticketData.length; i++) {
+        var RowHtml = ('<tr>'
+            + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
+            + '                <td>' + ticketData[i].projectName + '</td>'
+            + '                <td>' + ticketData[i].title + '</td>'
+            + '                <td>' + ticketData[i].ticketStatus + '</td>'
+            + '                <td>' + ticketData[i].ticketOwner + '</td>'
+            + '                <td>' + ticketData[i].assignedTo + '</td>'
+            + '                <td>' + ticketData[i].targetDate + '</td>'
+            + '                <td>' + ticketData[i].dueDate + '</td>'
+            + '                <td>' + ticketData[i].createdBy + '</td>'
+            + '                <td>' + ticketData[i].updatedBy + '</td>'
+            + '                <td class="text-center">'
+            + '                    <div class="btn-group dots_dropdown">'
+            + '                        <button type="button" class="dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">'
+            + '                            <i class="fas fa-ellipsis-v"></i>'
+            + '                        </button>'
+            + '                        <div class="dropdown-menu dropdown-menu-right shadow-lg">'
+            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="fa fa-edit"></i> Edit'
+            + '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="far fa-trash-alt"></i> Delete'
+            + '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="UserWorkCenter.AssignWorkcenter(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            + '                                <i class="fa fa-sign-in-alt"></i> Assign Workcenter'
+            + '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="UserRole.AssignRole(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            + '                                <i class="fa fa-plus"></i> Assign Role'
+            + '                            </button>'
+            + '                        </div>'
+            + '                    </div>'
+            + '                </td> '
+            + '            </tr>'
+            + '');
+
+        body.innerHTML = body.innerHTML + RowHtml;
+    }
+
 }
 
 function Ticket_OnErrorCallBack(data) {
