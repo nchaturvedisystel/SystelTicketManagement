@@ -105,7 +105,7 @@ Navigation.CallPageLoad = function (MenuCode) {
         Dashboard.BasepageOnReady();
     }
     else if (MenuCode == 'CSD') {
-        Support.BasepageOnReady();
+        Ticket.BasepageOnReady();
     }
 
 }
