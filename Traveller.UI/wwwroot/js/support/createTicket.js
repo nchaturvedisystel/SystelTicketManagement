@@ -1,7 +1,4 @@
 var Ticket = new Object();
-
-
-
 Ticket.TicketId = 0
 Ticket.Title = ""
 Ticket.TicketDesc = ""
@@ -26,9 +23,6 @@ Ticket.CompanyId = 0
 Ticket.CompanyName = ""
 Ticket.ProjectName = ""
 Ticket.ActionUser = 0
-
-
-
 
 
 Ticket.BasepageOnReady = function () {
@@ -57,7 +51,6 @@ Ticket.OpenCreateTicketModal = function () {
 
 
 function Ticket_OnSuccessCallBack(data) {
-    $('#CreateTicketModal').modal('hide');
     let ticketData = data.tickets
     var body = document.getElementById('TemplateListBody')
     body.innerHTML = "";
@@ -99,13 +92,9 @@ function Ticket_OnSuccessCallBack(data) {
             + '');
 
 
-
         body.innerHTML = body.innerHTML + RowHtml;
     }
 
-
-
-}
 
 function Ticket_OnErrorCallBack(data) {
     console.error(data)
