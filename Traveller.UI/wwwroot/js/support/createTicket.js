@@ -51,6 +51,7 @@ Ticket.OpenCreateTicketModal = function () {
 
 
 function Ticket_OnSuccessCallBack(data) {
+    $('#CreateTicketModal').modal('hide');
     let ticketData = data.tickets
     var body = document.getElementById('TemplateListBody')
     body.innerHTML = "";
@@ -94,44 +95,40 @@ function Ticket_OnSuccessCallBack(data) {
 
         body.innerHTML = body.innerHTML + RowHtml;
     }
-
-
-function Ticket_OnErrorCallBack(data) {
-    console.error(data)
-}
-Ticket.CreateNew = function () {
-    retText = InstructionsEditor.getPlainText()
-
-
-    Ticket.TicketId = 0
-    Ticket.Title = document.getElementById("title").value
-    Ticket.TicketDesc = retText
-    Ticket.TicketType = document.getElementById("ticketType").value
-    Ticket.Category = document.getElementById("category").value
-    Ticket.TagList = document.getElementById("tags").value     
-    Ticket.TicketPriority = document.getElementById("priority").value
-    Ticket.AffectsCustomer = document.getElementById("affectsCustomer").value
-    Ticket.TargetDate = document.getElementById("targetDate").value
-    // Ticket.DueDate = document.getElementById("dueDate").value
-    // Ticket.EstimatedDuration = document.getElementById("estimatedDuration").value
-    // Ticket.ActualDuration = document.getElementById("actualDuration").value  
-    // Ticket.ResolutionDate = document.getElementById("resolutionDate").value
-    // Ticket.AssignedTo = document.getElementById("assignedTo").value
-    // Ticket.TicketOwner = '1'
-    // Ticket.TicketStatus = document.getElementById("ticketStatus").value
-    Ticket.IsActive = 0
-    Ticket.IsDeleted = 0  
-    Ticket.ProjectId = document.getElementById("project").value
-    Ticket.CompanyId = 0
-    Ticket.CompanyName = document.getElementById("title").value
-    Ticket.ProjectName = ''
-    Ticket.ActionUser = User.UserId
-    console.log(Ticket)
-   
-   
-    
 }
 
 
+    function Ticket_OnErrorCallBack(data) {
+        console.error(data)
+    }
+    Ticket.CreateNew = function () {
+        retText = InstructionsEditor.getPlainText()
+        Ticket.TicketId = 0
+        Ticket.Title = document.getElementById("title").value
+        Ticket.TicketDesc = retText
+        Ticket.TicketType = document.getElementById("ticketType").value
+        Ticket.Category = document.getElementById("category").value
+        Ticket.TagList = document.getElementById("tags").value
+        Ticket.TicketPriority = document.getElementById("priority").value
+        Ticket.AffectsCustomer = document.getElementById("affectsCustomer").value
+        Ticket.TargetDate = document.getElementById("targetDate").value
+        // Ticket.DueDate = document.getElementById("dueDate").value
+        // Ticket.EstimatedDuration = document.getElementById("estimatedDuration").value
+        // Ticket.ActualDuration = document.getElementById("actualDuration").value  
+        // Ticket.ResolutionDate = document.getElementById("resolutionDate").value
+        // Ticket.AssignedTo = document.getElementById("assignedTo").value
+        // Ticket.TicketOwner = '1'
+        // Ticket.TicketStatus = document.getElementById("ticketStatus").value
+        Ticket.IsActive = 1
+        Ticket.IsDeleted = 0
+        Ticket.ProjectId = document.getElementById("project").value
+        Ticket.ActionUser = User.UserId
+        // console.log(User)
+         Ajax.AuthPost("ticket/ManageTicket", Ticket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
 
-            
+
+
+    }
+
+
+
