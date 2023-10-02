@@ -33,7 +33,8 @@ namespace Application.DTOs.SupportTicket
         public string CompanyName { get; set;}
         public string ProjectName { get; set;}
         public int ActionUser { get; set; }
-
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set;}
     }
 
     public class TicketList
