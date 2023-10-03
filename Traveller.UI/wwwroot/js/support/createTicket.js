@@ -123,6 +123,48 @@ Ticket.CreateNew = function () {
     Ticket.CompanyId = Ajax.CompanyId;
     // console.log(User)
     Ajax.AuthPost("ticket/ManageTicket", Ticket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
+
+    var title = document.getElementById("title").value;
+    var category = document.getElementById("category").value;
+    var priority = document.getElementById("priority").value;
+    var ticketType = document.getElementById("ticketType").value;
+    var targetDate = document.getElementById("targetDate").value;
+    var tags = document.getElementById("tags").value;
+    
+
+    // Perform validation
+    if (title.trim() === '') {
+        alert('Title cannot be empty');
+        return;
+    }
+    if (category.trim() === '') {
+        alert('Category cannot be empty');
+        return;
+    }
+    if (priority.trim() === '') {
+        alert('Priority cannot be empty');
+        return;
+    }
+
+    if (ticketType.trim() === '') {
+        alert('Ticket Type cannot be empty');
+        return;
+    }
+
+    if (targetDate.trim() === '') {
+        alert('Target Date cannot be empty');
+        return;
+    }
+
+    if (tags.trim() === '') {
+        alert('Tags cannot be empty');
+        return;
+    }
+   
+
+   
+
+  
 }
 
 Ticket.ClearCRUDform = function () {
