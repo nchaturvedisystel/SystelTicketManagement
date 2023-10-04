@@ -69,8 +69,8 @@ Date.prototype.addDays = function (days) {
 
 function Ticket_OnSuccessCallBack(data) {
     $('#CreateTicketModal').modal('hide');
-    let ticketData = data.tickets
-    var body = document.getElementById('TemplateListBody')
+    let ticketData = data.tickets;
+    var body = document.getElementById('TemplateListBody');
     body.innerHTML = "";
     console.log(ticketData);
     for (var i = 0; i < ticketData.length; i++) {
@@ -112,7 +112,7 @@ function Ticket_OnSuccessCallBack(data) {
 
 
 function Ticket_OnErrorCallBack(data) {
-    console.error(data)
+    console.error(data);
 }
 Ticket.CreateNew = function () {
 
@@ -129,6 +129,7 @@ Ticket.CreateNew = function () {
     newTicket.ProjectId = document.getElementById("project").value;
     newTicket.ActionUser = User.UserId;
     newTicket.CompanyId = Ajax.CompanyId;
+    console.log(newTicket.TargetDate);
     
     // Perform validation
     var ValidationMsg = " Please provide ";
