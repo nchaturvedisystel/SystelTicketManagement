@@ -3,19 +3,6 @@
     <button type="button" class="btn btn-primary btn-sm" onclick="Ticket.OpenCreateTicketModal()">Create New</button>
 </div>
 
-<div class="tabs-container">
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="" href="#">Active</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="Assigned.html">Assigned</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="Closed.html">Closed</a>
-        </li>
-    </ul>
-</div>
 
 <style>
     .nav.nav-tabs {
@@ -29,34 +16,7 @@
         }
 </style>
 
-<div style="bottom: 10px;">
-    <table id="example" class="table table-bordered com_table" style="width: 100%;">
-        <thead>
-            <tr class="text-dark">
 
-                <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
-                <th scope="col">Project Id</th>
-                <th scope="col">Title</th>
-                <!-- <th scope="col">Ticket Status</th> -->
-                <!-- <th scope="col">Ticket Owner</th> -->
-                <!-- <th scope="col">Assigned To</th> -->
-                <th scope="col">Target Date</th>
-                <!-- <th scope="col">Due Date</th> -->
-                <th scope="col">Created</th>
-                <th scope="col">Updated</th>
-                <th scope="col">Action</th>
-
-            </tr>
-        </thead>
-        <tbody id="TemplateListBody">
-            <tr>
-                <td colspan="7">
-                    <font style="color:red;">No Records found..</font>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
 
 <div class="modal fade" id="CreateTicketModal" tabindex="-1" role="dialog" aria-labelledby="WorkflowInstructionsModalLabel" aria-hidden="true">
@@ -110,11 +70,7 @@
 
                     </div>
                     <div class="form-row">
-                        <!-- <div class="form-group col-md-4">
-                            <label for="dueDate">Due Date</label>
-                            <input type="date" class="form-control" id="dueDate">
-                        </div> -->
-                        
+
                         <div class="form-group col-md-4">
                             <label for="targetDate">Target Date</label>
                             <input type="date" class="form-control" id="targetDate">
@@ -129,20 +85,8 @@
                                 <label class="form-check-label" for="affectsCustomer">Affects Customer</label>
                             </div>
                         </div>
-                        <!-- <div class="form-group col-md-4">
-                            <label for="resolutionDate">Resolution Date</label>
-                            <input type="date" class="form-control" id="resolutionDate">
-                        </div> -->
                     </div>
                     <div class="form-row">
-                        <!-- <div class="form-group col-md-4">
-                            <label for="estimatedDuration">Estimated Duration</label>
-                            <input type="text" class="form-control" id="estimatedDuration">
-                        </div> -->
-                        <!-- <div class="form-group col-md-4">
-                            <label for="actualDuration">Actual Duration</label>
-                            <input type="text" class="form-control" id="actualDuration">
-                        </div> -->
 
                     </div>
                     <label>Ticket Description</label>
@@ -150,27 +94,6 @@
                         This is the default text.
                     </div>
                     <div class="form-row">
-                        <!-- <div class="form-group col-md-6">
-                            <label for="owner">Ticket Owner</label>
-                            <select class="form-control" id="owner">
-                                <option>Owner 1</option>
-                                <option>Owner 2</option>
-                            </select>
-                        </div> -->
-                        <!-- <div class="form-group col-md-6">
-                            <label for="assignedTo">Assigned To</label>
-                            <select class="form-control" id="assignedTo">
-                                <option>Team Member 1</option>
-                                <option>Team Member 2</option>
-                            </select>
-                        </div> -->
-                        <!-- <div class="form-group col-md-4">
-                            <label for="tickeStatus">Ticket Status</label>
-                            <select class="form-control" id="ticketStatus">
-                                <option>Close</option>
-                                <option>Open</option>
-                            </select>
-                        </div> -->
                     </div>
 
 
@@ -182,5 +105,142 @@
 
             </div>
         </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="TabularViewDiv" role="tabpanel">
+        <div class="nav nav-tabs tra_tab" id="nav-tab" role="tablist">
+            <a class="active" data-toggle="tab" href="#tab1" role="tab" aria-selected="true">Active Tickets</a>
+            <a data-toggle="tab" href="#tab2" role="tab" aria-selected="false">In Progress Tickets</a>
+            <a data-toggle="tab" href="#tab3" role="tab" aria-selected="false">Closed Tickets</a>
+        </div>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" style="padding-bottom: 50px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 style="color:darkblue;">Tickets Creative but Not Assigned to anyone</h3>
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="bottom: 10px;" class="col-md-12">
+                        <table id="example" class="table table-bordered com_table" style="width: 100%;">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
+                                    <th scope="col">Project Id</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Target Date</th>
+                                    <th scope="col">Created</th>
+                                    <th scope="col">Updated</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TemplateListBody">
+                                <tr>
+                                    <td colspan="7">
+                                        <font style="color:red;">No Records found..</font>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel">
+                <div class="row col-md-12">
+                    <div class="col-md-12">
+                        <h3 style="color:darkblue;">In Progress Tickets</h3>
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="bottom: 10px;" class="col-md-12">
+                        <table id="example1" class="table table-bordered com_table" style="width: 100%;">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
+                                    <th scope="col">Project Id</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Target Date</th>
+                                    <th scope="col">Created</th>
+                                    <th scope="col">Updated</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TemplateListBody">
+                                <tr>
+                                    <td colspan="7">
+                                        <font style="color:red;">No Records found..</font>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab3" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 style="color:darkblue;">Completed/Cancelled/Closed Tickets</h3>
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="bottom: 10px;" class="col-md-12">
+                        <table id="example2" class="table table-bordered com_table" style="width: 100%;">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
+                                    <th scope="col">Project Id</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Target Date</th>
+                                    <th scope="col">Created</th>
+                                    <th scope="col">Updated</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TemplateListBody">
+                                <tr>
+                                    <td colspan="7">
+                                        <font style="color:red;">No Records found..</font>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </div>
