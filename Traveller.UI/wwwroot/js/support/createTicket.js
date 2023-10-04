@@ -71,7 +71,7 @@ function Ticket_OnSuccessCallBack(data) {
             + '                            <i class="fas fa-ellipsis-v"></i>'
             + '                        </button>'
             + '                        <div class="dropdown-menu dropdown-menu-right shadow-lg">'
-            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
             + '                                <i class="fa fa-edit"></i> Edit'
             + '                            </button>'
             + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
@@ -122,7 +122,7 @@ Ticket.CreateNew = function () {
     Ticket.ActionUser = User.UserId
     Ticket.CompanyId = Ajax.CompanyId;
     // console.log(User)
-    Ajax.AuthPost("ticket/ManageTicket", Ticket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
+    
 
     var title = document.getElementById("title").value;
     var category = document.getElementById("category").value;
@@ -155,44 +155,39 @@ Ticket.CreateNew = function () {
         alert('Target Date cannot be empty');
         return;
     }
+    else {
+        let DMY = targetDate.split("-");
+        let CDMY = new Date().getDate();
+   
+        if (DMY[2] <= (CDMY + 3)) {
+            alert("select date after 3 days");
+            return;
+        }
+       
+    }
 
     if (tags.trim() === '') {
         alert('Tags cannot be empty');
         return;
     }
-   
 
    
+
+   Ajax.AuthPost("ticket/ManageTicket", Ticket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
 
   
 }
 
 Ticket.ClearCRUDform = function () {
-    Ticket.TicketId = 0
-    Ticket.Title = ""
-    Ticket.TicketDesc = ""
-    Ticket.TicketType = ""
-    Ticket.Category = ""
-    Ticket.TagList = ""
-    Ticket.AssignedTo = ""
-    Ticket.TicketStatus = ""
-    Ticket.TicketPriority = ""
-    Ticket.AffectsCustomer = ""
-    Ticket.AppVersion = ""
-    Ticket.DueDate = new Date()
-    Ticket.EstimatedDuration = ""
-    Ticket.ActualDuration = ""
-    Ticket.TargetDate = new Date()
-    Ticket.ResolutionDate = new Date()
-    Ticket.IsActive = 0
-    Ticket.IsDeleted = 0
-    Ticket.TicketOwner = ""
-    Ticket.ProjectId = 0
-    Ticket.CompanyId = 0
-    Ticket.CompanyName = ""
-    Ticket.ProjectName = ""
-    Ticket.ActionUser = 0
+   
 }
 
 
+/*
+Ticket.Update = Function(Ticket){
+    Ticket = JSON.parse(decodeURIComponent(Ticket));
+    $('#userListModal').modal('show');
+}
+
+*/
 
