@@ -56,7 +56,7 @@ namespace Infrastructure.Persistance.Services.SupportTicket
                     DueDate = supportTicketDTO.DueDate,
                     EstimatedDuration = supportTicketDTO.EstimatedDuration,
                     ActualDuration = supportTicketDTO.ActualDuration,
-                    TargetDate = supportTicketDTO.TargetDate,
+                    TargetDate = supportTicketDTO.TargetDate.ToString("yyyy-MM-ddTHH:mm:ss.fff"),
                     ResolutionDate = supportTicketDTO.ResolutionDate,
                     IsActive = supportTicketDTO.IsActive,
                     IsDeleted = supportTicketDTO.IsDeleted,
