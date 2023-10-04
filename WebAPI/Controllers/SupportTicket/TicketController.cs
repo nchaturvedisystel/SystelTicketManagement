@@ -32,10 +32,12 @@ namespace WebAPI.Controllers.SupportTicket
         {
             TicketList response = new TicketList();
 
+
             response = await mediator.Send(new SupportTicketCommand
             {
                 supportTicketDTO = supportTicketDTO
             }) ;
+
             if (response == null)
                 return Ok(APIResponse<string>.Unauthorized("Please check login credentials"));
 
