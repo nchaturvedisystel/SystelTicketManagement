@@ -9,6 +9,7 @@ using Domain.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.SqlClient;
 using System.DirectoryServices.Protocols;
@@ -48,6 +49,7 @@ namespace Infrastructure.Persistance.Services.User
                 {
                     UserName = userName,
                     UserPassword = password,
+                    CompanyId = companyCode
 
                 }, commandType: CommandType.StoredProcedure);
 
