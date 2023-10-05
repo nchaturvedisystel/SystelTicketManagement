@@ -70,11 +70,17 @@ Date.prototype.addDays = function (days) {
 function Ticket_OnSuccessCallBack(data) {
     $('#CreateTicketModal').modal('hide');
     let ticketData = data.tickets;
+
+    
     var body = document.getElementById('TemplateListBody');
+    var body1 = document.getElementById('TemplateListBody1');
+    var body2 = document.getElementById('TemplateListBody2');
     body.innerHTML = "";
-    console.log(ticketData);
+    body1.innerHTML = "";
+    body2.innerHTML = "";
     for (var i = 0; i < ticketData.length; i++) {
-        var RowHtml = ('<tr>'
+        if ((ticketData[i].assignedTo == '' || ticketData[i].assignedTo == null) && ticketData[i].ticketStatus === 'Open'){
+            var RowHtml = ('<tr>'
             + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
             + '                <td>' + ticketData[i].projectId + '</td>'
             + '                <td>' + ticketData[i].title + '</td>'
@@ -93,12 +99,12 @@ function Ticket_OnSuccessCallBack(data) {
             + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
             + '                                <i class="far fa-trash-alt"></i> Delete'
             + '                            </button>'
-            + '                            <button class="dropdown-item" type="button" onclick="UserWorkCenter.AssignWorkcenter(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
-            + '                                <i class="fa fa-sign-in-alt"></i> Assign Workcenter'
-            + '                            </button>'
-            + '                            <button class="dropdown-item" type="button" onclick="UserRole.AssignRole(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
-            + '                                <i class="fa fa-plus"></i> Assign Role'
-            + '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserWorkCenter.AssignWorkcenter(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            //+ '                                <i class="fa fa-sign-in-alt"></i> Assign Workcenter'
+            //+ '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserRole.AssignRole(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            //+ '                                <i class="fa fa-plus"></i> Assign Role'
+            //+ '                            </button>'
             + '                        </div>'
             + '                    </div>'
             + '                </td> '
@@ -107,7 +113,80 @@ function Ticket_OnSuccessCallBack(data) {
 
 
         body.innerHTML = body.innerHTML + RowHtml;
+        }
+        else if(ticketData[i].assignedTo == User.UserId && ticketData[i].ticketStatus === 'Open'){
+            var RowHtml1 = ('<tr>'
+            + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
+            + '                <td>' + ticketData[i].projectId + '</td>'
+            + '                <td>' + ticketData[i].title + '</td>'
+            + '                <td>' + ticketData[i].targetDate + '</td>'
+            + '                <td>' + ticketData[i].createdOn + '</td>'
+            + '                <td>' + ticketData[i].modifiedOn + '</td>'
+            + '                <td class="text-center">'
+            + '                    <div class="btn-group dots_dropdown">'
+            + '                        <button type="button" class="dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">'
+            + '                            <i class="fas fa-ellipsis-v"></i>'
+            + '                        </button>'
+            + '                        <div class="dropdown-menu dropdown-menu-right shadow-lg">'
+            + '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="fa fa-edit"></i> Edit'
+            + '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="far fa-trash-alt"></i> Delete'
+            + '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserWorkCenter.AssignWorkcenter(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            //+ '                                <i class="fa fa-sign-in-alt"></i> Assign Workcenter'
+            //+ '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserRole.AssignRole(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            //+ '                                <i class="fa fa-plus"></i> Assign Role'
+            //+ '                            </button>'
+            + '                        </div>'
+            + '                    </div>'
+            + '                </td> '
+            + '            </tr>'
+            + '');
+            body1.innerHTML = body1.innerHTML + RowHtml1
+        }
+        else if(ticketData[i].ticketStatus === 'Close'){
+            var RowHtml2 = ('<tr>'
+            + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
+            + '                <td>' + ticketData[i].projectId + '</td>'
+            + '                <td>' + ticketData[i].title + '</td>'
+            + '                <td>' + ticketData[i].targetDate + '</td>'
+            + '                <td>' + ticketData[i].createdOn + '</td>'
+            + '                <td>' + ticketData[i].modifiedOn + '</td>'
+            + '                <td class="text-center">'
+            + '                    <div class="btn-group dots_dropdown">'
+            + '                        <button type="button" class="dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">'
+            + '                            <i class="fas fa-ellipsis-v"></i>'
+            + '                        </button>'
+            + '                        <div class="dropdown-menu dropdown-menu-right shadow-lg">'
+            + '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="fa fa-edit"></i> Edit'
+            + '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="far fa-trash-alt"></i> Delete'
+            + '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserWorkCenter.AssignWorkcenter(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            //+ '                                <i class="fa fa-sign-in-alt"></i> Assign Workcenter'
+            //+ '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserRole.AssignRole(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')" >'
+            //+ '                                <i class="fa fa-plus"></i> Assign Role'
+            //+ '                            </button>'
+            + '                        </div>'
+            + '                    </div>'
+            + '                </td> '
+            + '            </tr>'
+            + '');
+            body2.innerHTML = body2.innerHTML + RowHtml2
+        }
+
+        Ticket.InProgress(ticketData);
     }
+}
+
+Ticket.InProgress = function (ticketData) {
+    console.log("inprogress");
 }
 
 
