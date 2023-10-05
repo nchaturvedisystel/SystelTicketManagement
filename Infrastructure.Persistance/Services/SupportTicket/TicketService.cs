@@ -24,6 +24,7 @@ namespace Infrastructure.Persistance.Services.SupportTicket
     {
         APISettings _settings;
         private const string SP_ManageTicket_CRUD = "ManageTicket_CRUD";
+        private const string SP_SupportTickets_GetByUserId = "SupportTickets_GetByUserId";
         private ILogger<TicketService> _logger;
 
         public TicketService(IOptions<ConnectionSettings> connectionSettings, ILogger<TicketService> logger, IOptions<APISettings> settings) : base(connectionSettings.Value.DBCONN)
@@ -68,6 +69,33 @@ namespace Infrastructure.Persistance.Services.SupportTicket
                 }
                 //DueDate = supportTicketDTO.DueDate,
                 //ResolutionDate = supportTicketDTO.ResolutionDate,
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return response;
+        }
+        public async Task<ClientUserTicketList> SupportTickets_GetByUserId(SupportTicketDTO supportTicketDTO)
+        {
+            ClientUserTicketList response = new ClientUserTicketList();
+
+            _logger.LogInformation($"Started fetching all support tickets for the logged in user {supportTicketDTO.ActionUser}");
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+                {
+                    var reader = await connection.QueryMultipleAsync(SP_SupportTickets_GetByUserId, new
+                    {
+                        ActionUser = supportTicketDTO.ActionUser,
+                        CompanyId = supportTicketDTO.CompanyId,
+                    }, commandType: CommandType.StoredProcedure);
+
+                    response.ActiveTickets = await reader.ReadAsync<SupportTicketDTO>();
+                    response.InprogressTickets = await reader.ReadAsync<SupportTicketDTO>();
+                    response.ClosedTickets = await reader.ReadAsync<SupportTicketDTO>();
+
+                }
             }
             catch (Exception ex)
             {

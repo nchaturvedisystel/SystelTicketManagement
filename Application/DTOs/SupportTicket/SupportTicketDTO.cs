@@ -41,4 +41,10 @@ namespace Application.DTOs.SupportTicket
     {
         public IEnumerable<SupportTicketDTO> Tickets { get; set; }
     }
+    public class ClientUserTicketList
+    {
+        public IEnumerable<SupportTicketDTO> ActiveTickets { get; set; }
+        public IEnumerable<SupportTicketDTO> InprogressTickets { get; set; }
+        public IEnumerable<SupportTicketDTO> ClosedTickets { get; set; }
+    }
 }

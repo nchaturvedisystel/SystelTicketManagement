@@ -43,5 +43,21 @@ namespace WebAPI.Controllers.SupportTicket
 
             return Ok(response);
         }
+        [HttpPost("ClientUserTicketList")]
+        public async Task<IActionResult> ClientUserTicketList([FromBody] SupportTicketDTO supportTicketDTO)
+        {
+            ClientUserTicketList response = new ClientUserTicketList();
+
+
+            response = await mediator.Send(new ClientUserTicketListCommand
+            {
+                supportTicketDTO = supportTicketDTO
+            });
+
+            if (response == null)
+                return Ok(APIResponse<string>.Unauthorized("Please check login credentials"));
+
+            return Ok(response);
+        }
     }
 }

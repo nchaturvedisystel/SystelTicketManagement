@@ -33,6 +33,7 @@ function ValidateToken_OnSuccessCallBack(data) {
 }
 function ValidateToken_OnErrorCallBack(error) {
     localStorage.setItem('token', "");
+    localStorage.setItem('loggedInUser', "");
     window.location = window.location.origin + "/login";
 }
 User.SetValues = function (data) {
