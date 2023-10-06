@@ -9,7 +9,7 @@ DashboardWorkList.CreateDashboardWorkListOnReady = function () {
 
 DashboardWorkList.LoadAll = function () {
     DashboardWorkList.ActionUser = User.UserId
-    Ajax.AuthPost("user/GetUserWorkItems", DashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
+   // Ajax.AuthPost("user/GetUserWorkItems", DashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
 }
 
 DashboardWorkList_OnSuccessCallBack = function (data) {

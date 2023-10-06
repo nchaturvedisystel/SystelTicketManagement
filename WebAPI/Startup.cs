@@ -55,6 +55,9 @@ namespace WebAPI
             
             //Admin Services
             services.AddTransient<IMenuManage, MenuMasterService>();
+            services.AddTransient<IClientWorkList, MenuMasterService>();
+
+
 
 
             //Services

@@ -25,6 +25,7 @@ namespace Infrastructure.Persistance.Services.SupportTicket
         APISettings _settings;
         private const string SP_ManageTicket_CRUD = "ManageTicket_CRUD";
         private const string SP_SupportTickets_GetByUserId = "SupportTickets_GetByUserId";
+        private const string SP_SupportTicket_TicketWorkList = "SupportTicket_TicketWorkList";
         private ILogger<TicketService> _logger;
 
         public TicketService(IOptions<ConnectionSettings> connectionSettings, ILogger<TicketService> logger, IOptions<APISettings> settings) : base(connectionSettings.Value.DBCONN)
@@ -103,5 +104,8 @@ namespace Infrastructure.Persistance.Services.SupportTicket
             }
             return response;
         }
+
+       
+
     }
 }
