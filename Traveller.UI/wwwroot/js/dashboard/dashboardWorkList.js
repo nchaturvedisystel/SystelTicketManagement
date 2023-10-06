@@ -25,6 +25,7 @@ DashboardWorkList.ProjectName = "";
 DashboardWorkList.ActionUser = 0;
 DashboardWorkList.InstructionsEditorLoaded = 0;
 DashboardWorkList.InstructionsEditor;
+DashboardWorkList.AssignedToName = "";
 
 DashboardWorkList.CreateDashboardWorkListOnReady = function () {
     loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -62,42 +63,50 @@ function DashboardWorkList_OnSuccessCallBack(data) {
     var ClientWorkInProgressData = data.workInProgress;
     var ClientAssignedToMeData = data.assignedToMe;
     var ClientOpenTicketsData = data.openTickets;
+    var ClientClosedTicketsData = data.closedTickets;
 
     
 
     var ClientWorkInProgressListBody = document.getElementById('ClientWorkInProgressListBody');
     var ClientAssignedToMeListBody = document.getElementById('ClientAssignedToMeListBody');
     var ClientOpenTicketsListBody = document.getElementById('ClientOpenTicketsListBody');
+    var ClientClosedTicketsListBody = document.getElementById('ClientClosedTicketsListBody');
 
     ClientWorkInProgressListBody.innerHTML = "";
     ClientAssignedToMeListBody.innerHTML = "";
     ClientOpenTicketsListBody.innerHTML = "";
+    ClientClosedTicketsListBody.innerHTML = "";
 
     DashboardWorkList.BindClientUserTicketList(ClientWorkInProgressListBody, ClientWorkInProgressData);
     DashboardWorkList.BindClientUserTicketList(ClientAssignedToMeListBody, ClientAssignedToMeData);
     DashboardWorkList.BindClientUserTicketList(ClientOpenTicketsListBody, ClientOpenTicketsData);
+    DashboardWorkList.BindClientUserTicketList(ClientClosedTicketsListBody, ClientClosedTicketsData);
 }
 
 DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
     for (var i = 0; i < ticketData.length; i++) {
         var RowHtml = ('<tr>'
             + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
-            + '                <td>' + ticketData[i].projectId + '</td>'
-            + '                <td>' + ticketData[i].title + '</td>'
-            + '                <td>' + (new Date(ticketData[i].targetDate).toLocaleDateString("en-US")) + '</td>'
+            + '                <td>' + ticketData[i].companyName + '</td>'
+            + '                <td>' + ticketData[i].projectName + '</td>'
+            + '                <td>' + ticketData[i].assignedToName + '</td>'
             + '                <td>' + (new Date(ticketData[i].createdOn).toLocaleDateString("en-US")) + '</td>'
-            + '                <td>' + (new Date(ticketData[i].modifiedOn).toLocaleDateString("en-US")) + '</td>'
+            + '                <td>' + ticketData[i].ticketStatus + '</td>'
+            + '                <td>' + (new Date(ticketData[i].targetDate).toLocaleDateString("en-US")) + '</td>'
             + '                <td class="text-center">'
             + '                    <div class="btn-group dots_dropdown">'
             + '                        <button type="button" class="dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">'
             + '                            <i class="fas fa-ellipsis-v"></i>'
             + '                        </button>'
             + '                        <div class="dropdown-menu dropdown-menu-right shadow-lg">'
-            + '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
-            + '                                <i class="fa fa-edit"></i> Edit'
-            + '                            </button>'
-            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
-            + '                                <i class="far fa-trash-alt"></i> Delete'
+            //+ '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            //+ '                                <i class="fa fa-edit"></i> Edit'
+            //+ '                            </button>'
+            //+ '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            //+ '                                <i class="far fa-trash-alt"></i> Delete'
+            //+ '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="DashboardWorkList.View(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="far fa fa-eye"></i> View'
             + '                            </button>'
             + '                        </div>'
             + '                    </div>'
@@ -132,6 +141,11 @@ function DashboardWorkList_OnErrorCallBack(data) {
 
 //}
 
+DashboardWorkList.View = function () {
+    
+    
+    
+}
 DashboardWorkList.ClearCRUDform = function () {
 
 }

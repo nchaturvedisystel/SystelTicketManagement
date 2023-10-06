@@ -35,6 +35,7 @@ namespace Application.DTOs.SupportTicket
         public int ActionUser { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set;}
+        public string AssignedToName { get; set; }
     }
 
     public class TicketList
