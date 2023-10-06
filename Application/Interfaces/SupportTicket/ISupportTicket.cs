@@ -11,5 +11,6 @@ namespace Application.Interfaces.SupportTicket
     {
         public Task<TicketList> ManageTicket(SupportTicketDTO supportTicketDTO);
         public Task<ClientUserTicketList> SupportTickets_GetByUserId(SupportTicketDTO supportTicketDTO);
+      
     }
 }

@@ -10,7 +10,7 @@ UserDashboard.CreateUserDashboardOnReady = function(){
 
 UserDashboard.LoadAll = function () {
     UserDashboard.ActionUser = User.UserId;
-    Ajax.AuthPost("users/UserDashboardGet", UserDashboard, UserDashboard_OnSuccessCallBack, UserDashboard_OnErrorCallBack);
+    //Ajax.AuthPost("users/UserDashboardGet", UserDashboard, UserDashboard_OnSuccessCallBack, UserDashboard_OnErrorCallBack);
 }
 
 function UserDashboard_OnSuccessCallBack(data){

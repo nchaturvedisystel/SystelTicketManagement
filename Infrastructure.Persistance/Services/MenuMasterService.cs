@@ -13,14 +13,18 @@ using System.Threading.Tasks;
 using Dapper;
 using Application.DTOs.Admin;
 using Application.Interfaces.Admin;
+using Application.DTOs.SupportTicket;
 
 namespace Infrastructure.Persistance.Services
 {
-    public class MenuMasterService : DABase, IMenuContract, IMenuManage
+    public class MenuMasterService : DABase, IMenuContract, IMenuManage ,IClientWorkList
     {
         private const string SP_UserRolesByUserId = "UserRolesByUserId";
         private const string SP_MenuMaster_CRUD = "MenuMaster_CRUD";
         private const string SP_AdminDashboard_GetDetails = "AdminDashboard_GetDetails";
+        private const string SP_SupportTickets_GetByUserId = "SupportTickets_GetByUserId";
+        private const string SP_SupportTicket_TicketWorkList = "SupportTicket_TicketWorkList";
+
 
         private ILogger<MenuMasterService> _logger;
         public MenuMasterService(IOptions<ConnectionSettings> connectionSettings, ILogger<MenuMasterService> logger) : base(connectionSettings.Value.DBCONN)
@@ -93,6 +97,34 @@ namespace Infrastructure.Persistance.Services
                 }
             }
 
+            return response;
+        }
+
+        public async Task<ClientWorkList> SupportTicket_TicketWorkList(SupportTicketDTO supportTicketDTO)
+        {
+            ClientWorkList response = new ClientWorkList();
+
+            _logger.LogInformation($"Started fetching all support tickets for the logged in user {supportTicketDTO.ActionUser}");
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+                {
+                    var reader = await connection.QueryMultipleAsync(SP_SupportTicket_TicketWorkList, new
+                    {
+                        ActionUser = supportTicketDTO.ActionUser,
+                        CompanyId = supportTicketDTO.CompanyId,
+                    }, commandType: CommandType.StoredProcedure);
+
+                    response.WorkInProgress = await reader.ReadAsync<SupportTicketDTO>();
+                    response.AssignedToMe = await reader.ReadAsync<SupportTicketDTO>();
+                    response.OpenTickets = await reader.ReadAsync<SupportTicketDTO>();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return response;
         }
 
