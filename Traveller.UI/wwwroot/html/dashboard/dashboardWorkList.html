@@ -11,6 +11,7 @@
                     <a class="active" data-toggle="tab" href="#tab1" role="tab" aria-selected="true">Work in progress</a>
                     <a class="InProgress" data-toggle="tab" href="#tab2" role="tab" aria-selected="true">Assigned to me</a>
                     <a data-toggle="tab" href="#tab3" role="tab" aria-selected="false">Open Tickets</a>
+                    <a data-toggle="tab" href="#tab4" role="tab" aria-selected="false">Closed Tickets</a>
                 </div>
 
                 <div class="tab-content" id="nav-tabContent">
@@ -26,12 +27,13 @@
                                 <table id="example" class="table table-bordered com_table" style="width: 100%;">
                                     <thead>
                                         <tr class="text-dark">
-                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
-                                            <th scope="col">Project Id</th>
-                                            <th scope="col">Title</th>
+                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket No</th>
+                                            <th scope="col">Company Name</th>
+                                            <th scope="col">Project Name</th>
+                                            <th scope="col">Assigned To</th>
+                                            <th scope="col">Created on</th>
+                                            <th scope="col">Ticket Status</th>
                                             <th scope="col">Target Date</th>
-                                            <th scope="col">Created</th>
-                                            <th scope="col">Updated</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -58,12 +60,13 @@
                                 <table id="example1" class="table table-bordered com_table" style="width: 100%;">
                                     <thead>
                                         <tr class="text-dark">
-                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
-                                            <th scope="col">Project Id</th>
-                                            <th scope="col">Title</th>
+                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket No</th>
+                                            <th scope="col">Company Name</th>
+                                            <th scope="col">Project Name</th>
+                                            <th scope="col">Assigned To</th>
+                                            <th scope="col">Created on</th>
+                                            <th scope="col">Ticket Status</th>
                                             <th scope="col">Target Date</th>
-                                            <th scope="col">Created</th>
-                                            <th scope="col">Updated</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -90,16 +93,50 @@
                                 <table id="example2" class="table table-bordered com_table" style="width: 100%;">
                                     <thead>
                                         <tr class="text-dark">
-                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket Id</th>
-                                            <th scope="col">Project Id</th>
-                                            <th scope="col">Title</th>
+                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket No</th>
+                                            <th scope="col">Company Name</th>
+                                            <th scope="col">Project Name</th>
+                                            <th scope="col">Assigned To</th>
+                                            <th scope="col">Created on</th>
+                                            <th scope="col">Ticket Status</th>
                                             <th scope="col">Target Date</th>
-                                            <th scope="col">Created</th>
-                                            <th scope="col">Updated</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="ClientOpenTicketsListBody">
+                                        <tr>
+                                            <td colspan="7">
+                                                <font style="color:red;">No Records found..</font>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 style="color:darkblue;">Closed Tickets</h3>
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="bottom: 10px;" class="col-md-12">
+                                <table id="example3" class="table table-bordered com_table" style="width: 100%;">
+                                    <thead>
+                                        <tr class="text-dark">
+                                            <th style="border-left: 5px solid var(--orange-col);" scope="col">Ticket No</th>
+                                            <th scope="col">Company Name</th>
+                                            <th scope="col">Project Name</th>
+                                            <th scope="col">Assigned To</th>
+                                            <th scope="col">Created on</th>
+                                            <th scope="col">Ticket Status</th>
+                                            <th scope="col">Target Date</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ClientClosedTicketsListBody">
                                         <tr>
                                             <td colspan="7">
                                                 <font style="color:red;">No Records found..</font>
@@ -116,8 +153,6 @@
             </div>
         </div>
 
-        <tbody id="DashboardWorklistBody">
-        </tbody>
 
     </div>
 </div>
