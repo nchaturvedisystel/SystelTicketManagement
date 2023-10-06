@@ -1,136 +1,145 @@
 DashboardWorkList = new Object()
-DashboardWorkList.ActionUser = User.UserId
-DashboardWorkList.userList = {}
+DashboardWorkList.TicketId = 0;
+DashboardWorkList.Title = "";
+DashboardWorkList.TicketDesc = "";
+DashboardWorkList.TicketType = "";
+DashboardWorkList.Category = "";
+DashboardWorkList.TagList = "";
+DashboardWorkList.AssignedTo = "";
+DashboardWorkList.TicketStatus = "";
+DashboardWorkList.TicketPriority = "";
+DashboardWorkList.AffectsCustomer = "";
+DashboardWorkList.AppVersion = "";
+DashboardWorkList.DueDate = new Date();
+DashboardWorkList.EstimatedDuration = "";
+DashboardWorkList.ActualDuration = "";
+DashboardWorkList.TargetDate = new Date();
+DashboardWorkList.ResolutionDate = new Date();
+DashboardWorkList.IsActive = 0;
+DashboardWorkList.IsDeleted = 0;
+DashboardWorkList.TicketOwner = "";
+DashboardWorkList.ProjectId = 0;
+DashboardWorkList.CompanyId = 0;
+DashboardWorkList.CompanyName = "";
+DashboardWorkList.ProjectName = "";
+DashboardWorkList.ActionUser = 0;
+DashboardWorkList.InstructionsEditorLoaded = 0;
+DashboardWorkList.InstructionsEditor;
 
 DashboardWorkList.CreateDashboardWorkListOnReady = function () {
+    loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    Ajax.CompanyId = parseInt(loggedInUser.companyId);
     DashboardWorkList.LoadAll();
-    UserMaster.LoadAll();
 }
 
 DashboardWorkList.LoadAll = function () {
-    DashboardWorkList.ActionUser = User.UserId
-   // Ajax.AuthPost("user/GetUserWorkItems", DashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
+    var newDashboardWorkList = {};
+    DashboardWorkList.ClearCRUDform();
+    console.log('Crate page loaded');
+    newDashboardWorkList.ActionUser = User.UserId;
+    newDashboardWorkList.CompanyId = Ajax.CompanyId;
+    Ajax.AuthPost("menus/GetClientWorkList", newDashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
 }
 
-DashboardWorkList_OnSuccessCallBack = function (data) {
-    if (data && data.userWorkItems.length > 0) {
-        var body = document.getElementById('DashboardWorklistBody')
-        body.innerHTML = "";
-        let workitems = data.userWorkItems
-        for (var i = 0; i < workitems.length; i++) {
-            var RowHtml = '<tr>'
-                + '<td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + workitems[i].partName + '</td>'
-                + '<td>' + workitems[i].workName + '</td>'
-                + '<td>' + workitems[i].workItemName + '</td>'
-                + '<td>'
-                + '<div class="badge badge-secondary font-l" style="background-color: #' + Util.WCColors[i] + ';">' + workitems[i].workCenterCode + '</div>'
-                + '</td>'
-                + '<td>' + workitems[i].stepName + '</td>'
-                + '<td id="checkOutBtn_' + workitems[i].transitionId + '">' + workitems[i].currentStatus + '</td>'
-                + '<td>' + workitems[i].stepRemarks + '</td>'
-                + '<td>' + workitems[i].activityTime + '</td>'
-                + '<td>' + workitems[i].createdBy + '</td>'
-                + '<td id="AssignTo_' + workitems[i].transitionId + '" >'
-                + '<div onClick="DashboardWorkList.AssignWorkItem(' + workitems[i].transitionId + ',' + workitems[i].assignedId + ',' + workitems[i].currentStatus + ')"> ' + workitems[i].assignedTo + '</div>'
-                + '</td>';
 
-            RowHtml += '</tr>';
-            body.innerHTML += RowHtml;
-            var checkBtn = document.getElementById(`checkOutBtn_${workitems[i].transitionId}`);
-            if (workitems[i].currentStatus === 1) {
-                checkBtn.innerHTML = '<button class="btn btn-outline-primary rounded-pill btn-sm check-button check-in-button " onclick="DashboardWorkList.AssignStep(\'' + encodeURIComponent(JSON.stringify(workitems[i])) + '\')">Check In</button>';
-            } else if (workitems[i].currentStatus === 0) {
-                checkBtn.innerHTML = '<button class="btn btn-outline-primary rounded-pill btn-sm check-button check-out-button " onclick="DashboardWorkList.AssignStep(\'' + encodeURIComponent(JSON.stringify(workitems[i])) + '\')">Check Out</button>';
-            }
-            else if (workitems[i].currentStatus === 2) {
-                checkBtn.innerHTML = '<div class="badge bg-success font-l" style="background-color:green;">Completed</div>';
-            }
+//DashboardWorkList.OpenCreateTicketModal = function () {
+//    if (DashboardWorkList.InstructionsEditorLoaded == 0) {
+//        DashboardWorkList.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+//        DashboardWorkList.InstructionsEditorLoaded = 1;
+//    }
+//    $('#CreateTicketModal').modal('show');
+//}
 
-        }
+//Date.prototype.addDays = function (days) {
+//    var date = new Date(this.valueOf());
+//    date.setDate(date.getDate() + days);
+//    return date;
+//}
+
+function DashboardWorkList_OnSuccessCallBack(data) {
+    //$('#CreateTicketModal').modal('hide');
+
+    var ClientWorkInProgressData = data.workInProgress;
+    var ClientAssignedToMeData = data.assignedToMe;
+    var ClientOpenTicketsData = data.openTickets;
+
+    
+
+    var ClientWorkInProgressListBody = document.getElementById('ClientWorkInProgressListBody');
+    var ClientAssignedToMeListBody = document.getElementById('ClientAssignedToMeListBody');
+    var ClientOpenTicketsListBody = document.getElementById('ClientOpenTicketsListBody');
+
+    ClientWorkInProgressListBody.innerHTML = "";
+    ClientAssignedToMeListBody.innerHTML = "";
+    ClientOpenTicketsListBody.innerHTML = "";
+
+    DashboardWorkList.BindClientUserTicketList(ClientWorkInProgressListBody, ClientWorkInProgressData);
+    DashboardWorkList.BindClientUserTicketList(ClientAssignedToMeListBody, ClientAssignedToMeData);
+    DashboardWorkList.BindClientUserTicketList(ClientOpenTicketsListBody, ClientOpenTicketsData);
+}
+
+DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
+    for (var i = 0; i < ticketData.length; i++) {
+        var RowHtml = ('<tr>'
+            + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
+            + '                <td>' + ticketData[i].projectId + '</td>'
+            + '                <td>' + ticketData[i].title + '</td>'
+            + '                <td>' + (new Date(ticketData[i].targetDate).toLocaleDateString("en-US")) + '</td>'
+            + '                <td>' + (new Date(ticketData[i].createdOn).toLocaleDateString("en-US")) + '</td>'
+            + '                <td>' + (new Date(ticketData[i].modifiedOn).toLocaleDateString("en-US")) + '</td>'
+            + '                <td class="text-center">'
+            + '                    <div class="btn-group dots_dropdown">'
+            + '                        <button type="button" class="dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">'
+            + '                            <i class="fas fa-ellipsis-v"></i>'
+            + '                        </button>'
+            + '                        <div class="dropdown-menu dropdown-menu-right shadow-lg">'
+            + '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="fa fa-edit"></i> Edit'
+            + '                            </button>'
+            + '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
+            + '                                <i class="far fa-trash-alt"></i> Delete'
+            + '                            </button>'
+            + '                        </div>'
+            + '                    </div>'
+            + '                </td> '
+            + '            </tr>'
+            + '');
+        tbody.innerHTML = tbody.innerHTML + RowHtml;
     }
-    else {
-        var body = document.getElementById('DashboardWorklistBody')
-        body.innerHTML = ('<tr>'
-            + '<td  colspan = "7">'
-            + ' <font style="color:red;">No Records found..</font>'
-            + '        </td>'
-            + '    </tr>');
-    }
-
-
 }
 
-DashboardWorkList.AssignStep = function (data) {
-    let workListItem = JSON.parse(decodeURIComponent(data));
-
-    let workList = new Object()
-    workList.ActionUser = User.UserId
-    workList.CurrentStatus = workListItem.currentStatus
-    workList.TransitionId = workListItem.transitionId
-    Ajax.AuthPost("user/GetUserWorkItemUpdate", workList, AssignStep_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
+function DashboardWorkList_OnErrorCallBack(data) {
+    console.error(data);
 }
 
-function AssignStep_OnSuccessCallBack() {
+//DashboardWorkList.CreateNew = function () {
 
-    Toast.create("Success", "Check success", TOAST_STATUS.SUCCESS, 1500);
-    DashboardWorkList.LoadAll()
-}
-DashboardWorkList_OnErrorCallBack = function (err) {
-    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
-}
-DashboardWorkList.AssignWorkItem = function (id, assignedTo, currentStatus) {
-    if (currentStatus === 0) {
-        var userList = DashboardWorkList.userList;
-        var dropdownHTML = '<select class="form-control rounded-pill btn-sm assignDropdownList_' + id + '" onchange="DashboardWorkList.onchange(' + id + ', this)">';
-        var defaultOption = '<option value="0">Please Select...</option>'
-        dropdownHTML += defaultOption
-        for (let i = 0; i < userList.length; i++) {
-            dropdownHTML += `<option value="${userList[i].userId}">${userList[i].firstName} ${userList[i].middleName} ${userList[i].lastName}</option>`;
-        }
+//    var newDashboardWorkList = {};
+//    newDashboardWorkList.TicketId = 0;
+//    newDashboardWorkList.Title = document.getElementById("title").value;
+//    newDashboardWorkList.TicketDesc = Ticket.InstructionsEditor.getPlainText()
+//    newDashboardWorkList.TicketType = document.getElementById("ticketType").value;
+//    newDashboardWorkList.Category = document.getElementById("category").value;
+//    newDashboardWorkList.TagList = document.getElementById("tags").value;
+//    newDashboardWorkList.TicketPriority = document.getElementById("priority").value;
+//    newDashboardWorkList.AffectsCustomer = document.getElementById("affectsCustomer").value;
+//    newDashboardWorkList.TargetDate = new Date(document.getElementById("targetDate").value);
+//    newDashboardWorkList.ProjectId = document.getElementById("project").value;
+//    newDashboardWorkList.ActionUser = User.UserId;
+//    newDashboardWorkList.CompanyId = Ajax.CompanyId;
+//    console.log(newDashboardWorkList.TargetDate);
+//    Ajax.AuthPost("ticket/ManageTicket", newTicket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
 
-        dropdownHTML += '</select>';
-        var cells = document.querySelectorAll(`td[id^="AssignTo_${id}"]`);
+//}
 
-        for (var i = 0; i < cells.length; i++) {
-            cells[i].innerHTML = dropdownHTML;
-        }
-
-        var dropdowns = document.querySelectorAll(`select.assignDropdownList_${id}`);
-        for (var i = 1; i < dropdowns.length; i++) {
-            dropdowns[i].style.display = "none";
-        }
-        document.getElementsByClassName(`assignDropdownList_${id}`)[0].value = assignedTo
-    }
+DashboardWorkList.ClearCRUDform = function () {
 
 }
 
 
-DashboardWorkList.onchange = function (id, sender) {
-    var selectedOption = sender.options[sender.selectedIndex];
-    var selectedUserName = selectedOption.textContent;
 
-    AssignObjectDashboard = {}
-    AssignObjectDashboard.TransitionId = id
-    AssignObjectDashboard.ActionUser = User.UserId
-    AssignObjectDashboard.AssignedTo = sender.value
-    Ajax.AuthPost("user/GetUserWorkItemAssign", AssignObjectDashboard, function (data) {
-        AssignObjectDashboard_OnSuccessCallBack(data, id, selectedUserName);
-    }, AssignObjectDashboard_OnErrorCallBack);
-}
 
-function AssignObjectDashboard_OnSuccessCallBack(data, id, selectedUserName) {
 
-    Toast.create("Success", "Assigned Successful", TOAST_STATUS.SUCCESS, 1500);
-    var cells = document.querySelectorAll(`td[id^="AssignTo_${id}"]`);
-    for (var i = 0; i < cells.length; i++) {
-        cells[i].textContent = selectedUserName;
-    }
-    DashboardWorkList.LoadAll()
-}
-
-function AssignObjectDashboard_OnErrorCallBack(err) {
-    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
-}
 
 
 
