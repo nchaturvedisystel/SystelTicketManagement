@@ -118,6 +118,8 @@ namespace Infrastructure.Persistance.Services
                     response.WorkInProgress = await reader.ReadAsync<SupportTicketDTO>();
                     response.AssignedToMe = await reader.ReadAsync<SupportTicketDTO>();
                     response.OpenTickets = await reader.ReadAsync<SupportTicketDTO>();
+                    response.ClosedTickets = await reader.ReadAsync<SupportTicketDTO>();
+
 
                 }
             }

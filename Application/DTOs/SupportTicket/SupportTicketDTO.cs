@@ -54,5 +54,7 @@ namespace Application.DTOs.SupportTicket
         public IEnumerable<SupportTicketDTO> WorkInProgress { get; set; }
         public IEnumerable<SupportTicketDTO> AssignedToMe { get; set; }
         public IEnumerable<SupportTicketDTO> OpenTickets { get; set; }
+        public IEnumerable<SupportTicketDTO> ClosedTickets { get; set; }
+
     }
 }
