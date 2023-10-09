@@ -118,7 +118,7 @@ DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
 }
 
 function DashboardWorkList_OnErrorCallBack(data) {
-    console.error(data);
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
 
 //DashboardWorkList.CreateNew = function () {
@@ -141,16 +141,16 @@ function DashboardWorkList_OnErrorCallBack(data) {
 
 //}
 
-
 DashboardWorkList.View = function (ticketData) {
-    DashboardWorkList = JSON.parse(decodeURIComponent(ticketData));
+    let ticketdetails = JSON.parse(decodeURIComponent(ticketData));
+    TicketDetails.ticketId = ticketdetails.ticketId
+    Navigation.LoadPage('/html/support/TicketDetails.html', 'TDDB');  
     
-    console.log("view");
-}     
+}
 
-    
-    
+DashboardWorkList.TicketDetails = function () {
 
+}
 DashboardWorkList.ClearCRUDform = function () {
 
 }
