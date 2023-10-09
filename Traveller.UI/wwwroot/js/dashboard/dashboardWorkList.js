@@ -141,11 +141,16 @@ function DashboardWorkList_OnErrorCallBack(data) {
 
 //}
 
-DashboardWorkList.View = function () {
+
+DashboardWorkList.View = function (ticketData) {
+    DashboardWorkList = JSON.parse(decodeURIComponent(ticketData));
+    
+    console.log("view");
+}     
+
     
     
-    
-}
+
 DashboardWorkList.ClearCRUDform = function () {
 
 }

@@ -24,6 +24,7 @@ namespace Infrastructure.Persistance.Services.SupportTicket
     {
         APISettings _settings;
         private const string SP_ManageTicket_CRUD = "ManageTicket_CRUD";
+        private const string SP_SupportTickets_GetTicketDetails = "SupportTickets_GetTicketDetails";
         private const string SP_SupportTickets_GetByUserId = "SupportTickets_GetByUserId";
         private const string SP_SupportTicket_TicketWorkList = "SupportTicket_TicketWorkList";
         private ILogger<TicketService> _logger;
@@ -105,7 +106,32 @@ namespace Infrastructure.Persistance.Services.SupportTicket
             return response;
         }
 
-       
+        public async Task<TicketList> SupportTickets_GetTicketDetails(SupportTicketDTO supportTicketDTO)
+        {
+            TicketList response = new TicketList();
+
+            _logger.LogInformation($"Started fetching all workcenter by workCenterId {supportTicketDTO.TicketId}");
+            try
+            {
+                //supportTicketDTO.TargetDate = Convert.ToDateTime( "2023-10-04 16:24:45.493");
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+                {
+                    response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_SupportTickets_GetTicketDetails, new
+                    {
+                        TicketId = supportTicketDTO.TicketId,
+                    }, commandType: CommandType.StoredProcedure);
+
+                }
+                //DueDate = supportTicketDTO.DueDate,
+                //ResolutionDate = supportTicketDTO.ResolutionDate,
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return response;
+        }
+
 
     }
 }
