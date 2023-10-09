@@ -22,15 +22,39 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('CompanyName').innerHTML = ticketDetail.companyName;
     document.getElementById('Title').innerHTML = ticketDetail.title;
     document.getElementById('TDese').innerHTML = ticketDetail.ticketDesc;
-    document.getElementById('Towner').innerHTML = ticketDetail.ticketOwner;
-    document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedTo;
     document.getElementById('TicketStatus').innerHTML = ticketDetail.ticketStatus;
+    document.getElementById('ResolutionDate').innerHTML = ticketDetail.resolutionDate;
     document.getElementById('TargetDate').innerHTML = ticketDetail.targetDate;
+    document.getElementById('CreatedOn').innerHTML = ticketDetail.createdOn;
+    document.getElementById('ModifiedOn').innerHTML = ticketDetail.modifiedOn;
+    document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
     
     
 
 
 
+}
+
+TicketDetails.AddDescription = function () {
+    var newTicketDetails = {};
+    //newTicketDetails.TicketDesc = TicketDetails.InstructionsEditor.getPlainText();
+    //console.log(newTicketDetails.TicketDesc);
+
+    var commentText = document.getElementById("comment").value;
+    var commentsDiv = document.getElementById("comments");
+
+    if (commentText.trim() !== "") {
+        var commentElement = document.createElement("div");
+        commentElement.className = "col-md-6 comments-container border p-3 m-2";
+        commentElement.appendChild(document.createTextNode(commentText));
+        commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
+
+        // Clear the textarea after submission
+        document.getElementById("comment").value = "";
+    }
+    newTicketDetails.TicketDetails = commentText;
+    console.log(newTicketDetails.TicketDetails);
+   
 }
 
 function TicketDetails_OnErrorCallBack(err) {
