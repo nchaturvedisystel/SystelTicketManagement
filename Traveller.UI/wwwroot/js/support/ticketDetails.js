@@ -13,7 +13,24 @@ TicketDetails.LoadAll = function () {
 }
 
 function TicketDetails_OnSuccessCallBack(data) {
-    console.log(data)
+
+    let ticketDetail = data.tickets[0]
+    console.log(ticketDetail)
+    document.getElementById('ticketId').innerHTML = ticketDetail.ticketId;
+    document.getElementById('projectName').innerHTML = ticketDetail.projectName;
+    document.getElementById('ticketType').innerHTML = ticketDetail.ticketType;
+    document.getElementById('CompanyName').innerHTML = ticketDetail.companyName;
+    document.getElementById('Title').innerHTML = ticketDetail.title;
+    document.getElementById('TDese').innerHTML = ticketDetail.ticketDesc;
+    document.getElementById('Towner').innerHTML = ticketDetail.ticketOwner;
+    document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedTo;
+    document.getElementById('TicketStatus').innerHTML = ticketDetail.ticketStatus;
+    document.getElementById('TargetDate').innerHTML = ticketDetail.targetDate;
+    
+    
+
+
+
 }
 
 function TicketDetails_OnErrorCallBack(err) {
