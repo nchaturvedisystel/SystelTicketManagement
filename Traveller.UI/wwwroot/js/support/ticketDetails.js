@@ -9,11 +9,13 @@ TicketDetails.onReady = function () {
 
 TicketDetails.LoadAll = function () {
     Ajax.AuthPost("ticket/TicketDetails", TicketDetails, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
-
 }
 
 function TicketDetails_OnSuccessCallBack(data) {
 
+    //var cmtElement = document.getElementById('cmt');
+    //cmtElement.style.display = 'block';
+  
     let ticketDetail = data.tickets[0]
     console.log(ticketDetail)
     document.getElementById('ticketId').innerHTML = ticketDetail.ticketId;
@@ -28,10 +30,9 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('CreatedOn').innerHTML = ticketDetail.createdOn;
     document.getElementById('ModifiedOn').innerHTML = ticketDetail.modifiedOn;
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
+
     
     
-
-
 
 }
 
@@ -52,12 +53,25 @@ TicketDetails.AddDescription = function () {
         // Clear the textarea after submission
         document.getElementById("comment").value = "";
     }
-    newTicketDetails.TicketDetails = commentText;
-    console.log(newTicketDetails.TicketDetails);
+    newTicketDetails.TicketDescription = commentText;
+    newTicketDetails.ticketId = TicketDetails.ticketId;
+    Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
    
+}
+
+function TicketDescription_OnSuccessCallBack(data) {
+    let Description = data.tickets[0];
+    console.log(Description);
+    
+}
+function TicketDescription_OnErrorCallBack(err) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
 
 function TicketDetails_OnErrorCallBack(err) {
     Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
+
+
+
 
