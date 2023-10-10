@@ -15,6 +15,7 @@ function TicketDetails_OnSuccessCallBack(data) {
 
     //var cmtElement = document.getElementById('cmt');
     //cmtElement.style.display = 'block';
+    
   
     let ticketDetail = data.tickets[0]
     console.log(ticketDetail)
@@ -30,6 +31,10 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('CreatedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.createdOn);
     document.getElementById('ModifiedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.modifiedOn);
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
+    //document.getElementById('ownedBy').innerHTML = ticketDetail.ticketOwner;
+    TicketDetails.AddDescription();
+    
+   
 }
 
 TicketDetails.DateFormat = function (dateString) {
@@ -39,6 +44,7 @@ TicketDetails.DateFormat = function (dateString) {
 }
 
 TicketDetails.AddDescription = function () {
+    
     var newTicketDetails = {};
     //newTicketDetails.TicketDesc = TicketDetails.InstructionsEditor.getPlainText();
     //console.log(newTicketDetails.TicketDesc);
@@ -49,6 +55,7 @@ TicketDetails.AddDescription = function () {
     if (commentText.trim() !== "") {
         var commentElement = document.createElement("div");
         commentElement.className = "col-md-6 comments-container border p-3 m-2";
+        commentElement.style.backgroundColor = "#eee";
         commentElement.appendChild(document.createTextNode(commentText));
         commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
 
@@ -61,26 +68,21 @@ TicketDetails.AddDescription = function () {
     
 }
 
+
 function TicketDescription_OnSuccessCallBack(data) {
 
     var descriptions = data.tickets;
     var comments = document.getElementById('comments');
-    console.log(descriptions[0].ticketComments);
-    console.log(descriptions[1].ticketComments);
-    console.log(descriptions[2].ticketComments);
-    console.log(descriptions[3].ticketComments);
-    console.log(descriptions[4].ticketComments);
-    console.log(descriptions[5].ticketComments);
-    console.log(descriptions[6].ticketComments);
-    console.log(descriptions[7].ticketComments);
-    //for (let i = descriptions.length; i > 0; i--) {
-        //console.log(descriptions[i]);
-        //var newDiv = document.createElement('div');
-        //newDiv.className = "col-md-6 comments-container border p-3 m-2";
-        //let description = descriptions[i].ticketComments;
-        //newDiv.innerHTML = description;
-        //comments.appendChild(newDiv);
-    //}
+    //console.log(descriptions[1].ticketComments) 
+
+    for (let i = descriptions.length -1 ; i > 0; i--) {
+       
+        var newDiv = document.createElement('div');
+        newDiv.className = "col-md-6 comments-container border p-3 m-2";
+        let description = descriptions[i].ticketComments; 
+        newDiv.innerHTML = description;
+        comments.appendChild(newDiv);
+    }
 
 }
 function TicketDescription_OnErrorCallBack(err) {
