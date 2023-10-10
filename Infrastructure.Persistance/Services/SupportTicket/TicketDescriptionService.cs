@@ -40,7 +40,7 @@ namespace Infrastructure.Persistance.Services.SupportTicket
                     response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_InsertTicketDescription, new
                     {
                         TicketId = supportTicketDTO.TicketId,
-                        TicketDescription = supportTicketDTO.TicketDescription,
+                        TicketComments = supportTicketDTO.TicketComments,
                     }, commandType: CommandType.StoredProcedure);
 
                 }

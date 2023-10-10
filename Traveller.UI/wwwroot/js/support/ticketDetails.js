@@ -1,6 +1,6 @@
 TicketDetails = new Object()
 
-TicketDetails.ticketId = 0
+TicketDetails.ticketId = 0;
 
 
 TicketDetails.onReady = function () {
@@ -25,15 +25,17 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('Title').innerHTML = ticketDetail.title;
     document.getElementById('TDese').innerHTML = ticketDetail.ticketDesc;
     document.getElementById('TicketStatus').innerHTML = ticketDetail.ticketStatus;
-    document.getElementById('ResolutionDate').innerHTML = ticketDetail.resolutionDate;
-    document.getElementById('TargetDate').innerHTML = ticketDetail.targetDate;
-    document.getElementById('CreatedOn').innerHTML = ticketDetail.createdOn;
-    document.getElementById('ModifiedOn').innerHTML = ticketDetail.modifiedOn;
+    document.getElementById('ResolutionDate').innerHTML = TicketDetails.DateFormat(ticketDetail.resolutionDate);
+    document.getElementById('TargetDate').innerHTML = TicketDetails.DateFormat(ticketDetail.targetDate);
+    document.getElementById('CreatedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.createdOn);
+    document.getElementById('ModifiedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.modifiedOn);
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
+}
 
-    
-    
-
+TicketDetails.DateFormat = function (dateString) {
+    const indexOfT = dateString.indexOf('T');
+    const dateWithoutTime = dateString.substring(0, indexOfT);
+    return dateWithoutTime;
 }
 
 TicketDetails.AddDescription = function () {
@@ -50,19 +52,36 @@ TicketDetails.AddDescription = function () {
         commentElement.appendChild(document.createTextNode(commentText));
         commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
 
-        // Clear the textarea after submission
+        
         document.getElementById("comment").value = "";
     }
-    newTicketDetails.TicketDescription = commentText;
+    newTicketDetails.ticketComments = commentText;
     newTicketDetails.ticketId = TicketDetails.ticketId;
     Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
-   
+    
 }
 
 function TicketDescription_OnSuccessCallBack(data) {
-    let Description = data.tickets[0];
-    console.log(Description);
-    
+
+    var descriptions = data.tickets;
+    var comments = document.getElementById('comments');
+    console.log(descriptions[0].ticketComments);
+    console.log(descriptions[1].ticketComments);
+    console.log(descriptions[2].ticketComments);
+    console.log(descriptions[3].ticketComments);
+    console.log(descriptions[4].ticketComments);
+    console.log(descriptions[5].ticketComments);
+    console.log(descriptions[6].ticketComments);
+    console.log(descriptions[7].ticketComments);
+    //for (let i = descriptions.length; i > 0; i--) {
+        //console.log(descriptions[i]);
+        //var newDiv = document.createElement('div');
+        //newDiv.className = "col-md-6 comments-container border p-3 m-2";
+        //let description = descriptions[i].ticketComments;
+        //newDiv.innerHTML = description;
+        //comments.appendChild(newDiv);
+    //}
+
 }
 function TicketDescription_OnErrorCallBack(err) {
     Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
