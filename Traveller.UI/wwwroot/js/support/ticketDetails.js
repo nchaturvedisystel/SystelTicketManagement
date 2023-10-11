@@ -4,6 +4,7 @@ TicketDetails.ticketId = 0;
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 TicketDetails.flag = true;
+TicketDetails.UserId = 0;
 
 
 
@@ -27,8 +28,8 @@ function TicketDetails_OnSuccessCallBack(data) {
     TicketDetails.flag = true;
 
     let ticketDetail = data.tickets[0]
-    console.log(ticketDetail)
-    document.getElementById('ticketId').innerHTML = ticketDetail.ticketId;
+    //console.log(ticketDetail)
+    document.getElementById('ticketId').innerHTML = "#"+ticketDetail.ticketId;
     document.getElementById('projectName').innerHTML = ticketDetail.projectName;
     document.getElementById('ticketType').innerHTML = ticketDetail.ticketType;
     document.getElementById('CompanyName').innerHTML = ticketDetail.companyName;
@@ -40,10 +41,9 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('CreatedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.createdOn);
     document.getElementById('ModifiedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.modifiedOn);
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
-    //document.getElementById('ownedBy').innerHTML = ticketDetail.ticketOwner;
-    //TicketDetails.RichTextComment();
-
+    document.getElementById('ownedBy').innerHTML = ticketDetail.ownedBy;
     TicketDetails.AddDescription();
+    TicketDetails.UserId = User.UserId;
 }
 
 TicketDetails.DateFormat = function (dateString) {
@@ -64,9 +64,9 @@ TicketDetails.AddDescription = function () {
         commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
         document.getElementById("comment").value = "";
         newTicketDetails.ticketComments = commentText;
-        
     }
     newTicketDetails.ticketId = TicketDetails.ticketId;
+    newTicketDetails.createdBy = (TicketDetails.UserId).toString();      
     Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
     
 }
