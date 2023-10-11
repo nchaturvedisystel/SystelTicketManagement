@@ -41,6 +41,7 @@ namespace Infrastructure.Persistance.Services.SupportTicket
                     {
                         TicketId = supportTicketDTO.TicketId,
                         TicketComments = supportTicketDTO.TicketComments,
+                        CreatedBy = supportTicketDTO.CreatedBy,
                     }, commandType: CommandType.StoredProcedure);
 
                 }
