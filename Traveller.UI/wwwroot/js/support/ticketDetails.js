@@ -1,8 +1,17 @@
 TicketDetails = new Object()
 
 TicketDetails.ticketId = 0;
+TicketDetails.InstructionsEditorLoaded = 0;
+TicketDetails.InstructionsEditor;
 
 
+
+TicketDetails.RichTextComment = function () {
+    if (TicketDetails.InstructionsEditorLoaded == 0) {
+        TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+        TicketDetails.InstructionsEditorLoaded = 1;
+    }
+}
 TicketDetails.onReady = function () {
     TicketDetails.LoadAll()
 }
@@ -16,7 +25,7 @@ function TicketDetails_OnSuccessCallBack(data) {
     //var cmtElement = document.getElementById('cmt');
     //cmtElement.style.display = 'block';
     
-  
+    TicketDetails.RichTextComment();
     let ticketDetail = data.tickets[0]
     console.log(ticketDetail)
     document.getElementById('ticketId').innerHTML = ticketDetail.ticketId;
@@ -32,9 +41,9 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('ModifiedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.modifiedOn);
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
     //document.getElementById('ownedBy').innerHTML = ticketDetail.ticketOwner;
+    //TicketDetails.RichTextComment();
+
     TicketDetails.AddDescription();
-    
-   
 }
 
 TicketDetails.DateFormat = function (dateString) {
