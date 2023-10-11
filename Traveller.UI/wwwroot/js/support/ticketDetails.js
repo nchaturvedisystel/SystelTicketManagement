@@ -1,35 +1,34 @@
+
 TicketDetails = new Object()
 
 TicketDetails.ticketId = 0;
-TicketDetails.InstructionsEditorLoaded = 0;
-TicketDetails.InstructionsEditor;
 TicketDetails.flag = true;
 TicketDetails.UserId = 0;
 
+//TicketDetails.InstructionsEditorLoaded = 0;
+//TicketDetails.InstructionsEditor;
 
+//TicketDetails.RichTextComment = function () {
+//    if (TicketDetails.InstructionsEditorLoaded == 0) {
+//        TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+//        TicketDetails.InstructionsEditorLoaded = 1;
+//    }
+//}
 
-TicketDetails.RichTextComment = function () {
-    if (TicketDetails.InstructionsEditorLoaded == 0) {
-        TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-        TicketDetails.InstructionsEditorLoaded = 1;
-    }
-}
 TicketDetails.onReady = function () {
-    TicketDetails.LoadAll()
+    TicketDetails.LoadAll();
 }
 
 TicketDetails.LoadAll = function () {
     Ajax.AuthPost("ticket/TicketDetails", TicketDetails, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
 }
 
-function TicketDetails_OnSuccessCallBack(data) {    
-    TicketDetails.RichTextComment();
-
+function TicketDetails_OnSuccessCallBack(data) {
+    //TicketDetails.RichTextComment();
     TicketDetails.flag = true;
-
-    let ticketDetail = data.tickets[0]
+    let ticketDetail = data.tickets[0];
     //console.log(ticketDetail)
-    document.getElementById('ticketId').innerHTML = "#"+ticketDetail.ticketId;
+    document.getElementById('ticketId').innerHTML = "#" + ticketDetail.ticketId;
     document.getElementById('projectName').innerHTML = ticketDetail.projectName;
     document.getElementById('ticketType').innerHTML = ticketDetail.ticketType;
     document.getElementById('CompanyName').innerHTML = ticketDetail.companyName;
@@ -44,6 +43,7 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('ownedBy').innerHTML = ticketDetail.ownedBy;
     TicketDetails.AddDescription();
     TicketDetails.UserId = User.UserId;
+
 }
 
 TicketDetails.DateFormat = function (dateString) {
@@ -55,7 +55,7 @@ TicketDetails.DateFormat = function (dateString) {
 TicketDetails.AddDescription = function () {
     var newTicketDetails = {};
     var commentText = document.getElementById("comment").value;
-    if (commentText != "") { 
+    if (commentText != "") {
         var commentsDiv = document.getElementById("comments");
         var commentElement = document.createElement("div");
         commentElement.className = "col-md-6 comments-container border p-3 m-2";
@@ -66,21 +66,21 @@ TicketDetails.AddDescription = function () {
         newTicketDetails.ticketComments = commentText;
     }
     newTicketDetails.ticketId = TicketDetails.ticketId;
-    newTicketDetails.createdBy = (TicketDetails.UserId).toString();      
+    newTicketDetails.createdBy = (TicketDetails.UserId).toString();
     Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
-    
+
 }
 
 
 function TicketDescription_OnSuccessCallBack(data) {
-    if (TicketDetails.flag) { 
+    if (TicketDetails.flag) {
         var descriptions = data.tickets;
         var comments = document.getElementById('comments');
-        for (let i = descriptions.length -1 ; i > 0; i--) {
+        for (let i = descriptions.length - 1; i > 0; i--) {
             var newDiv = document.createElement('div');
             newDiv.className = "col-md-6 comments-container border p-3 m-2";
             newDiv.style.backgroundColor = "#eee";
-            let description = descriptions[i].ticketComments; 
+            let description = descriptions[i].ticketComments;
             newDiv.innerHTML = description;
             comments.appendChild(newDiv);
         }
