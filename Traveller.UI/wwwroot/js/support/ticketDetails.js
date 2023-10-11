@@ -12,6 +12,7 @@ TicketDetails.LoadAll = function () {
 }
 
 function TicketDetails_OnSuccessCallBack(data) {
+    TicketDetails.flag = true;
     let ticketDetail = data.tickets[0]
     console.log(ticketDetail)
     document.getElementById('ticketId').innerHTML = ticketDetail.ticketId;
@@ -48,9 +49,11 @@ TicketDetails.AddDescription = function () {
         commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
         document.getElementById("comment").value = "";
         newTicketDetails.ticketComments = commentText;
+        
     }
     newTicketDetails.ticketId = TicketDetails.ticketId;
     Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
+    
 }
 
 
@@ -61,6 +64,7 @@ function TicketDescription_OnSuccessCallBack(data) {
         for (let i = descriptions.length -1 ; i > 0; i--) {
             var newDiv = document.createElement('div');
             newDiv.className = "col-md-6 comments-container border p-3 m-2";
+            newDiv.style.backgroundColor = "#eee";
             let description = descriptions[i].ticketComments; 
             newDiv.innerHTML = description;
             comments.appendChild(newDiv);
