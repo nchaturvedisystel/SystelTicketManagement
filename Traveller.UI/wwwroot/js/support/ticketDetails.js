@@ -1,9 +1,19 @@
 TicketDetails = new Object()
 
 TicketDetails.ticketId = 0;
+TicketDetails.InstructionsEditorLoaded = 0;
+TicketDetails.InstructionsEditor;
 TicketDetails.flag = true;
 TicketDetails.UserId = 0;
 
+
+
+TicketDetails.RichTextComment = function () {
+    if (TicketDetails.InstructionsEditorLoaded == 0) {
+        TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+        TicketDetails.InstructionsEditorLoaded = 1;
+    }
+}
 TicketDetails.onReady = function () {
     TicketDetails.LoadAll()
 }
@@ -12,8 +22,11 @@ TicketDetails.LoadAll = function () {
     Ajax.AuthPost("ticket/TicketDetails", TicketDetails, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
 }
 
-function TicketDetails_OnSuccessCallBack(data) {
+function TicketDetails_OnSuccessCallBack(data) {    
+    TicketDetails.RichTextComment();
+
     TicketDetails.flag = true;
+
     let ticketDetail = data.tickets[0]
     //console.log(ticketDetail)
     document.getElementById('ticketId').innerHTML = "#"+ticketDetail.ticketId;
@@ -31,7 +44,6 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('ownedBy').innerHTML = ticketDetail.ownedBy;
     TicketDetails.AddDescription();
     TicketDetails.UserId = User.UserId;
-    
 }
 
 TicketDetails.DateFormat = function (dateString) {
