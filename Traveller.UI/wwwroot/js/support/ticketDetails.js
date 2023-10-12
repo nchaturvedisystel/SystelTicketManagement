@@ -8,32 +8,21 @@ TicketDetails.UserId = 0;
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 
-//TicketDetails.RichTextComment = function () {
-//    TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-//}
 
 TicketDetails.onReady = function () {
-    TicketDetails.LoadAll();
-    TicketDetails.InitiateRTE();
-}
-TicketDetails.InitiateRTE = function () {
-    if (document.getElementById("TemplateInstEditor")) {
-        TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-    }
-    else {
-        setTimeout(function () {
-            TicketDetails.InitiateRTE();
-        }, 1000);
-    }
+    TicketDetails.LoadTicketDetail();
+    TicketDetails.InitiateRTE("TemplateInstEditor");
 }
 
-TicketDetails.LoadAll = function () {
+
+//#region Load Ticket Details
+TicketDetails.LoadTicketDetail = function () {
     var ticket = new Object();
     ticket.ticketId = TicketDetails.ticketId;
-    Ajax.AuthPost("ticket/TicketDetails", ticket, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
+    Ajax.AuthPost("ticket/TicketDetails", ticket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 }
 
-function TicketDetails_OnSuccessCallBack(data) {
+function LoadTicketDetail_OnSuccessCallBack(data) {
     let ticketDetail = data.tickets[0];
     document.getElementById('ticketId').innerHTML = "#" + ticketDetail.ticketId;
     document.getElementById('projectName').innerHTML = ticketDetail.projectName;
@@ -49,16 +38,35 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
     document.getElementById('ownedBy').innerHTML = ticketDetail.ownedBy;
     TicketDetails.UserId = User.UserId;
-    Ajax.AuthPost("Description/TicketDescription", ticketDetail, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
+    Ajax.AuthPost("Description/TicketDescription", ticketDetail, AddTicketComments_OnSuccessCallBack, AddTicketComments_OnErrorCallBack);
 }
 
+function LoadTicketDetail_OnErrorCallBack(err) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
+}
+//#endregion
+
+//#region Common
 TicketDetails.DateFormat = function (dateString) {
     const indexOfT = dateString.indexOf('T');
     const dateWithoutTime = dateString.substring(0, indexOfT);
     return dateWithoutTime;
 }
+TicketDetails.InitiateRTE = function (id) {
+    if (document.getElementById(id)) {
+        var editorId = ("#" + id);
+        TicketDetails.InstructionsEditor = new RichTextEditor(editorId);
+    }
+    else {
+        setTimeout(function () {
+            TicketDetails.InitiateRTE(id);
+        }, 1000);
+    }
+}
+//#endregion
 
-TicketDetails.AddDescription = function () {
+//#region  Ticket Comments and Updates
+TicketDetails.AddTicketComments = function () {
     var newTicketDetails = {};
     var commentText = newTicketDetails.InstructionsEditor.getPlainText();
     if (commentText != "") {
@@ -74,12 +82,12 @@ TicketDetails.AddDescription = function () {
     newTicketDetails.ticketId = TicketDetails.ticketId;
     newTicketDetails.createdBy = (TicketDetails.UserId).toString();
     console.log('triggered')
-    //Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
+    //Ajax.AuthPost("Description/TicketDescription", newTicketDetails, AddTicketComments_OnSuccessCallBack, AddTicketComments_OnErrorCallBack);
 
 }
 
 
-function TicketDescription_OnSuccessCallBack(data) {
+function AddTicketComments_OnSuccessCallBack(data) {
     var descriptions = data.tickets;
     var comments = document.getElementById('comments');
     for (let i = descriptions.length - 1; i > 0; i--) {
@@ -100,13 +108,11 @@ function TicketDescription_OnSuccessCallBack(data) {
     }
 
 }
-function TicketDescription_OnErrorCallBack(err) {
+function AddTicketComments_OnErrorCallBack(err) {
     Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
+//#endregion
 
-function TicketDetails_OnErrorCallBack(err) {
-    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
-}
 
 
 
