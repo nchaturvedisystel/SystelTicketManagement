@@ -1,5 +1,5 @@
 
-    TicketDetails = new Object()
+TicketDetails = new Object()
 
 TicketDetails.ticketId = 0;
 TicketDetails.flag = true;
@@ -8,26 +8,33 @@ TicketDetails.UserId = 0;
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 
-TicketDetails.RichTextComment = function () {
-    // if (TicketDetails.InstructionsEditorLoaded == 0) {
-    TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-    //TicketDetails.InstructionsEditorLoaded = 1;
-    // }
-}
+//TicketDetails.RichTextComment = function () {
+//    TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+//}
 
 TicketDetails.onReady = function () {
     TicketDetails.LoadAll();
+    TicketDetails.InitiateRTE();
+}
+TicketDetails.InitiateRTE = function () {
+    if (document.getElementById("TemplateInstEditor")) {
+        TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
+    }
+    else {
+        setTimeout(function () {
+            TicketDetails.InitiateRTE();
+        }, 1000);
+    }
 }
 
 TicketDetails.LoadAll = function () {
-    Ajax.AuthPost("ticket/TicketDetails", TicketDetails, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
+    var ticket = new Object();
+    ticket.ticketId = TicketDetails.ticketId;
+    Ajax.AuthPost("ticket/TicketDetails", ticket, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
 }
 
 function TicketDetails_OnSuccessCallBack(data) {
-    TicketDetails.RichTextComment();
-    TicketDetails.flag = true;
     let ticketDetail = data.tickets[0];
-    //console.log(ticketDetail)
     document.getElementById('ticketId').innerHTML = "#" + ticketDetail.ticketId;
     document.getElementById('projectName').innerHTML = ticketDetail.projectName;
     document.getElementById('ticketType').innerHTML = ticketDetail.ticketType;
@@ -41,11 +48,8 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('ModifiedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.modifiedOn);
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
     document.getElementById('ownedBy').innerHTML = ticketDetail.ownedBy;
-    //TicketDetails.AddDescription();
     TicketDetails.UserId = User.UserId;
     Ajax.AuthPost("Description/TicketDescription", ticketDetail, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
-
-
 }
 
 TicketDetails.DateFormat = function (dateString) {
@@ -76,27 +80,24 @@ TicketDetails.AddDescription = function () {
 
 
 function TicketDescription_OnSuccessCallBack(data) {
-    if (TicketDetails.flag) {
-        var descriptions = data.tickets;
-        var comments = document.getElementById('comments');
-        for (let i = descriptions.length - 1; i > 0; i--) {
-            var newDiv = document.createElement('div');
-            newDiv.className = "col-md-12 comments-container border p-3 d-flex flex-column mb-0";
-            newDiv.style.backgroundColor = "#eee";
+    var descriptions = data.tickets;
+    var comments = document.getElementById('comments');
+    for (let i = descriptions.length - 1; i > 0; i--) {
+        var newDiv = document.createElement('div');
+        newDiv.className = "col-md-12 comments-container border p-3 d-flex flex-column mb-0";
+        newDiv.style.backgroundColor = "#eee";
 
-            let description = descriptions[i].ticketComments;
-            newDiv.innerHTML = description;
-            comments.appendChild(newDiv);
+        let description = descriptions[i].ticketComments;
+        newDiv.innerHTML = description;
+        comments.appendChild(newDiv);
 
-            //console.log(descriptions[i].modifiedBy);
-            var innerDiv = document.createElement("div");
-            innerDiv.className = "col-md-12 p-0 inner-div-class mb-3";
-            innerDiv.style.backgroundColor = "#eee";
-            innerDiv.innerHTML = TicketDetails.DateFormat(descriptions[i].modifiedOn);
-            comments.appendChild(innerDiv);
-        }
+        //console.log(descriptions[i].modifiedBy);
+        var innerDiv = document.createElement("div");
+        innerDiv.className = "col-md-12 p-0 inner-div-class mb-3";
+        innerDiv.style.backgroundColor = "#eee";
+        innerDiv.innerHTML = TicketDetails.DateFormat(descriptions[i].modifiedOn);
+        comments.appendChild(innerDiv);
     }
-    TicketDetails.flag = false;
 
 }
 function TicketDescription_OnErrorCallBack(err) {
