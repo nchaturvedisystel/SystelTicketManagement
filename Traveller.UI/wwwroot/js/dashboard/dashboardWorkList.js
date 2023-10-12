@@ -42,21 +42,6 @@ DashboardWorkList.LoadAll = function () {
     Ajax.AuthPost("menus/GetClientWorkList", newDashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
 }
 
-
-//DashboardWorkList.OpenCreateTicketModal = function () {
-//    if (DashboardWorkList.InstructionsEditorLoaded == 0) {
-//        DashboardWorkList.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-//        DashboardWorkList.InstructionsEditorLoaded = 1;
-//    }
-//    $('#CreateTicketModal').modal('show');
-//}
-
-//Date.prototype.addDays = function (days) {
-//    var date = new Date(this.valueOf());
-//    date.setDate(date.getDate() + days);
-//    return date;
-//}
-
 function DashboardWorkList_OnSuccessCallBack(data) {
     //$('#CreateTicketModal').modal('hide');
 
@@ -64,23 +49,25 @@ function DashboardWorkList_OnSuccessCallBack(data) {
     var ClientAssignedToMeData = data.assignedToMe;
     var ClientOpenTicketsData = data.openTickets;
     var ClientClosedTicketsData = data.closedTickets;
-
-    
+    var ClientAssignedToOthersData = data.assignedToOthers;
 
     var ClientWorkInProgressListBody = document.getElementById('ClientWorkInProgressListBody');
     var ClientAssignedToMeListBody = document.getElementById('ClientAssignedToMeListBody');
     var ClientOpenTicketsListBody = document.getElementById('ClientOpenTicketsListBody');
     var ClientClosedTicketsListBody = document.getElementById('ClientClosedTicketsListBody');
+    var ClientAssignedToOthersListBody = document.getElementById('ClientAssignedToOthersListBody');
 
     ClientWorkInProgressListBody.innerHTML = "";
     ClientAssignedToMeListBody.innerHTML = "";
     ClientOpenTicketsListBody.innerHTML = "";
     ClientClosedTicketsListBody.innerHTML = "";
+    ClientAssignedToOthersListBody.innerHTML = "";
 
     DashboardWorkList.BindClientUserTicketList(ClientWorkInProgressListBody, ClientWorkInProgressData);
     DashboardWorkList.BindClientUserTicketList(ClientAssignedToMeListBody, ClientAssignedToMeData);
     DashboardWorkList.BindClientUserTicketList(ClientOpenTicketsListBody, ClientOpenTicketsData);
     DashboardWorkList.BindClientUserTicketList(ClientClosedTicketsListBody, ClientClosedTicketsData);
+    DashboardWorkList.BindClientUserTicketList(ClientAssignedToOthersListBody, ClientAssignedToOthersData);
 }
 
 DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
@@ -89,7 +76,10 @@ DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
             + '                <td class="dtr-control sorting_1" style="border-left: 5px solid #' + Util.WCColors[i] + ';">' + ticketData[i].ticketId + '</td>'
             + '                <td>' + ticketData[i].companyName + '</td>'
             + '                <td>' + ticketData[i].projectName + '</td>'
-            + '                <td>' + ticketData[i].assignedToName + '</td>'
+            + '                <td id="AssignTo_' + ticketData[i].ticketId + '">'
+            + '                <div onClick="DashboardWorkList.AssignWorkItem(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">' + ticketData[i].assignedToName + '</div>' 
+            + '                 </td>'
+           // + '                 <div onClick="DashboardWorkList.AssignWorkItem(' + ticketData[i].ticketId + ',' + ticketData[i].modifiedBy + ',' + ticketData[i].assignedTo + ')"> ' + ticketData[i].assignedToName + '</div>'
             + '                <td>' + (new Date(ticketData[i].createdOn).toLocaleDateString("en-US")) + '</td>'
             + '                <td>' + ticketData[i].ticketStatus + '</td>'
             + '                <td>' + (new Date(ticketData[i].targetDate).toLocaleDateString("en-US")) + '</td>'
@@ -102,6 +92,7 @@ DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
             //+ '                            <button class="dropdown-item" type="button" onclick="Ticket.Update(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
             //+ '                                <i class="fa fa-edit"></i> Edit'
             //+ '                            </button>'
+
             //+ '                            <button class="dropdown-item" type="button" onclick="UserMaster.Delete(\'' + encodeURIComponent(JSON.stringify(ticketData[i])) + '\')">'
             //+ '                                <i class="far fa-trash-alt"></i> Delete'
             //+ '                            </button>'
@@ -119,6 +110,31 @@ DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
 
 function DashboardWorkList_OnErrorCallBack(data) {
     Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
+}
+
+DashboardWorkList.AssignWorkItem = function (data) {
+    let ticketdetails = JSON.parse(decodeURIComponent(data))
+    console.log(ticketdetails)
+    var body = document.getElementById(`AssignTo_${ticketdetails.ticketId}`)
+    body.innerHTML = ''
+
+    userList = [1,2,3,4]
+
+    var dropdownHTML = '<select class="form-control rounded-pill btn-sm assignDropdownList_' + ticketdetails.ticketId + '" onchange="DashboardWorkList.onchange(' + ticketdetails.ticketId + ', this)">';
+    var defaultOption = '<option value="0">Please Select...</option>'
+    dropdownHTML += defaultOption
+    for (let i = 0; i < userList.length; i++) {
+        dropdownHTML += `<option value="${userList[i]}">employeeNAme</option>`;
+    }
+    dropdownHTML += '</select>';
+
+    body.innerHTML = dropdownHTML
+}
+
+DashboardWorkList.onchange = function (data) {
+    var body = document.getElementsByClassName(`assignDropdownList_${data}`)[0].value
+    console.log(data, body)
+
 }
 
 //DashboardWorkList.CreateNew = function () {
