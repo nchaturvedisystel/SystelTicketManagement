@@ -14,16 +14,18 @@ using Dapper;
 using Application.DTOs.Admin;
 using Application.Interfaces.Admin;
 using Application.DTOs.SupportTicket;
+using Application.Interfaces.SupportTicket;
 
 namespace Infrastructure.Persistance.Services
 {
-    public class MenuMasterService : DABase, IMenuContract, IMenuManage ,IClientWorkList
+    public class MenuMasterService : DABase, IMenuContract, IMenuManage ,IClientWorkList , ITicketResolverList
     {
         private const string SP_UserRolesByUserId = "UserRolesByUserId";
         private const string SP_MenuMaster_CRUD = "MenuMaster_CRUD";
         private const string SP_AdminDashboard_GetDetails = "AdminDashboard_GetDetails";
         private const string SP_SupportTickets_GetByUserId = "SupportTickets_GetByUserId";
         private const string SP_SupportTicket_TicketWorkList = "SupportTicket_TicketWorkList";
+        private const string SP_TicketResolverList = "TicketResolverList";
 
 
         private ILogger<MenuMasterService> _logger;
@@ -119,6 +121,7 @@ namespace Infrastructure.Persistance.Services
                     response.AssignedToMe = await reader.ReadAsync<SupportTicketDTO>();
                     response.OpenTickets = await reader.ReadAsync<SupportTicketDTO>();
                     response.ClosedTickets = await reader.ReadAsync<SupportTicketDTO>();
+                    response.AssignedToOthers = await reader.ReadAsync<SupportTicketDTO>();
 
 
                 }
@@ -130,6 +133,30 @@ namespace Infrastructure.Persistance.Services
             return response;
         }
 
+        public async Task<TicketList> TicketResolverList(SupportTicketDTO supportTicketDTO)
+        {
+            TicketList response = new TicketList();
+
+            _logger.LogInformation($"Started fetching all support tickets for the logged in user {supportTicketDTO.ActionUser}");
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+                {
+                    response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_TicketResolverList, new
+                    {
+                        //TicketId = supportTicketDTO.TicketId,
+                        //ModifiedBy = supportTicketDTO.ModifiedBy,
+                        //AssignedTo = supportTicketDTO.AssignedTo,
+                    }, commandType: CommandType.StoredProcedure);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return response;
+        }
 
     }
 }

@@ -51,6 +51,8 @@ namespace WebAPI
             //Ticket Service
             services.AddTransient<ISupportTicket, TicketService>();
 
+            services.AddTransient<ITicketResolverList, MenuMasterService>();
+
             //Ticket Description service
             services.AddTransient<ITicketDescription, TicketDescriptionService>();
             

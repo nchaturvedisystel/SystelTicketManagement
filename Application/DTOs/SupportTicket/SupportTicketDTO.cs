@@ -40,6 +40,7 @@ namespace Application.DTOs.SupportTicket
         public string TicketComments { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
+        public string NAME { get; set; }
     }
 
     public class TicketList
@@ -60,6 +61,12 @@ namespace Application.DTOs.SupportTicket
         public IEnumerable<SupportTicketDTO> AssignedToMe { get; set; }
         public IEnumerable<SupportTicketDTO> OpenTickets { get; set; }
         public IEnumerable<SupportTicketDTO> ClosedTickets { get; set; }
+        public IEnumerable<SupportTicketDTO> AssignedToOthers { get; set; }
 
     }
+
+
+
+
+
 }
