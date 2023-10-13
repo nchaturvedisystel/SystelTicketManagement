@@ -41,6 +41,8 @@ namespace Application.DTOs.SupportTicket
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
         public string NAME { get; set; }
+        public int AssignedToId { get; set; }
+        public int UserId { get; set; }
     }
 
     public class TicketList

@@ -66,24 +66,38 @@ TicketDetails.InitiateRTE = function (id) {
 //#endregion
 
 //#region  Ticket Comments and Updates
-TicketDetails.AddTicketComments = function () {
+TicketDetails.InsertTicketComments = function () {
     var newTicketDetails = {};
-    var commentText = newTicketDetails.InstructionsEditor.getPlainText();
-    if (commentText != "") {
-        var commentsDiv = document.getElementById("comments");
-        var commentElement = document.createElement("div");
-        commentElement.className = "col-md-6 comments-container border p-3 m-2";
-        commentElement.style.backgroundColor = "#eee";
-        commentElement.appendChild(document.createTextNode(commentText));
-        commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
-        document.getElementById("comment").value = "";
-        newTicketDetails.ticketComments = commentText;
-    }
+    newTicketDetails.ticketsComments = TicketDetails.InstructionsEditor.getPlainText();
     newTicketDetails.ticketId = TicketDetails.ticketId;
     newTicketDetails.createdBy = (TicketDetails.UserId).toString();
-    console.log('triggered')
+    Ajax.AuthPost("Description/TicketDescription", newTicketDetails, InsertTicketComments_OnSuccessCallBack, InsertTicketComments_OnErrorCallBack);
+   // TicketDetails.LoadTicketDetail();
+
+    //console.log(commentText);
+    //if (commentText != "") {
+    //    var commentsDiv = document.getElementById("comments");
+    //    var commentElement = document.createElement("div");
+    //    commentElement.className = "col-md-6 comments-container border p-3 m-2";
+    //    commentElement.style.backgroundColor = "#eee";
+    //    commentElement.appendChild(document.createTextNode(commentText));
+    //    commentsDiv.insertBefore(commentElement, commentsDiv.firstChild);
+    //    document.getElementById("comment").value = "";
+    //    newTicketDetails.ticketComments = commentText;
+    //}
+    //
+    //
+    //console.log('triggered')
     //Ajax.AuthPost("Description/TicketDescription", newTicketDetails, AddTicketComments_OnSuccessCallBack, AddTicketComments_OnErrorCallBack);
 
+}
+
+function InsertTicketComments_OnSuccessCallBack(data) {
+    console.log(data);
+}
+
+function InsertTicketComments_OnErrorCallBack(error) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
 
 
