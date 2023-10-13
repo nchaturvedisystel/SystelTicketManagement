@@ -1,5 +1,5 @@
 
-    TicketDetails = new Object()
+TicketDetails = new Object()
 
 TicketDetails.ticketId = 0;
 TicketDetails.flag = true;
@@ -8,26 +8,22 @@ TicketDetails.UserId = 0;
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 
-TicketDetails.RichTextComment = function () {
-    // if (TicketDetails.InstructionsEditorLoaded == 0) {
-    TicketDetails.InstructionsEditor = new RichTextEditor("#TemplateInstEditor");
-    //TicketDetails.InstructionsEditorLoaded = 1;
-    // }
-}
 
 TicketDetails.onReady = function () {
-    TicketDetails.LoadAll();
+    TicketDetails.LoadTicketDetail();
+    TicketDetails.InitiateRTE("TemplateInstEditor");
 }
 
-TicketDetails.LoadAll = function () {
-    Ajax.AuthPost("ticket/TicketDetails", TicketDetails, TicketDetails_OnSuccessCallBack, TicketDetails_OnErrorCallBack);
+
+//#region Load Ticket Details
+TicketDetails.LoadTicketDetail = function () {
+    var ticket = new Object();
+    ticket.ticketId = TicketDetails.ticketId;
+    Ajax.AuthPost("ticket/TicketDetails", ticket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 }
 
-function TicketDetails_OnSuccessCallBack(data) {
-    TicketDetails.RichTextComment();
-    TicketDetails.flag = true;
+function LoadTicketDetail_OnSuccessCallBack(data) {
     let ticketDetail = data.tickets[0];
-    //console.log(ticketDetail)
     document.getElementById('ticketId').innerHTML = "#" + ticketDetail.ticketId;
     document.getElementById('projectName').innerHTML = ticketDetail.projectName;
     document.getElementById('ticketType').innerHTML = ticketDetail.ticketType;
@@ -41,20 +37,36 @@ function TicketDetails_OnSuccessCallBack(data) {
     document.getElementById('ModifiedOn').innerHTML = TicketDetails.DateFormat(ticketDetail.modifiedOn);
     document.getElementById('AssignedTo').innerHTML = ticketDetail.assignedToName;
     document.getElementById('ownedBy').innerHTML = ticketDetail.ownedBy;
-    //TicketDetails.AddDescription();
     TicketDetails.UserId = User.UserId;
-    Ajax.AuthPost("Description/TicketDescription", ticketDetail, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
-
-
+    Ajax.AuthPost("Description/TicketDescription", ticketDetail, AddTicketComments_OnSuccessCallBack, AddTicketComments_OnErrorCallBack);
 }
 
+function LoadTicketDetail_OnErrorCallBack(err) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
+}
+//#endregion
+
+//#region Common
 TicketDetails.DateFormat = function (dateString) {
     const indexOfT = dateString.indexOf('T');
     const dateWithoutTime = dateString.substring(0, indexOfT);
     return dateWithoutTime;
 }
+TicketDetails.InitiateRTE = function (id) {
+    if (document.getElementById(id)) {
+        var editorId = ("#" + id);
+        TicketDetails.InstructionsEditor = new RichTextEditor(editorId);
+    }
+    else {
+        setTimeout(function () {
+            TicketDetails.InitiateRTE(id);
+        }, 1000);
+    }
+}
+//#endregion
 
-TicketDetails.AddDescription = function () {
+//#region  Ticket Comments and Updates
+TicketDetails.AddTicketComments = function () {
     var newTicketDetails = {};
     var commentText = newTicketDetails.InstructionsEditor.getPlainText();
     if (commentText != "") {
@@ -70,42 +82,37 @@ TicketDetails.AddDescription = function () {
     newTicketDetails.ticketId = TicketDetails.ticketId;
     newTicketDetails.createdBy = (TicketDetails.UserId).toString();
     console.log('triggered')
-    //Ajax.AuthPost("Description/TicketDescription", newTicketDetails, TicketDescription_OnSuccessCallBack, TicketDescription_OnErrorCallBack);
+    //Ajax.AuthPost("Description/TicketDescription", newTicketDetails, AddTicketComments_OnSuccessCallBack, AddTicketComments_OnErrorCallBack);
 
 }
 
 
-function TicketDescription_OnSuccessCallBack(data) {
-    if (TicketDetails.flag) {
-        var descriptions = data.tickets;
-        var comments = document.getElementById('comments');
-        for (let i = descriptions.length - 1; i > 0; i--) {
-            var newDiv = document.createElement('div');
-            newDiv.className = "col-md-12 comments-container border p-3 d-flex flex-column mb-0";
-            newDiv.style.backgroundColor = "#eee";
+function AddTicketComments_OnSuccessCallBack(data) {
+    var descriptions = data.tickets;
+    var comments = document.getElementById('comments');
+    for (let i = descriptions.length - 1; i > 0; i--) {
+        var newDiv = document.createElement('div');
+        newDiv.className = "col-md-12 comments-container border p-3 d-flex flex-column mb-0";
+        newDiv.style.backgroundColor = "#eee";
 
-            let description = descriptions[i].ticketComments;
-            newDiv.innerHTML = description;
-            comments.appendChild(newDiv);
+        let description = descriptions[i].ticketComments;
+        newDiv.innerHTML = description;
+        comments.appendChild(newDiv);
 
-            //console.log(descriptions[i].modifiedBy);
-            var innerDiv = document.createElement("div");
-            innerDiv.className = "col-md-12 p-0 inner-div-class mb-3";
-            innerDiv.style.backgroundColor = "#eee";
-            innerDiv.innerHTML = TicketDetails.DateFormat(descriptions[i].modifiedOn);
-            comments.appendChild(innerDiv);
-        }
+        //console.log(descriptions[i].modifiedBy);
+        var innerDiv = document.createElement("div");
+        innerDiv.className = "col-md-12 p-0 inner-div-class mb-3";
+        innerDiv.style.backgroundColor = "#eee";
+        innerDiv.innerHTML = TicketDetails.DateFormat(descriptions[i].modifiedOn);
+        comments.appendChild(innerDiv);
     }
-    TicketDetails.flag = false;
 
 }
-function TicketDescription_OnErrorCallBack(err) {
+function AddTicketComments_OnErrorCallBack(err) {
     Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
+//#endregion
 
-function TicketDetails_OnErrorCallBack(err) {
-    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
-}
 
 
 
