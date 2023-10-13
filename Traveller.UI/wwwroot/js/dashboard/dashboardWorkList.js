@@ -43,7 +43,7 @@ DashboardWorkList.LoadAll = function () {
     Ajax.AuthPost("menus/GetClientWorkList", newDashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
     var TicketResolverList = {};
     TicketResolverList.ActionUser = User.UserId;
-    Ajax.AuthPost("menus/GetTicketResolverList", TicketResolverList, TicketResolverList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
+    Ajax.AuthPost("menus/GetTicketResolverList", TicketResolverList, TicketResolverList_OnSuccessCallBack, TicketResolverList_OnErrorCallBack);
 }
 
 function DashboardWorkList_OnSuccessCallBack(data) {
@@ -144,9 +144,21 @@ DashboardWorkList.AssignWorkItem = function (data) {
 DashboardWorkList.onchange = function (data) {
     var body = document.getElementsByClassName(`assignDropdownList_${data}`)[0].value
     console.log(data, body)
-    TicketResolverList = {};
+    var updateAssignedTo = {};
+    updateAssignedTo.ticketId = data;
+    updateAssignedTo.assignedToId = body;
+    updateAssignedTo.ActionUser = User.UserId;
+    Ajax.AuthPost("menus/GetTicketResolverList", updateAssignedTo, UpdatedTicketResolverList_OnSuccessCallBack, UpdatedTicketResolverList_OnErrorCallBack);
+
     DashboardWorkList.LoadAll();
 
+}
+
+function UpdatedTicketResolverList_OnSuccessCallBack(data) {
+
+}
+function UpdatedTicketResolverList_OnErrorCallBack(error) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
 
 function TicketResolverList_OnSuccessCallBack(data) {
@@ -156,6 +168,9 @@ function TicketResolverList_OnSuccessCallBack(data) {
     //    console.log(data.tickets[i].name);
     //}
    // console.log(DashboardWorkList.TicketResolverListObj.tickets);
+}
+function TicketResolverList_OnErrorCallBack(error) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
 
 function DashboardWorkList_OnErrorCallBack(error) {
