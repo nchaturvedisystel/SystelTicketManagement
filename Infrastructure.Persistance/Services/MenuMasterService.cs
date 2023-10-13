@@ -144,9 +144,9 @@ namespace Infrastructure.Persistance.Services
                 {
                     response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_TicketResolverList, new
                     {
-                        //TicketId = supportTicketDTO.TicketId,
-                        //ModifiedBy = supportTicketDTO.ModifiedBy,
-                        //AssignedTo = supportTicketDTO.AssignedTo,
+                        TicketId = supportTicketDTO.TicketId,
+                        AssignedToId = supportTicketDTO.AssignedToId,
+                        ActionUser = supportTicketDTO.ActionUser,
                     }, commandType: CommandType.StoredProcedure);
 
                 }

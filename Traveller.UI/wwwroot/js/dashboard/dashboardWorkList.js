@@ -42,6 +42,7 @@ DashboardWorkList.LoadAll = function () {
     newDashboardWorkList.CompanyId = Ajax.CompanyId;
     Ajax.AuthPost("menus/GetClientWorkList", newDashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
     var TicketResolverList = {};
+    TicketResolverList.ActionUser = User.UserId;
     Ajax.AuthPost("menus/GetTicketResolverList", TicketResolverList, TicketResolverList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
 }
 
@@ -126,13 +127,14 @@ DashboardWorkList.AssignWorkItem = function (data) {
 
    // userList = [1, 2, 3, 4]
     let ticketResolverList = DashboardWorkList.TicketResolverListObj;
-   // console.log(ticketResolverList.tickets);
+    
+
 
     var dropdownHTML = '<select class="form-control rounded-pill btn-sm assignDropdownList_' + ticketdetails.ticketId + '" onchange="DashboardWorkList.onchange(' + ticketdetails.ticketId + ', this)">';
     var defaultOption = '<option value="0">Please Select...</option>'
     dropdownHTML += defaultOption
     for (let i = 0; i < ticketResolverList.tickets.length; i++) {
-        dropdownHTML += `<option>${ticketResolverList.tickets[i].name}</option>`;
+        dropdownHTML += `<option value="${ticketResolverList.tickets[i].userId}">${ticketResolverList.tickets[i].name}</option>`;
     }
     dropdownHTML += '</select>';
 
@@ -141,7 +143,7 @@ DashboardWorkList.AssignWorkItem = function (data) {
 
 DashboardWorkList.onchange = function (data) {
     var body = document.getElementsByClassName(`assignDropdownList_${data}`)[0].value
-    //console.log(data, body)
+    console.log(data, body)
     TicketResolverList = {};
     DashboardWorkList.LoadAll();
 
