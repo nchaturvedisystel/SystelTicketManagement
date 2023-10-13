@@ -26,6 +26,7 @@ DashboardWorkList.ActionUser = 0;
 DashboardWorkList.InstructionsEditorLoaded = 0;
 DashboardWorkList.InstructionsEditor;
 DashboardWorkList.AssignedToName = "";
+DashboardWorkList.TicketResolverListObj = {};
 
 DashboardWorkList.CreateDashboardWorkListOnReady = function () {
     loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -40,6 +41,8 @@ DashboardWorkList.LoadAll = function () {
     newDashboardWorkList.ActionUser = User.UserId;
     newDashboardWorkList.CompanyId = Ajax.CompanyId;
     Ajax.AuthPost("menus/GetClientWorkList", newDashboardWorkList, DashboardWorkList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
+    var TicketResolverList = {};
+    Ajax.AuthPost("menus/GetTicketResolverList", TicketResolverList, TicketResolverList_OnSuccessCallBack, DashboardWorkList_OnErrorCallBack);
 }
 
 function DashboardWorkList_OnSuccessCallBack(data) {
@@ -106,6 +109,9 @@ DashboardWorkList.BindClientUserTicketList = function (tbody, ticketData) {
             + '');
         tbody.innerHTML = tbody.innerHTML + RowHtml;
     }
+    if (tbody == ClientAssignedToOthersListBody) {
+
+    }
 }
 
 function DashboardWorkList_OnErrorCallBack(data) {
@@ -118,13 +124,15 @@ DashboardWorkList.AssignWorkItem = function (data) {
     var body = document.getElementById(`AssignTo_${ticketdetails.ticketId}`)
     body.innerHTML = ''
 
-    userList = [1,2,3,4]
+   // userList = [1, 2, 3, 4]
+    let ticketResolverList = DashboardWorkList.TicketResolverListObj;
+   // console.log(ticketResolverList.tickets);
 
     var dropdownHTML = '<select class="form-control rounded-pill btn-sm assignDropdownList_' + ticketdetails.ticketId + '" onchange="DashboardWorkList.onchange(' + ticketdetails.ticketId + ', this)">';
     var defaultOption = '<option value="0">Please Select...</option>'
     dropdownHTML += defaultOption
-    for (let i = 0; i < userList.length; i++) {
-        dropdownHTML += `<option value="${userList[i]}">employeeNAme</option>`;
+    for (let i = 0; i < ticketResolverList.tickets.length; i++) {
+        dropdownHTML += `<option>${ticketResolverList.tickets[i].name}</option>`;
     }
     dropdownHTML += '</select>';
 
@@ -133,8 +141,23 @@ DashboardWorkList.AssignWorkItem = function (data) {
 
 DashboardWorkList.onchange = function (data) {
     var body = document.getElementsByClassName(`assignDropdownList_${data}`)[0].value
-    console.log(data, body)
+    //console.log(data, body)
+    TicketResolverList = {};
+    DashboardWorkList.LoadAll();
 
+}
+
+function TicketResolverList_OnSuccessCallBack(data) {
+    //console.log(data.tickets.length);
+    DashboardWorkList.TicketResolverListObj = data;
+    //for (let i = 0; i < data.tickets.length; i++) {
+    //    console.log(data.tickets[i].name);
+    //}
+   // console.log(DashboardWorkList.TicketResolverListObj.tickets);
+}
+
+function DashboardWorkList_OnErrorCallBack(error) {
+    Util.DisplayAutoCloseErrorPopUp("Error Occurred..", 1500);
 }
 
 //DashboardWorkList.CreateNew = function () {
