@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.DTOs.Admin;
+using Application.DTOs.Common;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Application.Interfaces.Admin;
@@ -29,6 +30,7 @@ namespace Infrastructure.Persistance.Services.User
         private const string SP_Dashboard_GetAllUserDetails = "Dashboard_GetAllUserDetails";
         private const string SP_UserMaster_UpdateStatus = "UserMaster_UpdateStatus";
         private const string SP_GetCompanyName = "GetCompanyName";
+        private const string SP_UserMaster_LoadAllDDL = "UserMaster_LoadAllDDL";
 
         private ILogger<UserService> _logger;
 
@@ -241,7 +243,19 @@ namespace Infrastructure.Persistance.Services.User
             }
             return response;
         }
+        public async Task<DropDownList> GetAllUserList()
+        {
+            DropDownList response = new DropDownList();
 
+            _logger.LogInformation($"fetching data for User List");
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                response.dropDownList = await connection.QueryAsync<DropDownDTO>(SP_UserMaster_LoadAllDDL, commandType: CommandType.StoredProcedure);
+            }
+
+
+            return response;
+        }
         public async Task<CompanyList> GetCompany()
         {
             CompanyList response = new CompanyList();
