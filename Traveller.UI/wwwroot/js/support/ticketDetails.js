@@ -90,6 +90,18 @@ TicketDetails.InitiateRTE = function (id) {
 //#endregion
 
 //#region  Ticket Comments and Updates
+TicketDetails.AddCommentButtonOnClick = function () {
+    if (!$('#detailActivityDiv').is(':visible')) {
+        $("#detailActivityDiv").slideToggle();
+    }    
+}
+TicketDetails.CloseCommentDialougeOnClick = function () {
+    if ($('#detailActivityDiv').is(':visible')) {
+        $("#detailActivityDiv").slideToggle();
+    }
+}
+
+
 TicketDetails.InsertTicketComments = function () {
     var newTicketDetails = {};
     newTicketDetails.ticketsComments = TicketDetails.InstructionsEditor.getPlainText();
