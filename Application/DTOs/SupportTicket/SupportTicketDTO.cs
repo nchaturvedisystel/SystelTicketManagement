@@ -25,6 +25,11 @@ namespace Application.DTOs.SupportTicket
         public string ActualDuration { get; set; }
         public DateTime TargetDate { get; set; }
         public DateTime ResolutionDate { get; set;}
+        public string AddField1 { get; set; }
+        public string AddField2 { get; set; }
+        public string AddField3 { get; set; }
+        public string AddField4 { get; set; }
+        public string AddField5 { get; set; }
         public int IsActive { get; set; }
         public int IsDeleted { get; set; }
         public string TicketOwner { get; set; }
@@ -43,6 +48,7 @@ namespace Application.DTOs.SupportTicket
         public string NAME { get; set; }
         public int AssignedToId { get; set; }
         public int UserId { get; set; }
+       
     }
 
     public class TicketList
