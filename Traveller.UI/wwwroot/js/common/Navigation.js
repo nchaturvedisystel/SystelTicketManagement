@@ -110,6 +110,9 @@ Navigation.CallPageLoad = function (MenuCode) {
     else if (MenuCode == 'TDDB') {
         TicketDetails.onReady();
     }
+    else if (MenuCode == 'CCDB') {
+        Company.BasepageOnReady();
+    }
 
 }
 
