@@ -14,7 +14,7 @@ using MediatR;
 
 namespace WebAPI.Controllers.SupportTicket
 {
-    [Route("ticket")]
+    [Route("Ticket")]
     //[AuthorizeUser]
     public class TicketController : BaseApiController
     {

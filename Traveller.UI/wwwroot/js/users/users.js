@@ -13,6 +13,7 @@ UserMaster.IsActive = 0;
 UserMaster.IsDeleted = 0;
 UserMaster.DOB = new Date();
 UserMaster.CompanyList = [];
+UserMaster.AllUserList = new Object();
 
 
 
@@ -369,5 +370,28 @@ function UpdateUserStatus_OnSuccesscallback(response) {
 
 function UpdateUserStatus_OnErrorCallBack(data) {
     Toast.create("Danger", "Some Error occured", TOAST_STATUS.DANGER, 1500);
+}
+
+UserMaster.GetAllUserList = function () {
+    Ajax.AuthGet("users/GetAllUserList", GetAllUserList_OnSuccessCallBack, GetAllUserList_OnErrorCallBack);
+}
+function GetAllUserList_OnSuccessCallBack(data) {
+    if (data && data.dropDownList) {
+        UserMaster.AllUserList = data.dropDownList;
+    }
+}
+function GetAllUserList_OnErrorCallBack(error) {
+    Toast.create("Danger", "Some Error occured", TOAST_STATUS.DANGER, 1500);
+}
+
+UserMaster.GetUserNameById = function (id) {
+    if (UserMaster.AllUserList) {
+        for (var i = 0; i < UserMaster.AllUserList.length; i++) {
+            if (UserMaster.AllUserList[i].key == id) {
+                id = UserMaster.AllUserList[i].value;
+            }
+        }
+    }
+    return id;
 }
 

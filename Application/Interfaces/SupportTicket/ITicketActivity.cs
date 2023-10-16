@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.SupportTicket
 {
-    public interface ITicketDescription
+    public interface ITicketActivity
     {
-        public Task<TicketList> TicketDescription(SupportTicketDTO supportTicketDTO);
+        public Task<TicketActivityList> TicketDescription(TicketActivityDTO ticketActivityDTO);
     }
 }
