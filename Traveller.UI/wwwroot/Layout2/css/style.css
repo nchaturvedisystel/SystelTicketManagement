@@ -368,3 +368,54 @@ footer.sticky-footer {padding: 1rem 0; bottom:0px; height:auto !important; posit
     height: 100vh !important;
 }
 
+
+   
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.form-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 0px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #01018F;
+}
+
+.form-control {
+    border-color: #01018F;
+}
+
+    .form-control:focus {
+        border-color: #01018F;
+        box-shadow: 0 0 0 0.2rem rgba(1,1,143,.25);
+    }
+
+.btn-primary {
+    background-color: #01018F;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #0b0c93;
+    }
+
+.form-check-input:checked {
+    background-color: #01018F;
+    border-color: #01018F;
+}
+
+.add-details-section {
+    background-color: #01018f;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}

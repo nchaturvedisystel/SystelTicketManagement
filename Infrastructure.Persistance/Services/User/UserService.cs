@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistance.Services.User
 {
-    public class UserService : DABase, IUserContract, IUserMaster, ICompany
+    public class UserService : DABase, IUserContract, IUserMaster
     {
         APISettings _settings;
         private const string SP_AuthenticateUser = "ValidateUserLogin";
@@ -242,18 +242,18 @@ namespace Infrastructure.Persistance.Services.User
             return response;
         }
 
-        public async Task<CompanyList> GetCompany()
-        {
-            CompanyList response = new CompanyList();
+        //public async Task<CompanyList> GetCompany(CompanyMasterDTO companyMasterDTO)
+        //{
+        //    CompanyList response = new CompanyList();
 
-            _logger.LogInformation($"fetching data for Company List");
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                response.Companies = await connection.QueryAsync<CompanyMasterDTO>(SP_GetCompanyName, commandType: CommandType.StoredProcedure);
-            }
+        //    _logger.LogInformation($"fetching data for Company List");
+        //    using (SqlConnection connection = new SqlConnection(ConnectionString))
+        //    {
+        //        response.Companies = await connection.QueryAsync<CompanyMasterDTO>(SP_GetCompanyName, commandType: CommandType.StoredProcedure);
+        //    }
 
 
-            return response;
-        }
+        //    return response;
+        //}
     }
 }

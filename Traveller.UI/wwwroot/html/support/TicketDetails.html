@@ -1,209 +1,200 @@
 ﻿
 <style>
-    .nav-detail {
-        padding-top: 5px;
-        border: 1px solid #ccc;
-        left: -20px;
-        display: flex;
-        grid-column-gap: 302px;
-        background-color: #01018f !important;
-        width: auto;
-        color: white;
-        /* Add this line to set the font color to white */
+    body {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        color: #303e3d;
+    }
+
+    .com_card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 10px 20px 0 rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .font-b {
+        font-weight: bold;
+    }
+
+    .tick_topband {
+        background-color: #303e3d;
+        padding: 10px;
+    }
+
+        .tick_topband span {
+            display: inline-block;
+            padding: 0 20px;
+            border-right: 1px solid #666;
+            color: white;
+        }
+
+            .tick_topband span:last-child {
+                border-right: none;
+            }
+
+    .side_status {
+        background-color: rgba(48, 62, 61, 0.05);
+        border-left: 1px solid #ccc;
+    }
+
+        .side_status table {
+            font-size: 12px;
+        }
+
+            .side_status table th {
+                text-align: right;
+                background-color: transparent;
+                border-bottom: none;
+            }
+
+            .side_status table td {
+                background-color: transparent;
+                border-bottom: none;
+            }
+
+    .assigned_block {
+        background-color: rgba(48, 62, 61, 0.03);
+        padding: 15px;
+        font-size: 14px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .action_buttons {
+        background-color: rgba(48, 62, 61, 0.05);
+        border-top: 1px solid #ccc;
+    }
+
+        .action_buttons button {
+            background-color: white;
+            border: 1px solid #303e3d;
+            color: #303e3d;
+        }
+
+            .action_buttons button:hover {
+                background-color: #303e3d;
+                border: 1px solid #303e3d;
+                color: white;
+            }
     }
 </style>
-<div class="d-flex align-items-center justify-content-between my-3" style="border-bottom:1px solid #CDD5E9">
-    <div class="main-heading">Ticket Details</div>
-</div>
+<body>
+    <div class="container">
+        <div class="com_card mb-3">
+            <div class="tick_topband">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <span id="TicketStatus"></span>
+                        <span id="ticketId"></span>
+                        <span id="Title"></span>
+                    </div>
+                    <div class="col-auto"><a href="#" class="btn btn-secondary btn-sm rounded">Unwatch</a></div>
+                </div>
+            </div>
 
-<div class="container-fluid " id="test">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ticket-details">
-                <div class="row mt-2">
-                    <div class="card col-md-3 m-0 p-0">
-                        <div class="card-body " style="min-height:100px; padding-left: 100px; background-color: #ccc;  ">
-                            <div>
-                                <label for="ticketId">
-                                    <strong>Ticket Id </strong>
-                                </label>
+
+
+            <div class="row g-0">
+                <div class="col-8">
+                    <div class="assigned_block">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-1">High Priority Hardware Problem</div>
+                                <div class="d-flex mb-1">
+                                    <div class="font-b me-2">Assigned To :</div>
+                                    <div><span class="badge text-bg-warning id="AssignedTo"></span></div>
+                                </div>
+                                <div class="d-flex mb-1">
+                                    <div class="font-b me-2">Owned By :</div>
+                                    <div id="ownedBy"></div>
+                                </div>
                             </div>
-                            <div>
-                                <label for="Title">
-                                    <Strong>Title </Strong>
-                                </label>
-                            </div>
-                            <div>
-                                <label for="ticketStatus">
-                                    <Strong>Ticket Status </Strong>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-md-3 m-0 p-0">
-                        <div class="card-body " style="min-height:100px; padding-left: 35px; background-color: #ccc;">
-                            <div>
-                                <label for="ticketId">
-                                    <span id="ticketId"></span>
-                                </label>
-                            </div>
-                            <div>
-                                <label for="Title">
-                                    <span id="Title"></span>
-                                </label>
-                            </div>
-                            <div>
-                                <label for="ticketStatus">
-                                    <span id="TicketStatus"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-md-2 m-0 p-0">
-                        <div class="card-body" style="min-height:100px; padding-left: 100px; background-color: #ccc;">
-                            <div class="form-group ">
-                                <label for="assignedTo">
-                                    <Strong>Assigned To </Strong>
-                                </label>
-                                <br>
-                                <label for="ownedBy">
-                                    <Strong>Owned By </Strong>
-                                </label>
+                            <div class="col-auto">
+                                <a href="#">Default</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card col-md-4 m-0 p-0">
-                        <div class="card-body" style="min-height:100px; background-color: #ccc;">
-                            <div class="form-group ">
-                                <label for="assignedTo">
-                                    <span id="AssignedTo"></span>
-                                </label>
-                                <br>
-                                <label for="ownedBy">
-                                    <span id="ownedBy"></span>
-                                </label>
-                            </div>
-                        </div>
+
+
+
+                    <div class="p-3" id="TDese">
+                       
                     </div>
-                    <div class="card col-md-3 " style="border: none;">
-                        <div class="card-body" style=" padding-left: 100px;">
-                            <div class="form-group ">
-                                <label for="projectName">
-                                    <Strong>Project Name  </Strong>
-                                </label>
-                                <br>
-                                <label for="ticketType">
-                                    <Strong>Ticket Type </Strong>
-                                </label>
-                                <br>
-                                <label for="companyName">
-                                    <Strong>Company Name </Strong>
-                                </label>
-                                <br>
-                                <label for="ResolutionDate">
-                                    <Strong>Resolution Date </Strong>
-                                </label>
-                                <br>
-                                <label for="createdOn">
-                                    <Strong>Created On </Strong>
-                                </label>
-                                <br>
-                                <label for="modifiedOn">
-                                    <Strong>Modified On </Strong>
-                                </label>
-                                <br>
-                                <label for="tDese">
-                                    <Strong>TDesc </Strong>
-                                </label>
-                                <br>
-                                <label for="targetDate">
-                                    <Strong>Target Date </Strong>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-md-9" style="border: none;">
-                        <div class="card-body ">
-                            <div class="form-group ">
-                                <label for="projectName">
-                                    <span id="projectName"></span>
-                                </label>
-                                <br>
-                                <label for="ticketType">
-                                    <span id="ticketType"></span>
-                                </label>
-                                <br>
-                                <label for="companyName">
-                                    <span id="CompanyName"></span>
-                                </label>
-                                <br>
-                                <label for="ResolutionDate">
-                                    <span type="date" id="ResolutionDate"></span>
-                                </label>
-                                <br>
-                                <label for="createdOn">
-                                    <span id="CreatedOn"></span>
-                                </label>
-                                <br>
-                                <label for="modifiedOn">
-                                    <span id="ModifiedOn"></span>
-                                </label>
-                                <br>
-                                <label for="tDese">
-                                    <span id="TDese"></span>
-                                </label>
-                                <br>
-                                <label for="targetDate">
-                                    <span id="TargetDate"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="col-4 side_status">
+                    <table class="table mb-0">
+                        <tr>
+                            <th>Ticket Status</th>
+                            <td >Active</td>
+                        </tr>
+                        <tr>
+                            <th>Due Date</th>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <th>Target Date</th>
+                            <td id="TargetDate"></td>
+                        </tr>
+                        <tr>
+                            <th>Resolution Date</th>
+                            <td id="ResolutionDate"></td>
+                        </tr>
+                        <tr>
+                            <th>Updated By</th>
+                            <td>Neeraj</td>
+                        </tr>
+                        <tr>
+                            <th>Updated Date</th>
+                            <td id="ModifiedOn"></td>
+                        </tr>
+                        <tr>
+                            <th>Status By</th>
+                            <td>Ranjeet</td>
+                        </tr>
+                        <tr>
+                            <th>Start Date</th>
+                            <td>9/22/2023 2:35PM</td>
+                        </tr>
+                        <tr>
+                            <th>Created By</th>
+                            <td>Ranjeet</td>
+                        </tr>
+                        <tr>
+                            <th>Created Date</th>
+                            <td>9/22/2023 2:35PM</td>
+                        </tr>
+                        <tr>
+                            <th>Estimate Duration</th>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <th>Actual Duration</th>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <th>Subscribers</th>
+                            <td>
+                                <div>Neeraj</div>
+                                <div>Ranjeet</div>
+                                <div>HelpDesk User</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="p-3 action_buttons">
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <button type="button" class="btn btn-outline-primary btn-sm">Comment</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Take Over</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Assign</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Force Close</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Edit Attachments</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Edit</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="container-fluid " id="test">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ticket-details">
-                <div class="row mt-2">
-
-                    <div class="card col-md-6" style="border: none; border-top: 0.5px solid black; border-radius: 0px;">
-                        <div class="card-body ">
-                            <div class="container mx-0 my-5">
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <div class="form-group">
-                                            <label><Strong>Add Comment </Strong></label>
-                                            <div id="TemplateInstEditor"></div>
-
-                                            <button class="btn btn-primary btn-sm mt-2"
-                                                    onclick="TicketDetails.AddDescription()">
-                                                Add
-                                                Comment
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-md-6" style="border: none; border-top: 0.5px solid black; border-radius: 0px;">
-                        <div class="card-body ">
-                            <div class="col-md-8 comments-container">
-                                <h2>Comments</h2>
-                                <div class="row" id="comments">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</body>
