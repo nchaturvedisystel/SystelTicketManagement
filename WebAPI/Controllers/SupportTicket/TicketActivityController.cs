@@ -7,29 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers.SupportTicket
 {
-    [Route("Description")]
-    public class TicketDescriptionController : BaseApiController
+    [Route("Ticket")]
+    public class TicketActivityController : BaseApiController
     {
         APISettings _settings;
         protected readonly IEncryptDecrypt _encryptDecrypt;
 
-        public TicketDescriptionController(IOptions<APISettings> settings, IEncryptDecrypt encryptDecrypt)
+        public TicketActivityController(IOptions<APISettings> settings, IEncryptDecrypt encryptDecrypt)
         {
             _settings = settings.Value;
             _encryptDecrypt = encryptDecrypt;
         }
 
-        [HttpPost("TicketDescription")]
-        public async Task<IActionResult> TicketDescription([FromBody] SupportTicketDTO supportTicketDTO)
+        [HttpPost("TicketComments")]
+        public async Task<IActionResult> TicketDescription([FromBody] TicketActivityDTO ticketActivityDTO)
         {
-            TicketList response = new TicketList();
+            TicketActivityList response = new TicketActivityList();
 
 
-            response = await mediator.Send(new TicketDescriptionCommand
+            response = await mediator.Send(new TicketActivityCommand
             {
-                supportTicketDTO = supportTicketDTO
+                ticketActivityDTO = ticketActivityDTO
             });
 
             if (response == null)

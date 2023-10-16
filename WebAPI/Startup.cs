@@ -54,7 +54,7 @@ namespace WebAPI
             services.AddTransient<ITicketResolverList, MenuMasterService>();
 
             //Ticket Description service
-            services.AddTransient<ITicketDescription, TicketDescriptionService>();
+            services.AddTransient<ITicketActivity, TicketActivityService>();
             
             //Admin Services
             services.AddTransient<IMenuManage, MenuMasterService>();

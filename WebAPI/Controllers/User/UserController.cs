@@ -15,6 +15,7 @@ using Application.DTOs.User;
 using WebAPI.Authorization;
 using Application.DTOs.Admin;
 using Application.Features.Admin.Commands;
+using Application.DTOs.Common;
 
 namespace WebAPI.Controllers
 {
@@ -201,12 +202,21 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetAllUserList")]
+        public async Task<IActionResult> GetAllUserList()
+        {
+            DropDownList response = await mediator.Send(new GetAllUserListCommand { });
+            return Ok(response);
+        }
+
         [HttpGet("GetCompanyList")]
         public async Task<IActionResult> GetCompanyList()
         {
             CompanyList response = await mediator.Send(new GetCompanyCommand{ } );
             return Ok(response);
         }
+
+
 
     }
 }

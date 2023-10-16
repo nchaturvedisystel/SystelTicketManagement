@@ -43,7 +43,7 @@ Ticket.LoadAll = function () {
     console.log('Crate page loaded');
     newTicket.ActionUser = User.UserId;
     newTicket.CompanyId = Ajax.CompanyId;
-    Ajax.AuthPost("ticket/ClientUserTicketList", newTicket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
+    Ajax.AuthPost("Ticket/ClientUserTicketList", newTicket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
 }
 Ticket.OpenCreateTicketModal = function () {
     if (Ticket.InstructionsEditorLoaded == 0) {
