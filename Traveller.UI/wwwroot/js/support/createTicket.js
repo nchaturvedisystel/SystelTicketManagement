@@ -15,6 +15,11 @@ Ticket.EstimatedDuration = "";
 Ticket.ActualDuration = "";
 Ticket.TargetDate = new Date();
 Ticket.ResolutionDate = new Date();
+Ticket.AddField1 = "";
+Ticket.AddField2 = "";
+Ticket.AddField3 = "";
+Ticket.AddField4 = "";
+Ticket.AddField5 = "";
 Ticket.IsActive = 0;
 Ticket.IsDeleted = 0;
 Ticket.TicketOwner = "";
@@ -134,7 +139,9 @@ Ticket.CreateNew = function () {
     newTicket.ProjectId = document.getElementById("project").value;
     newTicket.ActionUser = User.UserId;
     newTicket.CompanyId = Ajax.CompanyId;
-    console.log(newTicket.TargetDate);
+    newTicket.AddField1 = document.getElementById("AddField1").value;
+    newTicket.AddField2 = document.getElementById("AddField2").value;
+    //console.log(newTicket);
     
     // Perform validation
     var ValidationMsg = " Please provide ";
@@ -148,8 +155,16 @@ Ticket.CreateNew = function () {
         alert(ValidationMsg);
     }
     else {
-        Ajax.AuthPost("Ticket/ManageTicket", newTicket, Ticket_OnSuccessCallBack, Ticket_OnErrorCallBack);
+        Ajax.AuthPost("ticket/ManageTicket", newTicket, NewTicket_OnSuccessCallBack, NewTicket_OnErrorCallBack);
     }
+}
+
+function NewTicket_OnSuccessCallBack(data){
+    Ticket.LoadAll();
+}
+
+function NewTicket_OnErrorCallBack(error){
+    console.error(error);
 }
 
 Ticket.ClearCRUDform = function () {

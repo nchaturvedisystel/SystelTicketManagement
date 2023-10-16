@@ -127,9 +127,6 @@ DashboardWorkList.AssignWorkItem = function (data) {
 
    // userList = [1, 2, 3, 4]
     let ticketResolverList = DashboardWorkList.TicketResolverListObj;
-    
-
-
     var dropdownHTML = '<select class="form-control rounded-pill btn-sm assignDropdownList_' + ticketdetails.ticketId + '" onchange="DashboardWorkList.onchange(' + ticketdetails.ticketId + ', this)">';
     var defaultOption = '<option value="0">Please Select...</option>'
     dropdownHTML += defaultOption
@@ -149,9 +146,7 @@ DashboardWorkList.onchange = function (data) {
     updateAssignedTo.assignedToId = body;
     updateAssignedTo.ActionUser = User.UserId;
     Ajax.AuthPost("menus/GetTicketResolverList", updateAssignedTo, UpdatedTicketResolverList_OnSuccessCallBack, UpdatedTicketResolverList_OnErrorCallBack);
-
     DashboardWorkList.LoadAll();
-
 }
 
 function UpdatedTicketResolverList_OnSuccessCallBack(data) {
