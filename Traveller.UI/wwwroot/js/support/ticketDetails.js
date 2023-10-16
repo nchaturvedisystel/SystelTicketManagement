@@ -98,6 +98,12 @@ TicketDetails.CloseCommentDialougeOnClick = function () {
     }
     TicketDetails.ClearActivityForm();
 }
+
+TicketDetails.TakeOverButtonOnClick = function () {
+    console.log("Take Over Button Working")
+
+}
+
 TicketDetails.LoadTicketActivity = function (ticketId) {
     var ticketActivity = new Object();
     ticketActivity.ticketId = ticketId;
