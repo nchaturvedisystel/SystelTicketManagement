@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Admin;
+using Application.DTOs.SupportTicket;
 using Application.Interfaces.Admin;
 using MediatR;
 using System;
@@ -12,6 +13,7 @@ namespace Application.Features.Admin.Commands
 {
     public class GetCompanyCommand : IRequest<CompanyList>
     {
+        public CompanyMasterDTO companyMasterDTO { get; set; }
     }
     internal class CompanyHandler : IRequestHandler<GetCompanyCommand, CompanyList>
     {
@@ -23,7 +25,7 @@ namespace Application.Features.Admin.Commands
         }
         public async Task<CompanyList> Handle(GetCompanyCommand request, CancellationToken cancellationToken)
         {
-            return await _Company.GetCompany();
+            return await _Company.GetCompany(request.companyMasterDTO);
         }
     }
 }

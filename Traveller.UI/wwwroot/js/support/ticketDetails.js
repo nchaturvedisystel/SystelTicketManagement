@@ -8,7 +8,6 @@ TicketDetails.UserId = 0;
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 
-
 TicketDetails.onReady = function () {
     UserMaster.GetAllUserList();
     TicketDetails.InitiateRTE("TemplateInstEditor");
@@ -79,6 +78,7 @@ TicketDetails.DateTimeFormat = function (date) {
 TicketDetails.InitiateRTE = function (id) {
     if (document.getElementById(id)) {
         var editorId = ("#" + id);
+
         TicketDetails.InstructionsEditor = new RichTextEditor(editorId);
         TicketDetails.LoadTicketDetail();
     }
@@ -94,7 +94,7 @@ TicketDetails.InitiateRTE = function (id) {
 TicketDetails.AddCommentButtonOnClick = function () {
     if (!$('#detailActivityDiv').is(':visible')) {
         $("#detailActivityDiv").slideToggle();
-    }    
+    }
 }
 TicketDetails.CloseCommentDialougeOnClick = function () {
     if ($('#detailActivityDiv').is(':visible')) {
@@ -105,7 +105,22 @@ TicketDetails.CloseCommentDialougeOnClick = function () {
 
 TicketDetails.TakeOverButtonOnClick = function () {
     console.log("Take Over Button Working")
+    var TicketTakeOver = {};
+    TicketTakeOver.AssignedToId = User.UserId;
+    TicketTakeOver.ticketId = TicketDetails.ticketId;
+    TicketTakeOver.ActionUser = User.UserId;
+    Ajax.AuthPost("menus/GetTicketResolverList", TicketTakeOver, TicketTakeOver_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 
+}
+
+function TicketTakeOver_OnSuccessCallBack(data) {
+    var ticketActivity = new Object();
+    ticketActivity.ticketComments = `<div><span style=" text-align: left; font-style: italic"><span style="color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; white-space: nowrap; background-color: rgba(48, 62, 61, 0.03)"><span style="font-weight: bold; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">${User.UserName}</span><span>&nbsp;</span></span></span><span style=" white-space: nowrap; color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; background-color: rgba(48, 62, 61, 0.03)"><span style="font-style: italic; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">has taken over this ticket</span></span><br /></div>`
+        
+    ticketActivity.ticketId = TicketDetails.ticketId;
+    ticketActivity.createdBy = (TicketDetails.UserId).toString();
+    Ajax.AuthPost("Ticket/TicketComments", ticketActivity, InsertTicketActivity_OnSuccessCallBack, InsertTicketActivity_OnErrorCallBack);
+    TicketDetails.LoadTicketDetail();
 }
 
 TicketDetails.LoadTicketActivity = function (ticketId) {
@@ -117,11 +132,11 @@ TicketDetails.LoadTicketActivity = function (ticketId) {
 
 TicketDetails.InsertTicketActivity = function () {
     var ticketActivity = new Object();
-    ticketActivity.ticketComments = TicketDetails.InstructionsEditor.getPlainText();
+    ticketActivity.ticketComments = TicketDetails.InstructionsEditor.getHTML();
     ticketActivity.ticketId = TicketDetails.ticketId;
     ticketActivity.createdBy = (TicketDetails.UserId).toString();
     Ajax.AuthPost("Ticket/TicketComments", ticketActivity, InsertTicketActivity_OnSuccessCallBack, InsertTicketActivity_OnErrorCallBack);
-   
+
 }
 
 function InsertTicketActivity_OnSuccessCallBack(data) {
