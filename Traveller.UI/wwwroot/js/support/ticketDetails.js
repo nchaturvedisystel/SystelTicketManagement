@@ -16,9 +16,13 @@ TicketDetails.onReady = function () {
 
 //#region Load Ticket Details
 TicketDetails.LoadTicketDetail = function () {
+   // $('#CreateTicketModal').modal('hide');
     var ticket = new Object();
     ticket.ticketId = TicketDetails.ticketId;
     Ajax.AuthPost("Ticket/TicketDetails", ticket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+    var TicketResolverDropDown = {};
+    TicketResolverDropDown.ActionUser = User.UserId;
+    Ajax.AuthPost("menus/GetTicketResolverList", TicketResolverDropDown, TicketResolverDropDown_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 }
 
 function LoadTicketDetail_OnSuccessCallBack(data) {
@@ -163,6 +167,66 @@ TicketDetails.ClearActivityForm = function () {
 }
 //#endregion
 
+function TicketResolverDropDown_OnSuccessCallBack(data){
+    var resolverList = data.tickets;
+    var assignToList = document.getElementById("assignToList");
+    for (var i = 0; i < resolverList.length; i++) {
+        if (resolverList[i].userId !== User.UserId) {
+            var option = document.createElement("option");
+            option.value = resolverList[i].userId;
+            option.textContent = resolverList[i].name;
+            assignToList.appendChild(option);
+        }
+    }
+}
+
+TicketDetails.AssignToDropdown = function() {
+    var assignToDropdown = document.getElementById("assignToDropdown");
+    var dropdownDiv = document.getElementById("dropdownDiv");
+    if (assignToDropdown.style.display === "none") {
+        assignToDropdown.style.display = "block";
+    } else {
+        assignToDropdown.style.display = "none";
+    }
+    dropdownDiv.style.display = "none";
+}
+
+TicketDetails.handleAssigneeChange = function (selectElement) {
+
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    var selectedId = selectedOption.value;
+    var selectedName = selectedOption.textContent; 
+    let ticketId = TicketDetails.ticketId;
+    
+    var updateAssignedToOther = {};
+    updateAssignedToOther.ticketId = ticketId;
+    updateAssignedToOther.assignedToId = selectedId;
+    updateAssignedToOther.ActionUser = User.UserId;
+    Ajax.AuthPost("menus/GetTicketResolverList", updateAssignedToOther, UpdatedTicketResolverList_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+}
+
+function UpdatedTicketResolverList_OnSuccessCallBack(data){
+    TicketDetails.LoadTicketDetail();
+}
+
+TicketDetails.OpenEditTicketModal = function () {
+    $('#EditTicketModal').modal('show');
+    console.log(TicketDetails);
+    // let ticketData = JSON.parse(decodeURIComponent(data))
+    // document.getElementById("companyID").value = companyData.companyId
+    // document.getElementById("companyName").value = companyData.cName
+    // document.getElementById("companyCode").value = companyData.cCode
+    // document.getElementById("companyDescription").value = companyData.cDesc
+    // document.getElementById("companyAddress").value = companyData.cAddress
+    // document.getElementById("companyEmail").value = companyData.email
+    // document.getElementById("phoneNumber").value = companyData.phone
+    // document.getElementById("website").value = companyData.website
+    // document.getElementById("category").value = companyData.category
+    // document.getElementById("subCategory").value = companyData.subCategory
+    // document.getElementById("contactPerson").value = companyData.contactPerson
+    // document.getElementById("companyType").value = companyData.cType
+    // document.getElementById("isActive").checked = companyData.isActive == 1 ? true : false
+}
 
 
 
