@@ -209,12 +209,12 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetCompanyList")]
-        public async Task<IActionResult> GetCompanyList()
-        {
-            CompanyList response = await mediator.Send(new GetCompanyCommand{ } );
-            return Ok(response);
-        }
+        //[HttpGet("GetCompanyList")]
+        //public async Task<IActionResult> GetCompanyList()
+        //{
+        //    CompanyList response = await mediator.Send(new GetCompanyCommand{ } );
+        //    return Ok(response);
+        //}
 
 
 

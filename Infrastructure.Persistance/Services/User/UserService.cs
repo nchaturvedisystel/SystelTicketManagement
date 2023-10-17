@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistance.Services.User
 {
-    public class UserService : DABase, IUserContract, IUserMaster, ICompany
+    public class UserService : DABase, IUserContract, IUserMaster
     {
         APISettings _settings;
         private const string SP_AuthenticateUser = "ValidateUserLogin";
