@@ -206,6 +206,8 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
 }
 
 function UpdatedTicketResolverList_OnSuccessCallBack(data){
+    let assignToList = document.getElementById('assignToList');
+    assignToList.innerHTML = "";
     TicketDetails.LoadTicketDetail();
 }
 
