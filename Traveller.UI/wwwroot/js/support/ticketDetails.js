@@ -16,7 +16,7 @@ TicketDetails.onReady = function () {
 
 //#region Load Ticket Details
 TicketDetails.LoadTicketDetail = function () {
-   // $('#CreateTicketModal').modal('hide');
+    // $('#CreateTicketModal').modal('hide');
     var ticket = new Object();
     ticket.ticketId = TicketDetails.ticketId;
     Ajax.AuthPost("Ticket/TicketDetails", ticket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
@@ -26,6 +26,7 @@ TicketDetails.LoadTicketDetail = function () {
 }
 
 function LoadTicketDetail_OnSuccessCallBack(data) {
+    $('#EditTicketModal').modal('hide');
     let ticketDetail = data.tickets[0];
     document.getElementById("headerTicketStatus").innerHTML = ticketDetail.ticketStatus;
     document.getElementById("headerTicketTitle").innerHTML = ticketDetail.title;
@@ -116,7 +117,7 @@ TicketDetails.TakeOverButtonOnClick = function () {
 function TicketTakeOver_OnSuccessCallBack(data) {
     var ticketActivity = new Object();
     ticketActivity.ticketComments = `<div><span style=" text-align: left; font-style: italic"><span style="color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; white-space: nowrap; background-color: rgba(48, 62, 61, 0.03)"><span style="font-weight: bold; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">${User.UserName}</span><span>&nbsp;</span></span></span><span style=" white-space: nowrap; color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; background-color: rgba(48, 62, 61, 0.03)"><span style="font-style: italic; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">has taken over this ticket</span></span><br /></div>`
-        
+
     ticketActivity.ticketId = TicketDetails.ticketId;
     ticketActivity.createdBy = (TicketDetails.UserId).toString();
     Ajax.AuthPost("Ticket/TicketComments", ticketActivity, InsertTicketActivity_OnSuccessCallBack, InsertTicketActivity_OnErrorCallBack);
@@ -167,9 +168,13 @@ TicketDetails.ClearActivityForm = function () {
 }
 //#endregion
 
-function TicketResolverDropDown_OnSuccessCallBack(data){
+function TicketResolverDropDown_OnSuccessCallBack(data) {
     var resolverList = data.tickets;
     var assignToList = document.getElementById("assignToList");
+    var defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select an option";
+    assignToList.appendChild(defaultOption);
     for (var i = 0; i < resolverList.length; i++) {
         if (resolverList[i].userId !== User.UserId) {
             var option = document.createElement("option");
@@ -180,7 +185,7 @@ function TicketResolverDropDown_OnSuccessCallBack(data){
     }
 }
 
-TicketDetails.AssignToDropdown = function() {
+TicketDetails.AssignToDropdown = function () {
     var assignToDropdown = document.getElementById("assignToDropdown");
     var dropdownDiv = document.getElementById("dropdownDiv");
     if (assignToDropdown.style.display === "none") {
@@ -195,9 +200,8 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
 
     var selectedOption = selectElement.options[selectElement.selectedIndex];
     var selectedId = selectedOption.value;
-    var selectedName = selectedOption.textContent; 
+    var selectedName = selectedOption.textContent;
     let ticketId = TicketDetails.ticketId;
-    
     var updateAssignedToOther = {};
     updateAssignedToOther.ticketId = ticketId;
     updateAssignedToOther.assignedToId = selectedId;
@@ -205,7 +209,7 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
     Ajax.AuthPost("menus/GetTicketResolverList", updateAssignedToOther, UpdatedTicketResolverList_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 }
 
-function UpdatedTicketResolverList_OnSuccessCallBack(data){
+function UpdatedTicketResolverList_OnSuccessCallBack(data) {
     let assignToList = document.getElementById('assignToList');
     assignToList.innerHTML = "";
     TicketDetails.LoadTicketDetail();
@@ -214,20 +218,79 @@ function UpdatedTicketResolverList_OnSuccessCallBack(data){
 TicketDetails.OpenEditTicketModal = function () {
     $('#EditTicketModal').modal('show');
     console.log(TicketDetails);
-    // let ticketData = JSON.parse(decodeURIComponent(data))
-    // document.getElementById("companyID").value = companyData.companyId
-    // document.getElementById("companyName").value = companyData.cName
-    // document.getElementById("companyCode").value = companyData.cCode
-    // document.getElementById("companyDescription").value = companyData.cDesc
-    // document.getElementById("companyAddress").value = companyData.cAddress
-    // document.getElementById("companyEmail").value = companyData.email
-    // document.getElementById("phoneNumber").value = companyData.phone
-    // document.getElementById("website").value = companyData.website
-    // document.getElementById("category").value = companyData.category
-    // document.getElementById("subCategory").value = companyData.subCategory
-    // document.getElementById("contactPerson").value = companyData.contactPerson
-    // document.getElementById("companyType").value = companyData.cType
-    // document.getElementById("isActive").checked = companyData.isActive == 1 ? true : false
+    var ticket = new Object();
+    ticket.ticketId = TicketDetails.ticketId;
+    Ajax.AuthPost("Ticket/TicketDetails", ticket, EditTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+   
+}
+function EditTicketDetail_OnSuccessCallBack(data) {
+    let ticketData = data.tickets[0];
+    var projectSelect = document.getElementById("project");
+    for (var i = 0; i < projectSelect.options.length; i++) {
+        if (projectSelect.options[i].value == ticketData.projectId) {
+            projectSelect.options[i].selected = true;
+            break;
+        }
+    }
+    document.getElementById("title").value = ticketData.title;
+    var categorySelect = document.getElementById("category");
+    for (var i = 0; i < categorySelect.options.length; i++) {
+        if (categorySelect.options[i].value === ticketData.category) {
+            categorySelect.options[i].selected = true;
+            break; 
+        }
+    }
+    var prioritySelect = document.getElementById("priority");
+    for (var i = 0; i < prioritySelect.options.length; i++) {
+        if (prioritySelect.options[i].text === ticketData.ticketPriority) {
+            prioritySelect.options[i].selected = true;
+            break;
+        }
+    }
+    var ticketTypeySelect = document.getElementById("ticketType");
+    for (var i = 0; i < ticketTypeySelect.options.length; i++) {
+        if (ticketTypeySelect.options[i].text === ticketData.ticketType) {
+            ticketTypeySelect.options[i].selected = true;
+            break;
+        }
+    }
+    document.getElementById("targetDate").value = TicketDetails.DateFormat(ticketData.targetDate) ;
+    document.getElementById("tags").value = ticketData.tagList;
+    document.getElementById("affectsCustomer").checked = ticketData.affectsCustomer === 'on' ? true : false;
+    document.getElementById("AddField1").value = ticketData.addField1;
+    document.getElementById("AddField2").value = ticketData.addField2;
+}
+TicketDetails.UpdateTicket = function () {
+    var updateTicket = {};
+    updateTicket.TicketId = TicketDetails.ticketId;
+    updateTicket.Title = document.getElementById("title").value;
+    updateTicket.TicketType = document.getElementById("ticketType").value;
+    updateTicket.Category = document.getElementById("category").value;
+    updateTicket.TagList = document.getElementById("tags").value;
+    updateTicket.TicketPriority = document.getElementById("priority").value;
+    updateTicket.AffectsCustomer = document.getElementById("affectsCustomer").value;
+    updateTicket.TargetDate = new Date(document.getElementById("targetDate").value);
+    updateTicket.ProjectId = document.getElementById("project").value;
+    updateTicket.ActionUser = User.UserId;
+    updateTicket.AddField1 = document.getElementById("AddField1").value;
+    updateTicket.AddField2 = document.getElementById("AddField2").value;
+
+    // Perform validation
+    var ValidationMsg = " Please provide ";
+    ValidationMsg += (updateTicket.Title.trim() === '') ? " Title," : '';
+    ValidationMsg += (updateTicket.Category.trim() === '') ? " Category," : '';
+    ValidationMsg += (updateTicket.TicketPriority.trim() === '') ? " Priority," : '';
+    ValidationMsg += (updateTicket.TicketType.trim() === '') ? " Type," : '';
+    ValidationMsg += (updateTicket.TagList.trim() === '') ? " Tag," : '';
+    ValidationMsg += (updateTicket.AddField1.trim() === '') ? " AddField1," : '';
+    ValidationMsg += (updateTicket.AddField2.trim() === '') ? " AddField2," : '';
+
+    if (ValidationMsg.trim() != "Please provide") {
+        alert(ValidationMsg);
+    }
+    else {
+        Ajax.AuthPost("ticket/ManageTicket", updateTicket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+    }
 }
 
 
