@@ -124,6 +124,18 @@ function TicketTakeOver_OnSuccessCallBack(data) {
     TicketDetails.LoadTicketDetail();
 }
 
+TicketDetails.ForceCloseButtonOnClick = function () {
+
+    var closeTicket = new Object();
+
+    closeTicket.TicketId = TicketDetails.ticketId;
+    closeTicket.TicketStatus = "Forced Closed";
+    Ajax.AuthPost("ticket/ManageTicket", closeTicket, ForceClose_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+}
+function ForceClose_OnSuccessCallBack(data) {
+    TicketDetails.LoadTicketDetail();
+}
+
 TicketDetails.LoadTicketActivity = function (ticketId) {
     var ticketActivity = new Object();
     ticketActivity.ticketId = ticketId;
@@ -292,7 +304,3 @@ TicketDetails.UpdateTicket = function () {
         Ajax.AuthPost("ticket/ManageTicket", updateTicket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
     }
 }
-
-
-
-
