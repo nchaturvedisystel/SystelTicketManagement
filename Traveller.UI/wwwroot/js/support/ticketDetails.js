@@ -5,6 +5,8 @@ TicketDetails.ticketId = 0;
 TicketDetails.flag = true;
 TicketDetails.UserId = 0;
 
+CurrentTicket = new Object()
+
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 
@@ -27,6 +29,7 @@ TicketDetails.LoadTicketDetail = function () {
 
 function LoadTicketDetail_OnSuccessCallBack(data) {
     let ticketDetail = data.tickets[0];
+    TicketDetails.SetCurrentTicket(data.tickets[0])
     document.getElementById("headerTicketStatus").innerHTML = ticketDetail.ticketStatus;
     document.getElementById("headerTicketTitle").innerHTML = ticketDetail.title;
     document.getElementById("headerTicketId").innerHTML = "#" + ticketDetail.ticketId;
@@ -58,6 +61,51 @@ function LoadTicketDetail_OnErrorCallBack(err) {
 //#endregion
 
 //#region Common
+
+TicketDetails.SetCurrentTicket=function(data) {
+    CurrentTicket = {
+        ActionUser: data.actionUser,
+        ActualDuration: data.actualDuration,
+        AddField1: data.addField1,
+        AddField2: data.addField2,
+        AddField3: data.addField3,
+        AddField4: data.addField4,
+        AddField5: data.addField5,
+        AffectsCustomer: data.affectsCustomer,
+        AppVersion: data.appVersion,
+        AssignedTo: data.assignedTo,
+        AssignedToId: data.assignedToId,
+        AssignedToName: data.assignedToName,
+        Category: data.category,
+        CompanyId: data.companyId,
+        CompanyName: data.companyName,
+        CreatedBy: data.createdBy,
+        CreatedOn: data.createdOn,
+        DueDate: data.dueDate,
+        EstimatedDuration: data.estimatedDuration,
+        IsActive: data.isActive,
+        IsDeleted: data.isDeleted,
+        ModifiedBy: data.modifiedBy,
+        ModifiedOn: data.modifiedOn,
+        Name: data.name,
+        OwnedBy: data.ownedBy,
+        ProjectId: data.projectId,
+        ProjectName: data.projectName,
+        ResolutionDate: data.resolutionDate,
+        TagList: data.tagList,
+        TargetDate: data.targetDate,
+        TicketComments: data.ticketComments,
+        TicketDesc: data.ticketDesc,
+        TicketId: data.ticketId,
+        TicketOwner: data.ticketOwner,
+        TicketPriority: data.ticketPriority,
+        TicketStatus: data.ticketStatus,
+        TicketType: data.ticketType,
+        Title: data.title,
+        UserId: data.userId
+    };
+    
+}
 TicketDetails.DateFormat = function (dateString) {
     const indexOfT = dateString.indexOf('T');
     const dateWithoutTime = dateString.substring(0, indexOfT);
@@ -124,12 +172,9 @@ function TicketTakeOver_OnSuccessCallBack(data) {
 }
 
 TicketDetails.ForceCloseButtonOnClick = function () {
-
-    var closeTicket = new Object();
-
-    closeTicket.TicketId = TicketDetails.ticketId;
-    closeTicket.TicketStatus = "Forced Closed";
-    Ajax.AuthPost("ticket/ManageTicket", closeTicket, ForceClose_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+    CurrentTicket.TicketStatus = "Close";
+    CurrentTicket.ActionUser = User.UserId
+    Ajax.AuthPost("ticket/ManageTicket", CurrentTicket, ForceClose_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 }
 function ForceClose_OnSuccessCallBack(data) {
     TicketDetails.LoadTicketDetail();
@@ -215,6 +260,7 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
     updateAssignedToOther.assignedToId = selectedId;
     updateAssignedToOther.ActionUser = User.UserId;
     Ajax.AuthPost("menus/GetTicketResolverList", updateAssignedToOther, UpdatedTicketResolverList_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+ 
 }
 
 function UpdatedTicketResolverList_OnSuccessCallBack(data){
