@@ -105,7 +105,13 @@ Navigation.CallPageLoad = function (MenuCode) {
         Dashboard.BasepageOnReady();
     }
     else if (MenuCode == 'CSD') {
-        Support.BasepageOnReady();
+        Ticket.BasepageOnReady();
+    }
+    else if (MenuCode == 'TDDB') {
+        TicketDetails.onReady();
+    }
+    else if (MenuCode == 'CCDB') {
+        Company.BasepageOnReady();
     }
 
 }

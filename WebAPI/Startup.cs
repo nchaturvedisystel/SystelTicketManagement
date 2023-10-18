@@ -43,7 +43,7 @@ namespace WebAPI
             //Common Services
             services.AddTransient<IUserContract, UserService>();
             services.AddTransient<IUserMaster, UserService>();
-            services.AddTransient<ICompany, UserService>();
+            //services.AddTransient<ICompany, UserService>();
             services.AddTransient<IMenuContract, MenuMasterService>();
             //services.AddTransient<IGlobalSearch, GlobalSearchService>();
             services.AddTransient<IUserTimeTracking, UserTimeTrackingService>();
@@ -51,10 +51,19 @@ namespace WebAPI
             //Ticket Service
             services.AddTransient<ISupportTicket, TicketService>();
 
+            services.AddTransient<ITicketResolverList, MenuMasterService>();
 
+            //Company Master
+            services.AddTransient<ICompany, CompanyMasterService>();
+
+            //Ticket Description service
+            services.AddTransient<ITicketActivity, TicketActivityService>();
             
             //Admin Services
             services.AddTransient<IMenuManage, MenuMasterService>();
+            services.AddTransient<IClientWorkList, MenuMasterService>();
+
+
 
 
             //Services

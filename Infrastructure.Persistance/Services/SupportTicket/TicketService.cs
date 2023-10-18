@@ -24,6 +24,9 @@ namespace Infrastructure.Persistance.Services.SupportTicket
     {
         APISettings _settings;
         private const string SP_ManageTicket_CRUD = "ManageTicket_CRUD";
+        private const string SP_SupportTickets_GetTicketDetails = "SupportTickets_GetTicketDetails";
+        private const string SP_SupportTickets_GetByUserId = "SupportTickets_GetByUserId";
+        private const string SP_SupportTicket_TicketWorkList = "SupportTicket_TicketWorkList";
         private ILogger<TicketService> _logger;
 
         public TicketService(IOptions<ConnectionSettings> connectionSettings, ILogger<TicketService> logger, IOptions<APISettings> settings) : base(connectionSettings.Value.DBCONN)
@@ -37,36 +40,103 @@ namespace Infrastructure.Persistance.Services.SupportTicket
             TicketList response = new TicketList();
 
             _logger.LogInformation($"Started fetching all workcenter by workCenterId {supportTicketDTO.TicketId}");
-
-            using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+            try
             {
-                response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_ManageTicket_CRUD, new
+                //supportTicketDTO.TargetDate = Convert.ToDateTime( "2023-10-04 16:24:45.493");
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
                 {
-                    TicketId = supportTicketDTO.TicketId,
-                    Title = supportTicketDTO.Title,
-                    TDesc = supportTicketDTO.TicketDesc,
-                    TType = supportTicketDTO.TicketType,
-                    Category = supportTicketDTO.Category,
-                    TagList = supportTicketDTO.TagList,                   
-                    AssignedTo = supportTicketDTO.AssignedTo,
-                    TicketStatus = supportTicketDTO.TicketStatus,
-                    TPriority = supportTicketDTO.TicketPriority,
-                    AffectsCustomer = supportTicketDTO.AffectsCustomer,
-                    AppVersion = supportTicketDTO.AppVersion,
-                    DueDate = supportTicketDTO.DueDate,
-                    EstimatedDuration = supportTicketDTO.EstimatedDuration,
-                    ActualDuration = supportTicketDTO.ActualDuration,
-                    TargetDate = supportTicketDTO.TargetDate,
-                    ResolutionDate = supportTicketDTO.ResolutionDate,
-                    IsActive = supportTicketDTO.IsActive,
-                    IsDeleted = supportTicketDTO.IsDeleted,
-                    ActionUser = supportTicketDTO.ActionUser,
-                    ProjectId = supportTicketDTO.ProjectId,
-                    CompanyId = supportTicketDTO.CompanyId,
-                }, commandType: CommandType.StoredProcedure);
+                    response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_ManageTicket_CRUD, new
+                    {
+                        TicketId = supportTicketDTO.TicketId,
+                        Title = supportTicketDTO.Title,
+                        TDesc = supportTicketDTO.TicketDesc,
+                        TType = supportTicketDTO.TicketType,
+                        Category = supportTicketDTO.Category,
+                        TagList = supportTicketDTO.TagList,
+                        AssignedTo = supportTicketDTO.AssignedTo,
+                        TicketStatus = supportTicketDTO.TicketStatus,
+                        TPriority = supportTicketDTO.TicketPriority,
+                        AffectsCustomer = supportTicketDTO.AffectsCustomer,
+                        AppVersion = supportTicketDTO.AppVersion,
+                        EstimatedDuration = supportTicketDTO.EstimatedDuration,
+                        ActualDuration = supportTicketDTO.ActualDuration,
+                        AddField1 = supportTicketDTO.AddField1,
+                        AddField2 = supportTicketDTO.AddField2,
+                        AddField3 = supportTicketDTO.AddField3,
+                        AddField4 = supportTicketDTO.AddField4,
+                        AddField5 = supportTicketDTO.AddField5,
+                        IsActive = supportTicketDTO.IsActive,
+                        IsDeleted = supportTicketDTO.IsDeleted,
+                        ActionUser = supportTicketDTO.ActionUser,
+                        ProjectId = supportTicketDTO.ProjectId,
+                        CompanyId = supportTicketDTO.CompanyId,
+                        TargetDate = supportTicketDTO.TargetDate,
+                    }, commandType: CommandType.StoredProcedure);
 
+                }
+                //DueDate = supportTicketDTO.DueDate,
+                //ResolutionDate = supportTicketDTO.ResolutionDate,
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return response;
         }
+        public async Task<ClientUserTicketList> SupportTickets_GetByUserId(SupportTicketDTO supportTicketDTO)
+        {
+            ClientUserTicketList response = new ClientUserTicketList();
+
+            _logger.LogInformation($"Started fetching all support tickets for the logged in user {supportTicketDTO.ActionUser}");
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+                {
+                    var reader = await connection.QueryMultipleAsync(SP_SupportTickets_GetByUserId, new
+                    {
+                        ActionUser = supportTicketDTO.ActionUser,
+                        CompanyId = supportTicketDTO.CompanyId,
+                    }, commandType: CommandType.StoredProcedure);
+
+                    response.ActiveTickets = await reader.ReadAsync<SupportTicketDTO>();
+                    response.InprogressTickets = await reader.ReadAsync<SupportTicketDTO>();
+                    response.ClosedTickets = await reader.ReadAsync<SupportTicketDTO>();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return response;
+        }
+
+        public async Task<TicketList> SupportTickets_GetTicketDetails(SupportTicketDTO supportTicketDTO)
+        {
+            TicketList response = new TicketList();
+
+            _logger.LogInformation($"Started fetching all workcenter by workCenterId {supportTicketDTO.TicketId}");
+            try
+            {
+                //supportTicketDTO.TargetDate = Convert.ToDateTime( "2023-10-04 16:24:45.493");
+                using (SqlConnection connection = new SqlConnection(base.ConnectionString))
+                {
+                    response.Tickets = await connection.QueryAsync<SupportTicketDTO>(SP_SupportTickets_GetTicketDetails, new
+                    {
+                        TicketId = supportTicketDTO.TicketId,
+                    }, commandType: CommandType.StoredProcedure);
+
+                }
+                //DueDate = supportTicketDTO.DueDate,
+                //ResolutionDate = supportTicketDTO.ResolutionDate,
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return response;
+        }
+
+
     }
 }

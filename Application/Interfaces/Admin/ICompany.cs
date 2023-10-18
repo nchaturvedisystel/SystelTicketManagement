@@ -9,6 +9,6 @@ namespace Application.Interfaces.Admin
 {
     public interface ICompany
     {
-        public Task<CompanyList> GetCompany();
+        public Task<CompanyList> GetCompany(CompanyMasterDTO companyMasterDTO);
     }
 }

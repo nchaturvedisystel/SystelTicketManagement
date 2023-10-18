@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Admin;
+using Application.DTOs.SupportTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace Application.Interfaces.Admin
     {
         public Task<MenuManageList> ManageMenu(MenuManageDTO menuManageDTO);
         public Task<AdminDashboardList> AdminDashboardGet(int actionUser);
+        public Task<ClientWorkList> SupportTicket_TicketWorkList(SupportTicketDTO supportTicketDTO);
+       
     }
 }

@@ -10,9 +10,15 @@ namespace WebAPI.Filter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!context.ModelState.IsValid)
+            try
             {
-                throw new ValidationException(context.ModelState);
+                if (!context.ModelState.IsValid)
+                {
+                    throw new ValidationException(context.ModelState);
+                }
+            }
+            catch(ValidationException ex) { 
+                  
             }
         }
         public void OnActionExecuted(ActionExecutedContext context)

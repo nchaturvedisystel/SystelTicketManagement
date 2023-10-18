@@ -8,6 +8,7 @@
         public string EmailId { get; set; }
         public string MobileNo { get; set; }
         public string RoleId { get; set; }
+        public string CompanyId { get; set; }
     }
 
     public class SessionParam
@@ -18,5 +19,6 @@
         public string Param3 { get; set; }
         public string Param4 { get; set; }
         public string Param5 { get; set; }
+        public string Param6 { get; set; }
     }
 }

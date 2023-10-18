@@ -14,7 +14,7 @@ using MediatR;
 
 namespace WebAPI.Controllers.SupportTicket
 {
-    [Route("ticket")]
+    [Route("Ticket")]
     //[AuthorizeUser]
     public class TicketController : BaseApiController
     {
@@ -32,10 +32,45 @@ namespace WebAPI.Controllers.SupportTicket
         {
             TicketList response = new TicketList();
 
+
             response = await mediator.Send(new SupportTicketCommand
             {
                 supportTicketDTO = supportTicketDTO
             }) ;
+
+            if (response == null)
+                return Ok(APIResponse<string>.Unauthorized("Please check login credentials"));
+
+            return Ok(response);
+        }
+        [HttpPost("ClientUserTicketList")]
+        public async Task<IActionResult> ClientUserTicketList([FromBody] SupportTicketDTO supportTicketDTO)
+        {
+            ClientUserTicketList response = new ClientUserTicketList();
+
+
+            response = await mediator.Send(new ClientUserTicketListCommand
+            {
+                supportTicketDTO = supportTicketDTO
+            });
+
+            if (response == null)
+                return Ok(APIResponse<string>.Unauthorized("Please check login credentials"));
+
+            return Ok(response);
+        }
+
+        [HttpPost("TicketDetails")]
+        public async Task<IActionResult> TicketDetails([FromBody] SupportTicketDTO supportTicketDTO)
+        {
+            TicketList response = new TicketList();
+
+
+            response = await mediator.Send(new TicketDetailsCommand
+            {
+                supportTicketDTO = supportTicketDTO
+            });
+
             if (response == null)
                 return Ok(APIResponse<string>.Unauthorized("Please check login credentials"));
 

@@ -13,7 +13,7 @@ UserMaster.IsActive = 0;
 UserMaster.IsDeleted = 0;
 UserMaster.DOB = new Date();
 UserMaster.CompanyList = [];
-
+UserMaster.AllUserList = new Object();
 
 
 /*Base Page Start*/
@@ -29,18 +29,14 @@ UserMaster.CreateUserMasterOnReady = function () {
     UserMaster.LoadAll();
     WorkCenter.LoadAll();
     Roles.LoadAll();
+    Company.LoadAll();
 }
 
 UserMaster.LoadAll = function () {
     UserMaster.ClearObject()
     UserMaster.ActionUser = User.UserId;
     Ajax.AuthPost("users/UserMasterCrud", UserMaster, UserMasterCRUD_OnSuccessCallBack, UserMasterCRUD_OnErrorCallBack);
-    Ajax.AuthGet("users/GetCompanyList", GetCompanyList_OnSuccessCallBack, UserMasterCRUD_OnErrorCallBack);
 
-}
-
-function GetCompanyList_OnSuccessCallBack(data) {
-    UserMaster.CompanyList = data.companies
 }
 
 UserMaster.CreateNew = function () {
@@ -58,15 +54,20 @@ UserMaster.CreateNew = function () {
 
     UserMaster.ClearUserMasterCRUDForm();
     document.getElementById('profilePic').onchange = previewFile;
+    bindCompanyDropdownList();
+
+    
+}
+
+function bindCompanyDropdownList(){
     var companyDropdown = document.getElementById('UserCompany')
     companyDropdown.innerHTML = ""
     options = ''
-    for (var i = 0; i < UserMaster.CompanyList.length; i++) {
-        options = '<option value=' + UserMaster.CompanyList[i].companyId + '>' + UserMaster.CompanyList[i].companyName + '</option>'
+    let companylist = UserMaster.CompanyList
+    for (var i = 0; i < companylist.length; i++) {
+        options = '<option value=' + companylist[i].companyId + '>' + companylist[i].cName + '</option>'
         companyDropdown.innerHTML = companyDropdown.innerHTML + options
     }
-
-
 }
 
 
@@ -236,6 +237,7 @@ UserMaster.Update = function (userMaster) {
     document.getElementById('modalSaveButton').onclick = UserMaster.ValidateAndUpdateUser;
     document.getElementById('profileImagePath').value = userMaster.profileImage;
     document.getElementById('profilePic').onchange = previewFile;
+    bindCompanyDropdownList();
 
 }
 
@@ -369,5 +371,28 @@ function UpdateUserStatus_OnSuccesscallback(response) {
 
 function UpdateUserStatus_OnErrorCallBack(data) {
     Toast.create("Danger", "Some Error occured", TOAST_STATUS.DANGER, 1500);
+}
+
+UserMaster.GetAllUserList = function () {
+    Ajax.AuthGet("users/GetAllUserList", GetAllUserList_OnSuccessCallBack, GetAllUserList_OnErrorCallBack);
+}
+function GetAllUserList_OnSuccessCallBack(data) {
+    if (data && data.dropDownList) {
+        UserMaster.AllUserList = data.dropDownList;
+    }
+}
+function GetAllUserList_OnErrorCallBack(error) {
+    Toast.create("Danger", "Some Error occured", TOAST_STATUS.DANGER, 1500);
+}
+
+UserMaster.GetUserNameById = function (id) {
+    if (UserMaster.AllUserList) {
+        for (var i = 0; i < UserMaster.AllUserList.length; i++) {
+            if (UserMaster.AllUserList[i].key == id) {
+                id = UserMaster.AllUserList[i].value;
+            }
+        }
+    }
+    return id;
 }
 

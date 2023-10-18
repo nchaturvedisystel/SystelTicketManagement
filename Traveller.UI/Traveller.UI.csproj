@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\common\iconfonts.css" />
     <_ContentIncludedByDefault Remove="wwwroot\html\traveler\WorkItemDetail.html" />
     <_ContentIncludedByDefault Remove="wwwroot\Layout2\images\bubbles_bk_bg.jpg" />
   </ItemGroup>
