@@ -104,6 +104,20 @@ TicketDetails.TakeOverButtonOnClick = function () {
 
 }
 
+TicketDetails.ForceCloseButtonOnClick = function () {
+
+    var closeTicket = new Object();
+
+    closeTicket.TicketId = TicketDetails.ticketId;
+    closeTicket.TicketStatus = "Forced Closed";
+    Ajax.AuthPost("ticket/ManageTicket", closeTicket, ForceClose_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+}
+function ForceClose_OnSuccessCallBack(data) {
+    TicketDetails.LoadTicketDetail();
+}
+
+
+
 TicketDetails.LoadTicketActivity = function (ticketId) {
     var ticketActivity = new Object();
     ticketActivity.ticketId = ticketId;
@@ -147,6 +161,8 @@ TicketDetails.ClearActivityForm = function () {
     TicketDetails.InstructionsEditor.setPlainText("");
 }
 //#endregion
+
+
 
 
 

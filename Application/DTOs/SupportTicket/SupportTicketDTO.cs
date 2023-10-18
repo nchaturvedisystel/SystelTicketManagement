@@ -23,7 +23,7 @@ namespace Application.DTOs.SupportTicket
         public DateTime DueDate { get; set; }
         public string EstimatedDuration { get; set; }
         public string ActualDuration { get; set; }
-        public DateTime TargetDate { get; set; }
+        public DateTime? TargetDate { get; set; }
         public DateTime ResolutionDate { get; set;}
         public string AddField1 { get; set; }
         public string AddField2 { get; set; }
