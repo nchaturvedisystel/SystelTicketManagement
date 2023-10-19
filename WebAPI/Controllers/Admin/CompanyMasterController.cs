@@ -1,6 +1,6 @@
 ﻿using Application;
 using Application.DTOs.Admin;
-using Application.DTOs.SupportTicket;
+using Application.DTOs.SupportDesk;
 using Application.Features.Admin.Commands;
 using Application.Interfaces;
 using Domain.Settings;

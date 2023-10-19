@@ -1,4 +1,4 @@
-﻿using Application.DTOs.SupportTicket;
+﻿using Application.DTOs.SupportDesk;
 using System;
 using System.Collections.Generic;
 using System.Linq;

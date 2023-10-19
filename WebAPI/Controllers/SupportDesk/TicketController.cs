@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using WebAPI.Authorization;
-using Application.DTOs.SupportTicket;
-using Application.Features.SupportTicket;
+using Application.DTOs.SupportDesk;
+using Application.Features.SupportDesk;
 using Application.DTOs.Admin;
 using MediatR;
 
-namespace WebAPI.Controllers.SupportTicket
+namespace WebAPI.Controllers.SupportDesk
 {
     [Route("Ticket")]
     //[AuthorizeUser]
