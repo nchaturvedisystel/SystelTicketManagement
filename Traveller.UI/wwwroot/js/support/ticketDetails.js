@@ -6,6 +6,8 @@ TicketDetails.flag = true;
 TicketDetails.UserId = 0;
 CurrentTicket = new Object()
 
+CurrentTicket = new Object()
+
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
 
@@ -172,14 +174,17 @@ function TicketTakeOver_OnSuccessCallBack(data) {
 }
 
 TicketDetails.ForceCloseButtonOnClick = function () {
-
-    var closeTicket = new Object();
-
-    closeTicket.TicketId = TicketDetails.ticketId;
-    closeTicket.TicketStatus = "Forced Closed";
-    Ajax.AuthPost("ticket/ManageTicket", closeTicket, ForceClose_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+    CurrentTicket.TicketStatus = "Close";
+    CurrentTicket.ActionUser = User.UserId
+    Ajax.AuthPost("ticket/ManageTicket", CurrentTicket, ForceClose_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
 }
 function ForceClose_OnSuccessCallBack(data) {
+   
+    var ticketActivity = new Object();
+    ticketActivity.ticketComments = `<div><span style=" text-align: left; font-style: italic"><span style="color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; white-space: nowrap; background-color: rgba(48, 62, 61, 0.03)"><span style="font-weight: bold; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">${User.UserName}</span><span>&nbsp;</span></span></span><span style=" white-space: nowrap; color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; background-color: rgba(48, 62, 61, 0.03)"><span style="font-style: italic; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">has closed this ticket. </span></span><br /></div>`
+    ticketActivity.ticketId = TicketDetails.ticketId;
+    ticketActivity.createdBy = (TicketDetails.UserId).toString(); 
+    Ajax.AuthPost("Ticket/TicketComments", ticketActivity, InsertTicketActivity_OnSuccessCallBack, InsertTicketActivity_OnErrorCallBack);
     TicketDetails.LoadTicketDetail();
 }
 
@@ -266,6 +271,7 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
     updateAssignedToOther.assignedToId = selectedId;
     updateAssignedToOther.ActionUser = User.UserId;
     Ajax.AuthPost("menus/GetTicketResolverList", updateAssignedToOther, UpdatedTicketResolverList_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+ 
 }
 
 function UpdatedTicketResolverList_OnSuccessCallBack(data) {
