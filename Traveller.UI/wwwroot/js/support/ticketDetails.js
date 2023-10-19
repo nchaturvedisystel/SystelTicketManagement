@@ -6,7 +6,7 @@ TicketDetails.flag = true;
 TicketDetails.UserId = 0;
 CurrentTicket = new Object()
 
-CurrentTicket = new Object()
+
 
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
@@ -233,6 +233,7 @@ TicketDetails.ClearActivityForm = function () {
 //#endregion
 
 function TicketResolverDropDown_OnSuccessCallBack(data) {
+    document.getElementById("assignToList").innerHTML = "";
     var resolverList = data.tickets;
     var assignToList = document.getElementById("assignToList");
     var defaultOption = document.createElement("option");
@@ -353,7 +354,8 @@ TicketDetails.UpdateTicket = function () {
     else {
        Ajax.AuthPost("ticket/ManageTicket", CurrentTicket, UpdateTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
     }
+
 }
 function UpdateTicketDetail_OnSuccessCallBack(data) {
-    TicketDetails.LoadTicketDetail
+    TicketDetails.LoadTicketDetail();
 }
