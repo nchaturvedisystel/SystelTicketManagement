@@ -150,6 +150,8 @@ Ticket.CreateNew = function () {
     ValidationMsg += (newTicket.TicketPriority.trim() === '') ? " Priority," : '';
     ValidationMsg += (newTicket.TicketType.trim() === '') ? " Type," : '';
     ValidationMsg += (newTicket.TagList.trim() === '') ? " Tag," : '';
+    ValidationMsg += (newTicket.AddField1.trim() === '') ? " AddField1," : '';
+    ValidationMsg += (newTicket.AddField2.trim() === '') ? " AddField2," : '';
 
     if (ValidationMsg.trim() != "Please provide") {
         alert(ValidationMsg);

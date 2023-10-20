@@ -4,8 +4,9 @@ TicketDetails = new Object()
 TicketDetails.ticketId = 0;
 TicketDetails.flag = true;
 TicketDetails.UserId = 0;
-
 CurrentTicket = new Object()
+
+
 
 TicketDetails.InstructionsEditorLoaded = 0;
 TicketDetails.InstructionsEditor;
@@ -18,7 +19,7 @@ TicketDetails.onReady = function () {
 
 //#region Load Ticket Details
 TicketDetails.LoadTicketDetail = function () {
-   // $('#CreateTicketModal').modal('hide');
+    // $('#CreateTicketModal').modal('hide');
     var ticket = new Object();
     ticket.ticketId = TicketDetails.ticketId;
     Ajax.AuthPost("Ticket/TicketDetails", ticket, LoadTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
@@ -28,6 +29,7 @@ TicketDetails.LoadTicketDetail = function () {
 }
 
 function LoadTicketDetail_OnSuccessCallBack(data) {
+    $('#EditTicketModal').modal('hide');
     let ticketDetail = data.tickets[0];
     TicketDetails.SetCurrentTicket(data.tickets[0])
     document.getElementById("headerTicketStatus").innerHTML = ticketDetail.ticketStatus;
@@ -62,7 +64,7 @@ function LoadTicketDetail_OnErrorCallBack(err) {
 
 //#region Common
 
-TicketDetails.SetCurrentTicket=function(data) {
+TicketDetails.SetCurrentTicket = function (data) {
     CurrentTicket = {
         ActionUser: data.actionUser,
         ActualDuration: data.actualDuration,
@@ -104,7 +106,7 @@ TicketDetails.SetCurrentTicket=function(data) {
         Title: data.title,
         UserId: data.userId
     };
-    
+
 }
 TicketDetails.DateFormat = function (dateString) {
     const indexOfT = dateString.indexOf('T');
@@ -163,7 +165,8 @@ TicketDetails.TakeOverButtonOnClick = function () {
 
 function TicketTakeOver_OnSuccessCallBack(data) {
     var ticketActivity = new Object();
-    ticketActivity.ticketComments = `<div><span style=" text-align: left; font-style: italic"><span style="color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; white-space: nowrap; background-color: rgba(48, 62, 61, 0.03)"><span style="font-weight: bold; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">${User.UserName}</span><span>&nbsp;</span></span></span><span style=" white-space: nowrap; color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; background-color: rgba(48, 62, 61, 0.03)"><span style="font-style: italic; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">has taken over this ticket. </span></span><br /></div>`     
+    ticketActivity.ticketComments = `<div><span style=" text-align: left; font-style: italic"><span style="color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; white-space: nowrap; background-color: rgba(48, 62, 61, 0.03)"><span style="font-weight: bold; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">${User.UserName}</span><span>&nbsp;</span></span></span><span style=" white-space: nowrap; color: rgb(48, 62, 61); font-family: Montserrat, sans-serif; font-size: 10.5px; text-align: center; background-color: rgba(48, 62, 61, 0.03)"><span style="font-style: italic; background-color: rgb(255, 255, 255); color: rgb(128, 128, 128)">has taken over this ticket</span></span><br /></div>`
+
     ticketActivity.ticketId = TicketDetails.ticketId;
     ticketActivity.createdBy = (TicketDetails.UserId).toString();
     Ajax.AuthPost("Ticket/TicketComments", ticketActivity, InsertTicketActivity_OnSuccessCallBack, InsertTicketActivity_OnErrorCallBack);
@@ -229,9 +232,14 @@ TicketDetails.ClearActivityForm = function () {
 }
 //#endregion
 
-function TicketResolverDropDown_OnSuccessCallBack(data){
+function TicketResolverDropDown_OnSuccessCallBack(data) {
+    document.getElementById("assignToList").innerHTML = "";
     var resolverList = data.tickets;
     var assignToList = document.getElementById("assignToList");
+    var defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select an option";
+    assignToList.appendChild(defaultOption);
     for (var i = 0; i < resolverList.length; i++) {
         if (resolverList[i].userId !== User.UserId) {
             var option = document.createElement("option");
@@ -242,7 +250,7 @@ function TicketResolverDropDown_OnSuccessCallBack(data){
     }
 }
 
-TicketDetails.AssignToDropdown = function() {
+TicketDetails.AssignToDropdown = function () {
     var assignToDropdown = document.getElementById("assignToDropdown");
     var dropdownDiv = document.getElementById("dropdownDiv");
     if (assignToDropdown.style.display === "none") {
@@ -257,9 +265,8 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
 
     var selectedOption = selectElement.options[selectElement.selectedIndex];
     var selectedId = selectedOption.value;
-    var selectedName = selectedOption.textContent; 
+    var selectedName = selectedOption.textContent;
     let ticketId = TicketDetails.ticketId;
-    
     var updateAssignedToOther = {};
     updateAssignedToOther.ticketId = ticketId;
     updateAssignedToOther.assignedToId = selectedId;
@@ -268,7 +275,7 @@ TicketDetails.handleAssigneeChange = function (selectElement) {
  
 }
 
-function UpdatedTicketResolverList_OnSuccessCallBack(data){
+function UpdatedTicketResolverList_OnSuccessCallBack(data) {
     let assignToList = document.getElementById('assignToList');
     assignToList.innerHTML = "";
     TicketDetails.LoadTicketDetail();
@@ -276,19 +283,79 @@ function UpdatedTicketResolverList_OnSuccessCallBack(data){
 
 TicketDetails.OpenEditTicketModal = function () {
     $('#EditTicketModal').modal('show');
-    console.log(TicketDetails);
-    // let ticketData = JSON.parse(decodeURIComponent(data))
-    // document.getElementById("companyID").value = companyData.companyId
-    // document.getElementById("companyName").value = companyData.cName
-    // document.getElementById("companyCode").value = companyData.cCode
-    // document.getElementById("companyDescription").value = companyData.cDesc
-    // document.getElementById("companyAddress").value = companyData.cAddress
-    // document.getElementById("companyEmail").value = companyData.email
-    // document.getElementById("phoneNumber").value = companyData.phone
-    // document.getElementById("website").value = companyData.website
-    // document.getElementById("category").value = companyData.category
-    // document.getElementById("subCategory").value = companyData.subCategory
-    // document.getElementById("contactPerson").value = companyData.contactPerson
-    // document.getElementById("companyType").value = companyData.cType
-    // document.getElementById("isActive").checked = companyData.isActive == 1 ? true : false
+    //console.log(TicketDetails);
+    //var ticket = new Object();
+    //ticket.ticketId = TicketDetails.ticketId;
+    //Ajax.AuthPost("Ticket/TicketDetails", ticket, EditTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+    //let ticketData = data.tickets[0];
+    var projectSelect = document.getElementById("project");
+    for (var i = 0; i < projectSelect.options.length; i++) {
+        if (projectSelect.options[i].value == CurrentTicket.ProjectId) {
+            projectSelect.options[i].selected = true;
+            break;
+        }
+    }
+    document.getElementById("title").value = CurrentTicket.Title;
+    var categorySelect = document.getElementById("category");
+    for (var i = 0; i < categorySelect.options.length; i++) {
+        if (categorySelect.options[i].value === CurrentTicket.Category) {
+            categorySelect.options[i].selected = true;
+            break;
+        }
+    }
+    var prioritySelect = document.getElementById("priority");
+    for (var i = 0; i < prioritySelect.options.length; i++) {
+        if (prioritySelect.options[i].text === CurrentTicket.TicketPriority) {
+            prioritySelect.options[i].selected = true;
+            break;
+        }
+    }
+    var ticketTypeySelect = document.getElementById("ticketType");
+    for (var i = 0; i < ticketTypeySelect.options.length; i++) {
+        if (ticketTypeySelect.options[i].text === CurrentTicket.TicketType) {
+            ticketTypeySelect.options[i].selected = true;
+            break;
+        }
+    }
+    document.getElementById("targetDate").value = TicketDetails.DateFormat(CurrentTicket.TargetDate);
+    document.getElementById("tags").value = CurrentTicket.TagList;
+    document.getElementById("affectsCustomer").checked = CurrentTicket.AffectsCustomer === 'on' ? true : false;
+    document.getElementById("AddField1").value = CurrentTicket.AddField1;
+    document.getElementById("AddField2").value = CurrentTicket.AddField2;
+}
+
+TicketDetails.UpdateTicket = function () {
+    CurrentTicket.TicketId = TicketDetails.ticketId;
+    CurrentTicket.Title = document.getElementById("title").value;
+    CurrentTicket.TicketType = document.getElementById("ticketType").value;
+    CurrentTicket.Category = document.getElementById("category").value;
+    CurrentTicket.TagList = document.getElementById("tags").value;
+    CurrentTicket.TicketPriority = document.getElementById("priority").value;
+    CurrentTicket.AffectsCustomer = document.getElementById("affectsCustomer").value;
+    CurrentTicket.TargetDate = new Date(document.getElementById("targetDate").value);
+    CurrentTicket.ProjectId = document.getElementById("project").value;
+    CurrentTicket.ActionUser = User.UserId;
+    CurrentTicket.AddField1 = document.getElementById("AddField1").value;
+    CurrentTicket.AddField2 = document.getElementById("AddField2").value;
+
+    // Perform validation
+    var ValidationMsg = " Please provide ";
+    ValidationMsg += (CurrentTicket.Title.trim() === '') ? " Title," : '';
+    ValidationMsg += (CurrentTicket.Category.trim() === '') ? " Category," : '';
+    ValidationMsg += (CurrentTicket.TicketPriority.trim() === '') ? " Priority," : '';
+    ValidationMsg += (CurrentTicket.TicketType.trim() === '') ? " Type," : '';
+    ValidationMsg += (CurrentTicket.TagList.trim() === '') ? " Tag," : '';
+    ValidationMsg += (CurrentTicket.AddField1.trim() === '') ? " AddField1," : '';
+    ValidationMsg += (CurrentTicket.AddField2.trim() === '') ? " AddField2," : '';
+
+    if (ValidationMsg.trim() != "Please provide") {
+        alert(ValidationMsg);
+    }
+    else {
+       Ajax.AuthPost("ticket/ManageTicket", CurrentTicket, UpdateTicketDetail_OnSuccessCallBack, LoadTicketDetail_OnErrorCallBack);
+    }
+
+}
+function UpdateTicketDetail_OnSuccessCallBack(data) {
+    TicketDetails.LoadTicketDetail();
 }

@@ -101,8 +101,8 @@
             <button type="button" class="btn btn-outline-primary btn-sm" onclick="TicketDetails.TakeOverButtonOnClick()">Take Over</button>
             <!--<button type="button" class="btn btn-outline-primary btn-sm">Assign</button>-->
             <!-- <div id="dropdownDiv" class="btn btn-outline-primary btn-sm">Assign</div> -->
-            <div class="text-center">
-                <div id="dropdownDiv" class="btn btn-outline-primary btn-sm" onclick="TicketDetails.AssignToDropdown()">Assign To</div>
+            <div class="text-center btn btn-outline-primary btn-sm p-0 bg-white" >
+                <div id="dropdownDiv" class="btn btn-outline-primary btn-sm border-0 bg-white" onclick="TicketDetails.AssignToDropdown()">Assign To</div>
                 <div id="assignToDropdown" style="display: none;border: none;">
                     <select id="assignToList" style="height: 30px; " onchange="TicketDetails.handleAssigneeChange(this)"></select>
                 </div>
@@ -168,7 +168,7 @@
 <div style="height:100px;">
 </div>
 
-<!-- CreateTicketModal -->
+<!-- EditTicketModal -->
 
 <div class="modal fade" id="EditTicketModal" tabindex="-1" role="dialog" aria-labelledby="WorkflowInstructionsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 850px !important;" role="document">
@@ -255,7 +255,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="TicketDetails.CreateNew()">Update Ticket</button>
+                <button type="button" class="btn btn-primary" onclick="TicketDetails.UpdateTicket()">Update Ticket</button>
 
             </div>
         </div>

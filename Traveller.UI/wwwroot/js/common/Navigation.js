@@ -63,7 +63,7 @@ Navigation.CallPageLoad = function (MenuCode) {
         UserGroup.CreateGroupOnReady();
     }
     else if (MenuCode == "USR") {
-        UserDashboard.CreateUserDashboardOnReady();
+        UserMaster.CreateUserMasterOnReady();
     }
     else if (MenuCode == "USRL") {
         UserMaster.CreateUserMasterOnReady();
