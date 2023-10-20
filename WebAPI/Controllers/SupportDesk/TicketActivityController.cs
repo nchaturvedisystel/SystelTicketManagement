@@ -1,5 +1,5 @@
-﻿using Application.DTOs.SupportTicket;
-using Application.Features.SupportTicket;
+﻿using Application.DTOs.SupportDesk;
+using Application.Features.SupportDesk;
 using Application;
 using Application.Interfaces;
 using Domain.Settings;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
-namespace WebAPI.Controllers.SupportTicket
+namespace WebAPI.Controllers.SupportDesk
 {
     [Route("Ticket")]
     public class TicketActivityController : BaseApiController

@@ -9,8 +9,8 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Application.Features.Menus.Commands;
 using WebAPI.Authorization;
-using Application.DTOs.SupportTicket;
-using Application.Features.SupportTicket;
+using Application.DTOs.SupportDesk;
+using Application.Features.SupportDesk;
 
 namespace WebAPI.Controllers.Menu
 {

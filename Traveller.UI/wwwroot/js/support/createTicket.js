@@ -15,8 +15,8 @@ Ticket.EstimatedDuration = "";
 Ticket.ActualDuration = "";
 Ticket.TargetDate = new Date();
 Ticket.ResolutionDate = new Date();
-Ticket.AddField1 = "";
-Ticket.AddField2 = "";
+Ticket.Department = "";
+Ticket.RaisedBy = "";
 Ticket.AddField3 = "";
 Ticket.AddField4 = "";
 Ticket.AddField5 = "";
@@ -139,8 +139,8 @@ Ticket.CreateNew = function () {
     newTicket.ProjectId = document.getElementById("project").value;
     newTicket.ActionUser = User.UserId;
     newTicket.CompanyId = Ajax.CompanyId;
-    newTicket.AddField1 = document.getElementById("AddField1").value;
-    newTicket.AddField2 = document.getElementById("AddField2").value;
+    newTicket.Department = document.getElementById("department").value;
+    newTicket.RaisedBy = document.getElementById("raisedBy").value;
     //console.log(newTicket);
     
     // Perform validation

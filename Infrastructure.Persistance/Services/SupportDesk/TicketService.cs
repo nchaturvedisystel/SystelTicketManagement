@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Admin;
-using Application.DTOs.SupportTicket;
-using Application.Interfaces.SupportTicket;
+using Application.DTOs.SupportDesk;
+using Application.Interfaces.SupportDesk;
 using Domain.Settings;
 using Infrastructure.Persistance.Services.User;
 using Microsoft.Extensions.Logging;
@@ -18,7 +18,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Diagnostics;
 using Microsoft.VisualBasic;
 
-namespace Infrastructure.Persistance.Services.SupportTicket
+namespace Infrastructure.Persistance.Services.SupportDesk
 {
     public class TicketService : DABase, ISupportTicket
     {
@@ -60,8 +60,8 @@ namespace Infrastructure.Persistance.Services.SupportTicket
                         AppVersion = supportTicketDTO.AppVersion,
                         EstimatedDuration = supportTicketDTO.EstimatedDuration,
                         ActualDuration = supportTicketDTO.ActualDuration,
-                        AddField1 = supportTicketDTO.AddField1,
-                        AddField2 = supportTicketDTO.AddField2,
+                        Department = supportTicketDTO.Department,
+                        RaisedBy = supportTicketDTO.RaisedBy,
                         AddField3 = supportTicketDTO.AddField3,
                         AddField4 = supportTicketDTO.AddField4,
                         AddField5 = supportTicketDTO.AddField5,

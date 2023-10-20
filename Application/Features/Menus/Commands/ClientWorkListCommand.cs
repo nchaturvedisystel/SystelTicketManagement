@@ -1,7 +1,7 @@
-﻿using Application.DTOs.SupportTicket;
-using Application.Features.SupportTicket;
+﻿using Application.DTOs.SupportDesk;
+using Application.Features.SupportDesk;
 using Application.Interfaces;
-using Application.Interfaces.SupportTicket;
+using Application.Interfaces.SupportDesk;
 using MediatR;
 using System;
 using System.Collections.Generic;

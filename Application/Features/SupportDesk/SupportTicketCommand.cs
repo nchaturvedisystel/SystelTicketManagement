@@ -1,8 +1,8 @@
 ﻿using Application.DTOs.Admin;
-using Application.DTOs.SupportTicket;
+using Application.DTOs.SupportDesk;
 using Application.Features.Admin.Commands;
 using Application.Interfaces.Admin;
-using Application.Interfaces.SupportTicket;
+using Application.Interfaces.SupportDesk;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Features.SupportTicket
+namespace Application.Features.SupportDesk
 {
     public class SupportTicketCommand : IRequest<TicketList>
     {

@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 using Dapper;
 using Application.DTOs.Admin;
 using Application.Interfaces.Admin;
-using Application.DTOs.SupportTicket;
-using Application.Interfaces.SupportTicket;
+using Application.DTOs.SupportDesk;
+using Application.Interfaces.SupportDesk;
 
 namespace Infrastructure.Persistance.Services
 {

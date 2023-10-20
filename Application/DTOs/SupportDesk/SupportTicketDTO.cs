@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.SupportTicket
+namespace Application.DTOs.SupportDesk
 {
     public class SupportTicketDTO
     {
@@ -25,8 +25,8 @@ namespace Application.DTOs.SupportTicket
         public string ActualDuration { get; set; }
         public DateTime? TargetDate { get; set; }
         public DateTime ResolutionDate { get; set;}
-        public string AddField1 { get; set; }
-        public string AddField2 { get; set; }
+        public string Department { get; set; }
+        public string RaisedBy { get; set; }
         public string AddField3 { get; set; }
         public string AddField4 { get; set; }
         public string AddField5 { get; set; }

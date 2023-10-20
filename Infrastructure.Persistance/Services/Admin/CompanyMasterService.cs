@@ -14,7 +14,7 @@ using Application.Interfaces.Admin;
 using Application.Interfaces.User;
 using Application.Interfaces;
 using Dapper;
-using Application.DTOs.SupportTicket;
+using Application.DTOs.SupportDesk;
 using System.Net;
 using System.Numerics;
 

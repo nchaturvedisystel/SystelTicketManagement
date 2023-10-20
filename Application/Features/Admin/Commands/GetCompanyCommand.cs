@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Admin;
-using Application.DTOs.SupportTicket;
+using Application.DTOs.SupportDesk;
 using Application.Interfaces.Admin;
 using MediatR;
 using System;

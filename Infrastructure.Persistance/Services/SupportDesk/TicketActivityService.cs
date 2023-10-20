@@ -1,4 +1,4 @@
-﻿using Application.DTOs.SupportTicket;
+﻿using Application.DTOs.SupportDesk;
 using Domain.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
-using Application.Interfaces.SupportTicket;
+using Application.Interfaces.SupportDesk;
 
-namespace Infrastructure.Persistance.Services.SupportTicket
+namespace Infrastructure.Persistance.Services.SupportDesk
 {
     public class TicketActivityService : DABase, ITicketActivity
     {
